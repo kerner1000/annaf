@@ -13,19 +13,19 @@ import de.mpg.mpiz.koeln.anna.step.Step;
  * @author Alexander Kerner
  *
  */
-abstract class AbstractStepExecutor implements Callable<Boolean> {
+abstract class AbstractStepExecutor<V> implements Callable<Boolean> {
 
-	protected final Step step;
-	protected final Server server;
+	protected final Step<V> step;
+	protected final Server<V> server;
 	protected final LogDispatcher logger;
 
-	AbstractStepExecutor(Step step, Server server) {
+	AbstractStepExecutor(Step<V> step, Server<V> server) {
 		this.step = step;
 		this.server = server;
 		this.logger = new ConsoleLogger();
 	}
 
-	AbstractStepExecutor(Step step, Server server, LogDispatcher logger) {
+	AbstractStepExecutor(Step<V> step, Server<V> server, LogDispatcher logger) {
 		this.step = step;
 		this.server = server;
 		if (logger != null)
