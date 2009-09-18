@@ -6,26 +6,28 @@ import java.util.Collection;
 
 import de.bioutils.fasta.FASTAElement;
 import de.bioutils.fasta.NewFASTAFileImpl;
+import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
+import de.mpg.mpiz.koeln.anna.server.dataproxy.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
-public class InputSequenceReader extends AbstractStep {
+public class InputSequenceReader extends AbstractStep<GFF3DataBean> {
 
 	private final static String INFILE_KEY = "anna.step.inputsequencereader.infile";
 
-	public boolean requirementsSatisfied(DataProxy data)
+	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		logger.debug(this, "no requirements needed");
 		return true;
 	}
 
-	public boolean canBeSkipped(DataProxy data) throws StepExecutionException {
+	public boolean canBeSkipped(DataProxy<GFF3DataBean> data) throws StepExecutionException {
 		try {
-			final boolean inputSequences = (data.getInputSequences() != null);
-			final boolean inputSequencesSize = (data.getInputSequences().size() != 0);
+			final boolean inputSequences = (data.viewData().getInputSequence() != null);
+			final boolean inputSequencesSize = (data.viewData().getInputSequence().size() != 0);
 			logger.debug(this, "need to run:");
 			logger.debug(this, "\tinputSequences=" + inputSequences);
 			logger.debug(this, "\tinputSequencesSize=" + inputSequencesSize);
@@ -37,7 +39,7 @@ public class InputSequenceReader extends AbstractStep {
 		}
 	}
 
-	public boolean run(DataProxy data, StepProcessObserver listener)
+	public boolean run(DataProxy<GFF3DataBean> data, StepProcessObserver listener)
 			throws StepExecutionException {
 		try {
 			final File inFile = new File(getStepProperties().getProperty(
@@ -50,7 +52,11 @@ public class InputSequenceReader extends AbstractStep {
 			}
 			logger.debug(this, "got input sequences:"
 					+ fastas.iterator().next().getHeader() + " [...]");
-			data.setInputSequences(new ArrayList<FASTAElement>(fastas));
+			data.modifiyData(new DataModifier<GFF3DataBean>() {
+				public void modifiyData(GFF3DataBean v) {
+					v.setInputSequence(new ArrayList<FASTAElement>(fastas));
+				}
+			});
 			return true;
 		} catch (Exception e) {
 			StepUtils.handleException(this, e, logger);

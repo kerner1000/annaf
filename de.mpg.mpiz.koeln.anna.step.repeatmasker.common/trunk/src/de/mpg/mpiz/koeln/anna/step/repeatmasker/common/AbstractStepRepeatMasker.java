@@ -9,9 +9,11 @@ import org.osgi.framework.BundleContext;
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
 import de.bioutils.gff.element.NewGFFElement;
-import de.bioutils.gff.file.*;
+import de.bioutils.gff.file.NewGFFFileImpl;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
+import de.mpg.mpiz.koeln.anna.server.dataproxy.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.AbstractStepProcessBuilder;
@@ -19,7 +21,7 @@ import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
-public abstract class AbstractStepRepeatMasker extends AbstractStep {
+public abstract class AbstractStepRepeatMasker extends AbstractStep<GFF3DataBean> {
 	
 	protected File exeDir;
 	protected File workingDir;
@@ -56,13 +58,13 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 		logger.debug(this, "\texeDir=" + exeDir);
 	}
 
-	public boolean canBeSkipped(DataProxy data)
+	public boolean canBeSkipped(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		try {
 			// must this two actions be atomar?
-			final boolean repeatGtf = (data.getRepeatMaskerGff() != null);
-			final boolean repeatGtfSize = (data
-					.getRepeatMaskerGff().size() != 0);
+			final boolean repeatGtf = (data.viewData().getRepeatMaskerGFF() != null);
+			final boolean repeatGtfSize = (data.viewData()
+					.getRepeatMaskerGFF().size() != 0);
 			
 			return (repeatGtf && repeatGtfSize);
 		} catch (Throwable t) {
@@ -72,13 +74,13 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 		}
 	}
 
-	public boolean requirementsSatisfied(DataProxy data)
+	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		try {
 			// must this two actions be atomar?
-			final boolean sequence = (data.getInputSequences() != null);
-			final boolean sequenceSize = (data
-					.getInputSequences().size() != 0);
+			final boolean sequence = (data.viewData().getInputSequence() != null);
+			final boolean sequenceSize = (data.viewData()
+					.getInputSequence().size() != 0);
 			
 			return (sequence && sequenceSize);
 		} catch (Throwable t) {
@@ -88,7 +90,7 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 		}
 	}
 	
-	public boolean run(DataProxy data, StepProcessObserver listener)
+	public boolean run(DataProxy<GFF3DataBean> data, StepProcessObserver listener)
 			throws StepExecutionException {
 		logger.debug(this, "running");
 		final File inFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME);
@@ -99,12 +101,12 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 		final AbstractStepProcessBuilder worker = getProcess(inFile);
 		boolean success = true;
 		try{
-			new NewFASTAFileImpl(data.getInputSequences())
+			new NewFASTAFileImpl(data.viewData().getInputSequence())
 			.write(inFile);
 			worker.addResultFile(true, outFile);
 		success = worker.createAndStartProcess();
 		if (success) {
-			upUpdate(data, outFile);
+			update(data, outFile);
 		}
 		} catch (Throwable t) {
 			StepUtils.handleException(this, t, logger);
@@ -114,10 +116,15 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 		return success;
 	}
 	
-	private void upUpdate(DataProxy data, File outFile) throws DataBeanAccessException, IOException, GFFFormatErrorException{
+	private void update(DataProxy<GFF3DataBean> data, final File outFile) throws DataBeanAccessException, IOException, GFFFormatErrorException{
 		logger.debug(this, "updating data");
-		data.setRepeatMaskerGff(
-				(ArrayList<? extends NewGFFElement>) NewGFFFileImpl.parseFile(outFile).getElements());
+		final ArrayList<NewGFFElement> result = new ArrayList<NewGFFElement>();
+		result.addAll(NewGFFFileImpl.parseFile(outFile).getElements());
+		data.modifiyData(new DataModifier<GFF3DataBean>() {
+			public void modifiyData(GFF3DataBean v) {
+				v.setRepeatMaskerGFF(result);	
+			}
+		});
 	}
 	
 	protected abstract AbstractStepProcessBuilder getProcess(File inFile);

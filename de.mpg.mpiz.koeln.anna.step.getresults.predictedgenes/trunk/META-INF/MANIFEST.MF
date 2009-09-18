@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GetResultsPredictedGenes
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.getresults.predictedgenes
-Bundle-Version: 0.1.2
-Bundle-Activator: de.mpg.mpiz.koeln.anna.step.getresults.predictedgenes.StepGetPredictedGenes
+Bundle-Version: 0.2.0
+Bundle-Activator: de.mpg.mpiz.koeln.anna.step.getresults.predictedgenes.GetPredictedGenes
 Import-Package: de.bioutils,
  de.bioutils.gff,
  de.bioutils.gff.element,

@@ -12,22 +12,23 @@ import de.bioutils.gff.element.NewGFFElement;
 import de.bioutils.gff.file.NewGFFFile;
 import de.bioutils.gff.file.NewGFFFileImpl;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
-public class StepGetPredictedGenes extends AbstractStep {
+public class GetPredictedGenes extends AbstractStep<GFF3DataBean> {
 
 	private final static String OUT_DIR_KEY = "anna.step.getResults.outDir";
 	private final static String OUT_FILE_NAME_KEY = "anna.step.getResults.predictedGenes.fileName";
 
-	public boolean requirementsSatisfied(DataProxy data)
+	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		try {
-			final ArrayList<? extends NewGFFElement> elements = data
-					.getPredictedGenesGtf();
+			final ArrayList<? extends NewGFFElement> elements = data.viewData()
+					.getPredictedGenesGFF();
 			// TODO predicted genes may be size==0
 			return (elements != null && elements.size() != 0);
 		} catch (Throwable t) {
@@ -37,12 +38,12 @@ public class StepGetPredictedGenes extends AbstractStep {
 		}
 	}
 
-	public boolean canBeSkipped(DataProxy data)
+	public boolean canBeSkipped(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		return false;
 	}
 
-	public boolean run(DataProxy data, StepProcessObserver listener)
+	public boolean run(DataProxy<GFF3DataBean> data, StepProcessObserver listener)
 			throws StepExecutionException {
 		boolean success = false;
 		try {
@@ -61,8 +62,8 @@ public class StepGetPredictedGenes extends AbstractStep {
 		return success;
 	}
 
-	private void writeAllToSeparateFile(File outDir, DataProxy data) throws DataBeanAccessException, IOException {
-		ArrayList<? extends NewGFFElement> ele = data.getPredictedGenesGtf();
+	private void writeAllToSeparateFile(File outDir, DataProxy<GFF3DataBean> data) throws DataBeanAccessException, IOException {
+		ArrayList<? extends NewGFFElement> ele = data.viewData().getPredictedGenesGFF();
 		final NewGFFFile file = new NewGFFFileImpl(ele);
 		Map<String, List<NewGFFElement>> set = splitToSeqNames(file);
 		for(Entry<String, List<NewGFFElement>> e : set.entrySet()){
@@ -96,13 +97,13 @@ public class StepGetPredictedGenes extends AbstractStep {
 		return map;
 	}
 
-	private void writeAllToOne(File outDir, DataProxy data) throws DataBeanAccessException, IOException {
+	private void writeAllToOne(File outDir, DataProxy<GFF3DataBean> data) throws DataBeanAccessException, IOException {
 		final File outFile = new File(outDir, super.getStepProperties()
 				.getProperty(OUT_FILE_NAME_KEY));
 		logger.info(this, ": writing predicted genes to "
 				+ outFile);
-		final NewGFFFile file = new NewGFFFileImpl(data
-				.getPredictedGenesGtf());
+		final NewGFFFile file = new NewGFFFileImpl(data.viewData()
+				.getPredictedGenesGFF());
 		file.write(outFile);	
 	}
 

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: RepeatMasker LSF
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.repeatmasker.lsf
 Bundle-Version: 0.2.1
-Bundle-Activator: de.mpg.mpiz.koeln.anna.step.repeatmasker.lsf.StepRepeatMaskerLSF
+Bundle-Activator: de.mpg.mpiz.koeln.anna.step.repeatmasker.lsf.RepeatMaskerLSF
 Import-Package: de.bioutils.fasta,
  de.bioutils.gff,
  de.kerner.commons,

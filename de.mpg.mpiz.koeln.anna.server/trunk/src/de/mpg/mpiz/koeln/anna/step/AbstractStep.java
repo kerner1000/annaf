@@ -24,7 +24,7 @@ import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
  * @author Alexander Kerner
  * 
  */
-public abstract class AbstractStep implements BundleActivator, Step {
+public abstract class AbstractStep<V> implements BundleActivator, Step<V> {
 
 	private final static File PROPERTIES_FILE = new File(FileUtils.WORKING_DIR,
 			"configuration" + File.separatorChar + "step.properties");
@@ -40,7 +40,7 @@ public abstract class AbstractStep implements BundleActivator, Step {
 	 * @return
 	 * @throws StepExecutionException
 	 */
-	public boolean run(DataProxy data) throws StepExecutionException {
+	public boolean run(DataProxy<V> data) throws StepExecutionException {
 		return run(data, null);
 	}
 
@@ -83,7 +83,7 @@ public abstract class AbstractStep implements BundleActivator, Step {
 						return Server.class;
 					}
 				}.getService();
-				AbstractStep as = new DummyStep(this.toString());
+				AbstractStep<V> as = new DummyStep<V>(this.toString());
 				as.setState(AbstractStep.State.ERROR);
 				s.registerStep(as);
 			} catch (Throwable t) {

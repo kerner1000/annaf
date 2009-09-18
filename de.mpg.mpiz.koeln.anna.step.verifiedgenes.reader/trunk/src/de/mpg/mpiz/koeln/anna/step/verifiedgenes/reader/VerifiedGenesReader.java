@@ -17,13 +17,15 @@ import de.bioutils.gff.file.NewGFFFileImpl;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
+import de.mpg.mpiz.koeln.anna.server.dataproxy.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
-public class VerifiedGenesReader extends AbstractStep {
+public class VerifiedGenesReader extends AbstractStep<GFF3DataBean> {
 
 	private final static String FASTA_KEY = "anna.step.verified.fasta";
 	private final static String GTF_KEY = "anna.step.verified.gtf";
@@ -54,12 +56,12 @@ public class VerifiedGenesReader extends AbstractStep {
 		gtf = new File(gtfPath);
 	}
 
-	public boolean requirementsSatisfied(DataProxy data) {
+	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data) {
 		logger.info(this, "no requirements needed");
 		return true;
 	}
 
-	public boolean run(DataProxy data, StepProcessObserver observer) throws StepExecutionException {
+	public boolean run(DataProxy<GFF3DataBean> data, StepProcessObserver observer) throws StepExecutionException {
 		observer.setProgress(0, 100);
 		try {
 			observer.setProgress(30, 100);
@@ -75,36 +77,44 @@ public class VerifiedGenesReader extends AbstractStep {
 		return true;
 	}
 
-	private void doGtf(DataProxy data) throws IOException,
+	private void doGtf(DataProxy<GFF3DataBean> data) throws IOException,
 			GFFFormatErrorException, DataBeanAccessException {
 		logger.info(this, "reading GTF file " + gtf);
 		final NewGFFFile gtfFile = NewGFFFileImpl.parseFile(gtf);
 		final Collection<? extends NewGFFElement> elements = gtfFile
 				.getElements();
 		logger.info(this, "done reading gtf");
-		data.setVerifiedGenesGff(new ArrayList<NewGFFElement>(elements));
+		data.modifiyData(new DataModifier<GFF3DataBean>() {
+			public void modifiyData(GFF3DataBean v) {
+				v.setVerifiedGenesGFF(new ArrayList<NewGFFElement>(elements));	
+			}
+		});
 	}
 
-	private void doFasta(DataProxy data) throws IOException,
+	private void doFasta(DataProxy<GFF3DataBean> data) throws IOException,
 			DataBeanAccessException, StepExecutionException {
 		try{
 		logger.info(this, "reading FASTA file " + fasta);
 		final NewFASTAFile fastaFile = NewFASTAFileImpl.parse(fasta);
 		final Collection<? extends FASTAElement> sequences = fastaFile.getElements();
 		logger.info(this, "done reading fasta");
-		data.setVerifiedGenesFasta(new ArrayList<FASTAElement>(sequences));
+		data.modifiyData(new DataModifier<GFF3DataBean>() {
+			public void modifiyData(GFF3DataBean v) {
+				v.setVerifiedGenesFasta(new ArrayList<FASTAElement>(sequences));
+			}
+		});
 		} catch (Throwable t) {
 			StepUtils.handleException(this, t, logger);
 		}
 	}
 
-	public boolean canBeSkipped(DataProxy data) throws StepExecutionException {
+	public boolean canBeSkipped(DataProxy<GFF3DataBean> data) throws StepExecutionException {
 		try {
 			// TODO size == 0 sub-optimal indicator
-			final Collection<? extends FASTAElement> list1 = data
+			final Collection<? extends FASTAElement> list1 = data.viewData()
 					.getVerifiedGenesFasta();
-			final Collection<? extends NewGFFElement> list2 = data
-					.getVerifiedGenesGff();
+			final Collection<? extends NewGFFElement> list2 = data.viewData()
+					.getVerifiedGenesGFF();
 			return (list1 != null && list1.size() != 0 && list2 != null && list2
 					.size() != 0);
 		} catch (Throwable t) {
