@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Kerner-Commons
+Bundle-SymbolicName: de.kerner.commons
+Bundle-Version: 0.0.9
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: .,
+ lib/kerner-commons-0.0.9.jar
+Export-Package: de.kerner.commons,
+ de.kerner.commons.file,
+ de.kerner.commons.xml,
+ de.kerner.commons.zip
