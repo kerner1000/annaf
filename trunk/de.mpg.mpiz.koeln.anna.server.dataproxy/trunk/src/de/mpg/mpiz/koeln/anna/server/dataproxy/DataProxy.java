@@ -1,47 +1,30 @@
 package de.mpg.mpiz.koeln.anna.server.dataproxy;
 
-import java.io.File;
-import java.util.ArrayList;
-
-import de.bioutils.fasta.FASTAElement;
-import de.bioutils.gff.element.NewGFFElement;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 
-public interface DataProxy {
-
-	void setVerifiedGenesGff(ArrayList<? extends NewGFFElement> elements)
-			throws DataBeanAccessException;
-
-	void setVerifiedGenesFasta(ArrayList<? extends FASTAElement> sequences)
-			throws DataBeanAccessException;
-
-	ArrayList<? extends FASTAElement> getVerifiedGenesFasta()
-			throws DataBeanAccessException;
-
-	ArrayList<? extends NewGFFElement> getVerifiedGenesGff()
-			throws DataBeanAccessException;
-
-	ArrayList<? extends FASTAElement> getInputSequences()
-			throws DataBeanAccessException;
-
-	void setInputSequences(ArrayList<? extends FASTAElement> fastas)
-			throws DataBeanAccessException;
-
-	File getConradTrainingFile() throws DataBeanAccessException;
-
-	void setConradTrainingFile(File trainingFile)
-			throws DataBeanAccessException;
-
-	ArrayList<? extends NewGFFElement> getPredictedGenesGtf()
-			throws DataBeanAccessException;
-
-	void setPredictedGenesGff(ArrayList<? extends NewGFFElement> result)
-			throws DataBeanAccessException;
-
-	ArrayList<? extends NewGFFElement> getRepeatMaskerGff()
-			throws DataBeanAccessException;
-
-	void setRepeatMaskerGff(ArrayList<? extends NewGFFElement> elements)
-			throws DataBeanAccessException;
+public interface DataProxy<V> {
+	
+	/**
+	 * 
+	 * <p> Atomar operation on data.
+	 * Data will be synchronized bevor and after this operation.
+	 * </p>
+	 * 
+	 * @param v Type of Data, that is accessed.
+	 * @throws DataBeanAccessException
+	 */
+	void modifiyData(DataModifier<V> v) throws DataBeanAccessException;
+	
+	/**
+	 * 
+	 * <p>
+	 * Use this method for reading data only.
+	 * If you make changes to the data you get from this method, these changes will not be synchronized!
+	 * If you want to write data, use {@link modifiyData()} instead.
+	 * 
+	 * @return the data object.
+	 * @throws DataBeanAccessException
+	 */
+	V viewData() throws DataBeanAccessException;
 
 }

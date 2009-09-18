@@ -8,9 +8,11 @@ import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 
 interface SerialisationStrategy {
 
-	DataBean readFromDisk(File file) throws DataBeanAccessException;
+	<V extends DataBean> V readDataBean(File file, Class<V> v) throws DataBeanAccessException;
 
-	void writeDataBean(DataBean dataBean, File file)
+	<V extends DataBean> void writeDataBean(V v, File file)
 			throws DataBeanAccessException;
+	
+	<V extends DataBean> V getNewDataBean();
 
 }

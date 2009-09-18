@@ -10,7 +10,7 @@ import de.mpg.mpiz.koeln.anna.step.common.lsf.LSF;
 import de.mpg.mpiz.koeln.anna.step.repeatmasker.common.AbstractStepRepeatMasker;
 import de.mpg.mpiz.koeln.anna.step.repeatmasker.common.RepeatMaskerConstants;
 
-public class StepRepeatMaskerLSF extends AbstractStepRepeatMasker {
+public class RepeatMaskerLSF extends AbstractStepRepeatMasker {
 
 	private class Process extends AbstractStepProcessBuilder {
 

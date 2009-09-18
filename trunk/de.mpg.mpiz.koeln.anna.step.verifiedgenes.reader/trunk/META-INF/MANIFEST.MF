@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Verified-Genes-Reader
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.verifiedgenes.reader
-Bundle-Version: 0.2.1
+Bundle-Version: 0.3.0
 Bundle-Activator: de.mpg.mpiz.koeln.anna.step.verifiedgenes.reader.VerifiedGenesReader
 Import-Package: de.bioutils,
  de.bioutils.fasta,

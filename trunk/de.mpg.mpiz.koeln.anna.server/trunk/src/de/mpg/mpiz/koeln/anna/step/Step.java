@@ -6,7 +6,7 @@ import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 
-public interface Step {
+public interface Step<V> {
 	
 	public enum State {
 		LOOSE, REGISTERED, CHECK_NEED_TO_RUN, WAIT_FOR_REQ, RUNNING, DONE,
@@ -20,7 +20,7 @@ public interface Step {
 	 * @return
 	 * @throws StepExecutionException
 	 */
-	boolean requirementsSatisfied(DataProxy data) throws StepExecutionException;
+	boolean requirementsSatisfied(DataProxy<V> data) throws StepExecutionException;
 
 	/**
 	 * No need for synchronization. DataProxy is fully threadSave.
@@ -29,7 +29,7 @@ public interface Step {
 	 * @return
 	 * @throws StepExecutionException
 	 */
-	boolean canBeSkipped(DataProxy data) throws StepExecutionException;
+	boolean canBeSkipped(DataProxy<V> data) throws StepExecutionException;
 
 	/**
 	 * No need for synchronization. DataProxy is fully threadSave.
@@ -38,7 +38,7 @@ public interface Step {
 	 * @return
 	 * @throws StepExecutionException
 	 */
-	boolean run(DataProxy data) throws StepExecutionException;
+	boolean run(DataProxy<V> data) throws StepExecutionException;
 
 	/**
 	 * No need for synchronization. DataProxy is fully threadSave.
@@ -48,7 +48,7 @@ public interface Step {
 	 * @return
 	 * @throws StepExecutionException
 	 */
-	boolean run(DataProxy data, StepProcessObserver listener)
+	boolean run(DataProxy<V> data, StepProcessObserver listener)
 			throws StepExecutionException;
 	
 	
