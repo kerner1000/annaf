@@ -4,6 +4,7 @@ import java.util.concurrent.Callable;
 
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.server.Server;
+import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.step.Step;
 
 /**
@@ -15,9 +16,9 @@ import de.mpg.mpiz.koeln.anna.step.Step;
  */
 class StepController implements Callable<Void> {
 
-	private final AbstractStepExecutor exe;
+	private final AbstractStepExecutor<GFF3DataBean> exe;
 
-	StepController(Step step, Server server, LogDispatcher logger) {
+	StepController(Step<GFF3DataBean> step, Server<GFF3DataBean> server, LogDispatcher logger) {
 		exe = new LocalSepExecutor(step, server, logger);
 	}
 

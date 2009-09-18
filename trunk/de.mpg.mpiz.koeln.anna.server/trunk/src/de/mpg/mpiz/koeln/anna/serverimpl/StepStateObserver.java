@@ -2,15 +2,15 @@ package de.mpg.mpiz.koeln.anna.serverimpl;
 
 import de.mpg.mpiz.koeln.anna.step.Step;
 
-public interface StepStateObserver {
+public interface StepStateObserver<V> {
 	
-	void stepRegistered(Step step);
+	void stepRegistered(Step<V> step);
 
-	void stepStarted(Step step);
+	void stepStarted(Step<V> step);
 
-	void stepFinished(Step step, boolean success);
+	void stepFinished(Step<V> step, boolean success);
 
-	void stepChecksNeedToRun(Step step);
+	void stepChecksNeedToRun(Step<V> step);
 
-	void stepWaitForReq(Step step);
+	void stepWaitForReq(Step<V> step);
 }

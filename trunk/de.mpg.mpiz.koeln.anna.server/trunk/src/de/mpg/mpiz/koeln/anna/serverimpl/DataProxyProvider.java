@@ -3,6 +3,7 @@ package de.mpg.mpiz.koeln.anna.serverimpl;
 import org.osgi.framework.BundleContext;
 
 import de.kerner.osgi.commons.utils.AbstractServiceProvider;
+import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 
 /**
@@ -11,14 +12,15 @@ import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
  * @lastVisit 2009-08-14
  *
  */
-class DataProxyProvider extends AbstractServiceProvider<DataProxy>{
+class DataProxyProvider<V> extends AbstractServiceProvider<DataProxy<GFF3DataBean>>{
 
 	DataProxyProvider(BundleContext context) {
 		super(context);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected Class<DataProxy> getServiceClass() {
-		return DataProxy.class;
+	protected Class<DataProxy<GFF3DataBean>> getServiceClass() {
+		return (Class<DataProxy<GFF3DataBean>>) this.getClass();
 	}
 }
