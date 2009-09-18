@@ -55,4 +55,9 @@ public class GFF3DataBeanImpl implements GFF3DataBean {
 	public void setCustom(Map<String, Serializable> custom) {
 		this.custom = custom;
 	}
+	
+	@Override
+	public String toString(){
+		return this.getClass().getSimpleName();
+	}
 }

@@ -9,12 +9,12 @@ import de.bioutils.fasta.NewFASTAFileImpl;
 import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.step.AbstractStep;
+import de.mpg.mpiz.koeln.anna.step.AbstractGFF3Step;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
-public class InputSequenceReader extends AbstractStep<GFF3DataBean> {
+public class InputSequenceReader extends AbstractGFF3Step {
 
 	private final static String INFILE_KEY = "anna.step.inputsequencereader.infile";
 

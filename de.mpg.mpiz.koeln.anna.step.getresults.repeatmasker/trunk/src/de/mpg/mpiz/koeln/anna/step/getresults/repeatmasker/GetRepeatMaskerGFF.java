@@ -12,12 +12,12 @@ import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.step.AbstractStep;
+import de.mpg.mpiz.koeln.anna.step.AbstractGFF3Step;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
-public class GetRepeatMaskerGFF extends AbstractStep<GFF3DataBean> {
+public class GetRepeatMaskerGFF extends AbstractGFF3Step {
 	
 	private final static String OUT_DIR_KEY = "anna.step.getResults.outDir";
 	private final static String OUT_FILE_NAME_KEY = "anna.step.getResults.repeatMasker.fileName";

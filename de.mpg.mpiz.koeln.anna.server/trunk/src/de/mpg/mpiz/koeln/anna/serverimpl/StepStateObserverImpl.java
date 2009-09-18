@@ -6,19 +6,18 @@ import java.util.Map;
 
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.step.Step;
 
 /**
  * @ThreadSave
- * @cleaned 2009-07.29
+ * @cleaned 2009-07-29
  * @author Alexander Kerner
  *
  */
-public class StepStateObserverImpl implements StepStateObserver<GFF3DataBean> {
+public class StepStateObserverImpl implements GFF3StepStateObserver {
 
-	private final Map<Step<GFF3DataBean>, Step.State> stepStates = new HashMap<Step<GFF3DataBean>, Step.State>();
-	private final Map<Step<GFF3DataBean>, Boolean> stepSuccesses = new HashMap<Step<GFF3DataBean>, Boolean>();
+	private final Map<Step<?>, Step.State> stepStates = new HashMap<Step<?>, Step.State>();
+	private final Map<Step<?>, Boolean> stepSuccesses = new HashMap<Step<?>, Boolean>();
 	private final static String PRE_LINE =  "++++++ current states ++++++++";
 	private final static String POST_LINE = "++++++++++++++++++++++++++++++";
 	private final LogDispatcher logger;
@@ -31,11 +30,11 @@ public class StepStateObserverImpl implements StepStateObserver<GFF3DataBean> {
 		return this.getClass().getSimpleName();
 	}
 
-	private synchronized void printStepStates(Step<GFF3DataBean> lastChangedStep) {
+	private synchronized void printStepStates(Step<?> lastChangedStep) {
 		logger.info(this, FileUtils.NEW_LINE);
 		logger.info(this, PRE_LINE);
 		
-		for (Step<GFF3DataBean> s : stepStates.keySet()) {
+		for (Step<?> s : stepStates.keySet()) {
 			final String s1 = s.toString();
 			final String s2 = "state=" + stepStates.get(s);
 			final String s3 = "skipped=" + s.wasSkipped();
@@ -56,7 +55,7 @@ public class StepStateObserverImpl implements StepStateObserver<GFF3DataBean> {
 		logger.info(this, FileUtils.NEW_LINE);
 	}
 
-	private void changeStepState(Step<GFF3DataBean> step,
+	private void changeStepState(Step<?> step,
 			Step.State newState) {
 		if(step.getState().equals(Step.State.ERROR))
 			newState = Step.State.ERROR;
@@ -64,7 +63,7 @@ public class StepStateObserverImpl implements StepStateObserver<GFF3DataBean> {
 		printStepStates(step);
 	}
 
-	public synchronized void stepFinished(Step<GFF3DataBean> step, boolean success) {
+	public synchronized void stepFinished(Step<?> step, boolean success) {
 		final Step.State newState = Step.State.DONE;
 //		final Step.State expectedCurrentState = State.RUNNING;
 		stepSuccesses.put(step, success);
@@ -72,7 +71,7 @@ public class StepStateObserverImpl implements StepStateObserver<GFF3DataBean> {
 		changeStepState(step, newState);
 	}
 
-	public synchronized void stepRegistered(Step<GFF3DataBean> step) {
+	public synchronized void stepRegistered(Step<?> step) {
 		final Step.State newState = Step.State.REGISTERED;
 //		final Step.State expectedCurrentState = Step.State.LOOSE;
 //		checkConsistity(step, expectedCurrentState, newState);
@@ -80,14 +79,14 @@ public class StepStateObserverImpl implements StepStateObserver<GFF3DataBean> {
 
 	}
 
-	public synchronized void stepStarted(Step<GFF3DataBean> step) {
+	public synchronized void stepStarted(Step<?> step) {
 		final Step.State newState = Step.State.RUNNING;
 //		final Step.State expectedCurrentState = Step.State.WAIT_FOR_REQ;
 //		checkConsistity(step, expectedCurrentState, newState);
 		changeStepState(step, newState);
 	}
 
-	public synchronized void stepChecksNeedToRun(Step<GFF3DataBean> step) {
+	public synchronized void stepChecksNeedToRun(Step<?> step) {
 		final Step.State newState = Step.State.CHECK_NEED_TO_RUN;
 //		final Step.State expectedCurrentState = Step.State.REGISTERED;
 //		checkConsistity(step, expectedCurrentState, newState);
@@ -95,7 +94,7 @@ public class StepStateObserverImpl implements StepStateObserver<GFF3DataBean> {
 
 	}
 
-	public synchronized void stepWaitForReq(Step<GFF3DataBean> step) {
+	public synchronized void stepWaitForReq(Step<?> step) {
 		final Step.State newState = Step.State.WAIT_FOR_REQ;
 //		final Step.State expectedCurrentState = Step.State.CHECK_NEED_TO_RUN;
 //		checkConsistity(step, expectedCurrentState, newState);
