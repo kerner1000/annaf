@@ -30,7 +30,7 @@ public interface GFF3DataBean extends DataBean{
 	public void setRepeatMaskerGFF(ArrayList<NewGFFElement> repeatMaskerGFF);
 	
 	public Map<String, Serializable> getCustom();
-	public void setCustom(Map<String, Serializable> custom);
 	
+	public void setCustom(Map<String, Serializable> custom);
 
 }

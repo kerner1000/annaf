@@ -20,12 +20,12 @@ import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.step.AbstractStep;
+import de.mpg.mpiz.koeln.anna.step.AbstractGFF3Step;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
-public class VerifiedGenesReader extends AbstractStep<GFF3DataBean> {
+public class VerifiedGenesReader extends AbstractGFF3Step {
 
 	private final static String FASTA_KEY = "anna.step.verified.fasta";
 	private final static String GTF_KEY = "anna.step.verified.gtf";

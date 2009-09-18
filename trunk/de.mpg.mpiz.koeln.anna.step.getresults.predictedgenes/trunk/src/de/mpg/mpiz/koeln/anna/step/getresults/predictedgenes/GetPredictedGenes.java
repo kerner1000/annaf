@@ -14,12 +14,12 @@ import de.bioutils.gff.file.NewGFFFileImpl;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.step.AbstractStep;
+import de.mpg.mpiz.koeln.anna.step.AbstractGFF3Step;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
-public class GetPredictedGenes extends AbstractStep<GFF3DataBean> {
+public class GetPredictedGenes extends AbstractGFF3Step {
 
 	private final static String OUT_DIR_KEY = "anna.step.getResults.outDir";
 	private final static String OUT_FILE_NAME_KEY = "anna.step.getResults.predictedGenes.fileName";

@@ -3,17 +3,20 @@ package de.mpg.mpiz.koeln.anna.step;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
-import de.kerner.commons.file.FileUtils;
-import de.kerner.commons.StringUtils;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+
+import de.kerner.commons.StringUtils;
+import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.kerner.osgi.commons.utils.AbstractServiceProvider;
 import de.kerner.osgi.commons.utils.GetServiceAndRun;
-import de.mpg.mpiz.koeln.anna.server.Server;
+import de.mpg.mpiz.koeln.anna.server.GFF3Server;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 
 /**
@@ -24,7 +27,7 @@ import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
  * @author Alexander Kerner
  * 
  */
-public abstract class AbstractStep<V> implements BundleActivator, Step<V> {
+public abstract class AbstractGFF3Step implements BundleActivator, GFF3Step {
 
 	private final static File PROPERTIES_FILE = new File(FileUtils.WORKING_DIR,
 			"configuration" + File.separatorChar + "step.properties");
@@ -40,7 +43,7 @@ public abstract class AbstractStep<V> implements BundleActivator, Step<V> {
 	 * @return
 	 * @throws StepExecutionException
 	 */
-	public boolean run(DataProxy<V> data) throws StepExecutionException {
+	public boolean run(DataProxy<GFF3DataBean> data) throws StepExecutionException {
 		return run(data, null);
 	}
 
@@ -66,9 +69,9 @@ public abstract class AbstractStep<V> implements BundleActivator, Step<V> {
 	public void start(final BundleContext context) throws Exception {
 		logger.debug(this, "starting step " + this);
 		try {
-			new GetServiceAndRun<Server>(Server.class, context) {
+			new GetServiceAndRun<GFF3Server>(GFF3Server.class, context) {
 				@Override
-				public void doSomeThing(Server s) throws Exception {
+				public void doSomeThing(GFF3Server s) throws Exception {
 					init(context);
 					registerToServer(s);
 				}
@@ -77,14 +80,14 @@ public abstract class AbstractStep<V> implements BundleActivator, Step<V> {
 			try {
 				logger.error(this, StringUtils.getString(
 						"could not start step ", this), e);
-				Server s = new AbstractServiceProvider<Server>(context) {
+				GFF3Server s = new AbstractServiceProvider<GFF3Server>(context) {
 					@Override
-					protected Class<Server> getServiceClass() {
-						return Server.class;
+					protected Class<GFF3Server> getServiceClass() {
+						return GFF3Server.class;
 					}
 				}.getService();
-				AbstractStep<V> as = new DummyStep<V>(this.toString());
-				as.setState(AbstractStep.State.ERROR);
+				AbstractGFF3Step as = new DummyStep(this.toString());
+				as.setState(AbstractGFF3Step.State.ERROR);
 				s.registerStep(as);
 			} catch (Throwable t) {
 				logger.error(this, "cannot start nor register, going to die", t);
@@ -110,7 +113,7 @@ public abstract class AbstractStep<V> implements BundleActivator, Step<V> {
 		properties = getPropertes();
 	}
 
-	private synchronized void registerToServer(Server server) {
+	private synchronized void registerToServer(GFF3Server server) {
 		server.registerStep(this);
 	}
 

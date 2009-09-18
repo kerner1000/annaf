@@ -5,7 +5,10 @@ import java.util.List;
 
 import de.kerner.commons.CommandStringBuilder;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
+import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
+import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.common.AbstractStepProcessBuilder;
+import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.conrad.common.AbstractConradPredictStep;
 import de.mpg.mpiz.koeln.anna.step.conrad.common.ConradConstants;
 
@@ -40,4 +43,5 @@ public class PredictLocal extends AbstractConradPredictStep {
 	protected AbstractStepProcessBuilder getProcess() {
 		return new Process(exeDir, workingDir, logger);
 	}
+
 }

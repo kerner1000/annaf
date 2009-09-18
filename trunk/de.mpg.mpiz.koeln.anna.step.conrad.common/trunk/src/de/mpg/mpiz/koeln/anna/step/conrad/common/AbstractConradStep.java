@@ -5,8 +5,7 @@ import java.io.File;
 import org.osgi.framework.BundleContext;
 
 import de.kerner.commons.StringUtils;
-import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
-import de.mpg.mpiz.koeln.anna.step.AbstractStep;
+import de.mpg.mpiz.koeln.anna.step.AbstractGFF3Step;
 import de.mpg.mpiz.koeln.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 
@@ -18,7 +17,7 @@ import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
  * @Strings good
  *
  */
-public abstract class AbstractConradStep extends AbstractStep<GFF3DataBean> {
+public abstract class AbstractConradStep extends AbstractGFF3Step {
 	
 	public static final String TRAINING_FILE = "conrad.trainingfile";
 	

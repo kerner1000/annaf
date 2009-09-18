@@ -73,6 +73,8 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 	public boolean canBeSkipped(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		try {
+			System.err.println("dataproxy="+data);
+			System.err.println("databean="+data.viewData());
 			final boolean predictedGtf = (data.viewData().getPredictedGenesGFF() != null);
 			final boolean predictedGtfSize = (data.viewData()
 					.getPredictedGenesGFF().size() != 0);

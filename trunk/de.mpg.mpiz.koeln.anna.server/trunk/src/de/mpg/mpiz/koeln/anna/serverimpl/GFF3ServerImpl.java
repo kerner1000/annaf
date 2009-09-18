@@ -11,51 +11,48 @@ import java.util.concurrent.Executors;
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.kerner.osgi.commons.utils.AbstractServiceProvider;
-import de.mpg.mpiz.koeln.anna.server.Server;
+import de.mpg.mpiz.koeln.anna.server.GFF3Server;
 import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
+import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.anna.server.dataproxy.GFF3DataProxy;
+import de.mpg.mpiz.koeln.anna.step.GFF3Step;
 import de.mpg.mpiz.koeln.anna.step.Step;
 
-/**
- * 
- * @ThreadSave (individual guarded)
- * 
- */
-public class ServerImpl implements Server<GFF3DataBean> {
-
+public class GFF3ServerImpl implements GFF3Server {
+	
 	// TODO path
 	private final static File PROPERTIES_FILE = new File(FileUtils.WORKING_DIR,
 			"configuration"
 					+ File.separatorChar + "server.properties");
 	private final Properties properties;
 	private final ExecutorService exe = Executors.newCachedThreadPool();
-	private final StepStateObserver<GFF3DataBean> observer;
-	private final AbstractServiceProvider<GFF3DataBean> dataProxyProvder;
+	private final GFF3StepStateObserver observer;
+	private final GFF3DataProxy proxy;
 	private final LogDispatcher logger;
 
-	ServerImpl(final AbstractServiceProvider<GFF3DataBean> provider,
+	GFF3ServerImpl(final  GFF3DataProxy proxy,
 			final LogDispatcher logger) {
 		if (logger != null)
 			this.logger = logger;
 		else
 			this.logger = new ConsoleLogger();
 		this.observer = new StepStateObserverImpl(this.logger);
-		this.dataProxyProvder = provider;
+		this.proxy = proxy;
 		properties = getPropertes();
 		logger.debug(this, "loaded properties: " + properties);
 	}
 
-	ServerImpl(AbstractServiceProvider<GFF3DataBean> provider) {
+	GFF3ServerImpl(GFF3DataProxy proxy) {
 		this.logger = new ConsoleLogger();
 		this.observer = new StepStateObserverImpl(logger);
-		this.dataProxyProvder = provider;
+		this.proxy = proxy;
 		properties = getPropertes();
 		logger.debug(this, "loaded properties: " + properties);
 	}
-
+	
 	public void registerStep(Step<GFF3DataBean> step) {
 		observer.stepRegistered(step);
-		StepController controller = new StepController(step, this, logger);
+		GFF3StepController controller = new GFF3StepController(step, this, logger);
 		synchronized (exe) {
 			exe.submit(controller);
 		}
@@ -63,24 +60,26 @@ public class ServerImpl implements Server<GFF3DataBean> {
 	}
 
 	public void unregisterStep(Step<GFF3DataBean> step) {
-		System.err.println(this + ": unregistering step " + step);
-		// TODO method stub
+		// TODO Auto-generated method stub
+	}
 
+	public void registerStep(GFF3Step step) {
+		observer.stepRegistered(step);
+		GFF3StepController controller = new GFF3StepController(step, this, logger);
+		synchronized (exe) {
+			exe.submit(controller);
+		}
+		logger.debug(this, "registered step " + step);
 	}
 
 	// observer is final
-	public StepStateObserver<GFF3DataBean> getStepStateObserver() {
+	public GFF3StepStateObserver getStepStateObserver() {
 		return observer;
 	}
 
 	// properties is final
 	public Properties getServerProperties() {
 		return new Properties(properties);
-	}
-
-	// dataProxyProvider is final
-	public AbstractServiceProvider<?> getDataProxyProvider() {
-		return dataProxyProvder;
 	}
 
 	public String toString() {
@@ -114,4 +113,7 @@ public class ServerImpl implements Server<GFF3DataBean> {
 		return pro;
 	}
 
+	public DataProxy<GFF3DataBean> getDataProxy() {
+		return proxy;
+	}
 }

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Server
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.server
 Bundle-Version: 0.7.0
-Bundle-Activator: de.mpg.mpiz.koeln.anna.serverimpl.ServerActivator
+Bundle-Activator: de.mpg.mpiz.koeln.anna.serverimpl.GFF3ServerActivator
 Import-Package: de.kerner.commons,
  de.kerner.commons.file,
  de.kerner.osgi.commons.logger.dispatcher,
