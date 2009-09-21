@@ -126,6 +126,10 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3AnnaStep {
 		});
 	}
 	
+	public boolean isCyclic() {
+		return false;
+	}
+	
 	protected abstract AbstractStepProcessBuilder getProcess(File inFile);
 
 }

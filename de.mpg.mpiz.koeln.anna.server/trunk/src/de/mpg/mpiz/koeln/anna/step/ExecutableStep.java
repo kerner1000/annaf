@@ -13,5 +13,7 @@ public interface ExecutableStep {
 	boolean run() throws StepExecutionException;
 	
 	Properties getStepProperties();
+	
+	boolean isCyclic();
 
 }
