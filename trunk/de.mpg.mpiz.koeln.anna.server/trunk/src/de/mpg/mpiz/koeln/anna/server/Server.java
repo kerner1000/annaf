@@ -2,8 +2,6 @@ package de.mpg.mpiz.koeln.anna.server;
 
 import java.util.Properties;
 
-import de.mpg.mpiz.koeln.anna.serverimpl.StepStateObserver;
-
 /**
  * 
  * @lastVisit 2009-09-18
@@ -13,7 +11,7 @@ import de.mpg.mpiz.koeln.anna.serverimpl.StepStateObserver;
 public interface Server {
 
 	Properties getServerProperties();
-
-	StepStateObserver getStepStateObserver();
+	
+	void addEventListener(AnnaEventListener observer);
 
 }

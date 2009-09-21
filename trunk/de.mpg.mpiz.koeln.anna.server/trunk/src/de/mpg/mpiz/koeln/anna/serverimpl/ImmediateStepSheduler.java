@@ -1,9 +1,6 @@
 package de.mpg.mpiz.koeln.anna.serverimpl;
 
-import java.util.concurrent.Callable;
-
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.mpg.mpiz.koeln.anna.server.AnnaServer;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
 
 /**
@@ -13,17 +10,10 @@ import de.mpg.mpiz.koeln.anna.step.AnnaStep;
  * @lastVisit 2009-08-14
  *
  */
-class AnnaStepController implements Callable<Void> {
+class ImmediateStepSheduler extends StepSheduler {
 
-	private final AnnaSepExecutor exe;
-
-	AnnaStepController(AnnaStep step, AnnaServer server, LogDispatcher logger) {
-		exe = new AnnaSepExecutor(step, server, logger);
-	}
-
-	public String toString() {
-		return this.getClass().getSimpleName() + ":"
-				+ exe.getClass().getSimpleName();
+	ImmediateStepSheduler(AnnaStep step, EventHandler handler, LogDispatcher logger) {
+		super(step, handler, logger);
 	}
 
 	public Void call() throws Exception {
