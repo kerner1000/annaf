@@ -17,6 +17,12 @@ import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.server.data.DataBean;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 
+/**
+ * 
+ * @author Alexander Kerner
+ * @lastVisit 2009-09-21
+ *
+ */
 abstract class AbstractDiskSerialisation implements SerialisationStrategy {
 
 	protected final LogDispatcher logger;
@@ -64,7 +70,6 @@ abstract class AbstractDiskSerialisation implements SerialisationStrategy {
 				inStream.close();
 			if (fis != null)
 				fis.close();
-
 		}
 	}
 

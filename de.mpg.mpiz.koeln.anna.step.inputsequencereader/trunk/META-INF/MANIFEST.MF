@@ -7,6 +7,8 @@ Bundle-Activator: de.mpg.mpiz.koeln.anna.step.inputsequencereader.InputSequenceR
 Import-Package: de.bioutils,
  de.bioutils.fasta,
  de.kerner.osgi.commons.logger.dispatcher,
+ de.kerner.osgi.commons.utils,
+ de.mpg.mpiz.koeln.anna.abstractstep,
  de.mpg.mpiz.koeln.anna.server,
  de.mpg.mpiz.koeln.anna.server.data,
  de.mpg.mpiz.koeln.anna.server.dataproxy,

@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.anna.server.dataproxy.impl;
+package de.mpg.mpiz.koeln.anna.serverimpl;
 
 import java.util.Hashtable;
 
@@ -7,31 +7,30 @@ import org.osgi.framework.BundleContext;
 
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
-import de.mpg.mpiz.koeln.anna.server.dataproxy.GFF3DataProxy;
+import de.mpg.mpiz.koeln.anna.server.AnnaServer;
 
 /**
- * 
+ * @lastVisit 2009-09-18
  * @author Alexander Kerner
- * @lastVisit 2009-09-21
  *
  */
-public class GFF3DataProxyActivator implements BundleActivator {
+public class AnnaServerActivator implements BundleActivator {
 
 	private LogDispatcher logger = null;
 
 	public void start(BundleContext context) throws Exception {
 		logger = new LogDispatcherImpl(context);
-		GFF3DataProxy proxy = new GFF3DataProxyImpl(new CachedDiskSerialisation(logger));
-		context.registerService(GFF3DataProxy.class.getName(), proxy,
+		final AnnaServer service = new AnnaServerImpl(logger);
+		context.registerService(AnnaServer.class.getName(), service,
 				new Hashtable<Object, Object>());
+		logger.debug(this, "activated");
 	}
 
 	public void stop(BundleContext context) throws Exception {
-		logger.debug(this, "service stopped!");
-		logger = null;
+		// TODO method stub
 	}
 
 	public String toString() {
 		return this.getClass().getSimpleName();
-	}	
+	}
 }

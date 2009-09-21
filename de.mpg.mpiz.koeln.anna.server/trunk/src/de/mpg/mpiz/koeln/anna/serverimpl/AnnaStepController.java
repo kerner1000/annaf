@@ -3,9 +3,9 @@ package de.mpg.mpiz.koeln.anna.serverimpl;
 import java.util.concurrent.Callable;
 
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.mpg.mpiz.koeln.anna.server.GFF3Server;
-import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
-import de.mpg.mpiz.koeln.anna.step.Step;
+import de.mpg.mpiz.koeln.anna.server.AnnaServer;
+import de.mpg.mpiz.koeln.anna.step.AnnaStep;
+import de.mpg.mpiz.koeln.anna.step.ExecutableStep;
 
 /**
  * 
@@ -14,12 +14,12 @@ import de.mpg.mpiz.koeln.anna.step.Step;
  * @lastVisit 2009-08-14
  *
  */
-class GFF3StepController implements Callable<Void> {
+class AnnaStepController implements Callable<Void> {
 
-	private final GFF3SepExecutor exe;
+	private final AnnaSepExecutor exe;
 
-	GFF3StepController(Step<GFF3DataBean> step, GFF3Server server, LogDispatcher logger) {
-		exe = new GFF3SepExecutor(step, server, logger);
+	AnnaStepController(AnnaStep step, AnnaServer server, LogDispatcher logger) {
+		exe = new AnnaSepExecutor(step, server, logger);
 	}
 
 	public String toString() {

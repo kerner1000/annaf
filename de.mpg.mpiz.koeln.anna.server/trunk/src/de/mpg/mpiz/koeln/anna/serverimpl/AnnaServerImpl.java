@@ -11,14 +11,12 @@ import java.util.concurrent.Executors;
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.mpg.mpiz.koeln.anna.server.GFF3Server;
-import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
-import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.server.dataproxy.GFF3DataProxy;
-import de.mpg.mpiz.koeln.anna.step.GFF3Step;
-import de.mpg.mpiz.koeln.anna.step.Step;
+import de.mpg.mpiz.koeln.anna.server.AnnaServer;
+import de.mpg.mpiz.koeln.anna.step.AnnaStep;
+import de.mpg.mpiz.koeln.anna.step.ExecutableStep;
+import de.mpg.mpiz.koeln.anna.step.ObservableStep;
 
-public class GFF3ServerImpl implements GFF3Server {
+public class AnnaServerImpl implements AnnaServer {
 	
 	// TODO path
 	private final static File PROPERTIES_FILE = new File(FileUtils.WORKING_DIR,
@@ -26,46 +24,26 @@ public class GFF3ServerImpl implements GFF3Server {
 					+ File.separatorChar + "server.properties");
 	private final Properties properties;
 	private final ExecutorService exe = Executors.newCachedThreadPool();
-	private final GFF3StepStateObserver observer;
-	private final GFF3DataProxy proxy;
+	private final StepStateObserver observer;
 	private final LogDispatcher logger;
 
-	GFF3ServerImpl(final  GFF3DataProxy proxy,
-			final LogDispatcher logger) {
+	AnnaServerImpl(final LogDispatcher logger) {
 		if (logger != null)
 			this.logger = logger;
 		else
 			this.logger = new ConsoleLogger();
 		this.observer = new StepStateObserverImpl(this.logger);
-		this.proxy = proxy;
 		properties = getPropertes();
 		logger.debug(this, "loaded properties: " + properties);
 	}
 
-	GFF3ServerImpl(GFF3DataProxy proxy) {
-		this.logger = new ConsoleLogger();
-		this.observer = new StepStateObserverImpl(logger);
-		this.proxy = proxy;
-		properties = getPropertes();
-		logger.debug(this, "loaded properties: " + properties);
-	}
-	
-	public void registerStep(Step<GFF3DataBean> step) {
-		observer.stepRegistered(step);
-		GFF3StepController controller = new GFF3StepController(step, this, logger);
-		synchronized (exe) {
-			exe.submit(controller);
-		}
-		logger.debug(this, "registered step " + step);
-	}
-
-	public void unregisterStep(Step<GFF3DataBean> step) {
+	public void unregisterStep(ExecutableStep step) {
 		// TODO Auto-generated method stub
 	}
 
-	public void registerStep(GFF3Step step) {
-		observer.stepRegistered(step);
-		GFF3StepController controller = new GFF3StepController(step, this, logger);
+	public void registerStep(ExecutableStep step) {
+		observer.stepRegistered((ObservableStep) step);
+		AnnaStepController controller = new AnnaStepController((AnnaStep) step, this, logger);
 		synchronized (exe) {
 			exe.submit(controller);
 		}
@@ -73,7 +51,7 @@ public class GFF3ServerImpl implements GFF3Server {
 	}
 
 	// observer is final
-	public GFF3StepStateObserver getStepStateObserver() {
+	public StepStateObserver getStepStateObserver() {
 		return observer;
 	}
 
@@ -111,9 +89,5 @@ public class GFF3ServerImpl implements GFF3Server {
 		Properties pro = new Properties();
 		// pro.setProperty(WORKING_DIR_KEY, WORKING_DIR_VALUE);
 		return pro;
-	}
-
-	public DataProxy<GFF3DataBean> getDataProxy() {
-		return proxy;
 	}
 }

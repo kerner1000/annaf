@@ -114,17 +114,24 @@ public class Activator implements BundleActivator {
 	private final static String PLUGINS_PATH_6 = System.getProperty("user.dir")
 	+ "/06-anna-steps/";
 	private final ExecutorService exe = Executors.newSingleThreadExecutor();
-	public void start(BundleContext context) throws Exception {
-		synchronized (this) {
-			final Collection<Bundle> c = exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_0))).get();
-			c.addAll(exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_1))).get());
-			c.addAll(exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_2))).get());
-			c.addAll(exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_3))).get());
-			c.addAll(exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_4))).get());
-			c.addAll(exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_5))).get());
-			c.addAll(exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_6))).get());
-			exe.submit(new BundleStarter(c)).get();
+	public void start(final BundleContext context) throws Exception {
+		exe.submit(new Runnable(){
+			public void run() {
+				try {
+//					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_0)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_1)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_2)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_3)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_4)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_5)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_6)).call()).call();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
+		);
 	}
 
 	public void stop(BundleContext context) throws Exception {

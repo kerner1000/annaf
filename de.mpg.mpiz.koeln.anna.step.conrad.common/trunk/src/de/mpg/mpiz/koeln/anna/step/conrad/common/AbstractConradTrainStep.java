@@ -20,7 +20,6 @@ import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
-import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
 /**
@@ -70,6 +69,7 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		logger.debug(this, "initialisation done");
 	}
 
+	@Override
 	public boolean canBeSkipped(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		try {
@@ -93,6 +93,7 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		}
 	}
 
+	@Override
 	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		try {
@@ -147,7 +148,8 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		}
 	}
 
-	public boolean run(DataProxy<GFF3DataBean> data, StepProcessObserver listener)
+	@Override
+	public boolean run(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		logger.debug(this, "running");
 		boolean success = true;

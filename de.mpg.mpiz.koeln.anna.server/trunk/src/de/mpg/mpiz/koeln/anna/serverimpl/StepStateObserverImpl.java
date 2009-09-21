@@ -6,7 +6,7 @@ import java.util.Map;
 
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.mpg.mpiz.koeln.anna.step.Step;
+import de.mpg.mpiz.koeln.anna.step.ObservableStep;
 
 /**
  * @ThreadSave
@@ -14,10 +14,10 @@ import de.mpg.mpiz.koeln.anna.step.Step;
  * @author Alexander Kerner
  *
  */
-public class StepStateObserverImpl implements GFF3StepStateObserver {
+public class StepStateObserverImpl implements StepStateObserver {
 
-	private final Map<Step<?>, Step.State> stepStates = new HashMap<Step<?>, Step.State>();
-	private final Map<Step<?>, Boolean> stepSuccesses = new HashMap<Step<?>, Boolean>();
+	private final Map<ObservableStep, ObservableStep.State> stepStates = new HashMap<ObservableStep, ObservableStep.State>();
+	private final Map<ObservableStep, Boolean> stepSuccesses = new HashMap<ObservableStep, Boolean>();
 	private final static String PRE_LINE =  "++++++ current states ++++++++";
 	private final static String POST_LINE = "++++++++++++++++++++++++++++++";
 	private final LogDispatcher logger;
@@ -30,11 +30,11 @@ public class StepStateObserverImpl implements GFF3StepStateObserver {
 		return this.getClass().getSimpleName();
 	}
 
-	private synchronized void printStepStates(Step<?> lastChangedStep) {
+	private synchronized void printStepStates(ObservableStep lastChangedStep) {
 		logger.info(this, FileUtils.NEW_LINE);
 		logger.info(this, PRE_LINE);
 		
-		for (Step<?> s : stepStates.keySet()) {
+		for (ObservableStep s : stepStates.keySet()) {
 			final String s1 = s.toString();
 			final String s2 = "state=" + stepStates.get(s);
 			final String s3 = "skipped=" + s.wasSkipped();
@@ -55,47 +55,47 @@ public class StepStateObserverImpl implements GFF3StepStateObserver {
 		logger.info(this, FileUtils.NEW_LINE);
 	}
 
-	private void changeStepState(Step<?> step,
-			Step.State newState) {
-		if(step.getState().equals(Step.State.ERROR))
-			newState = Step.State.ERROR;
+	private void changeStepState(ObservableStep step,
+			ObservableStep.State newState) {
+		if(step.getState().equals(ObservableStep.State.ERROR))
+			newState = ObservableStep.State.ERROR;
 		stepStates.put(step, newState);
 		printStepStates(step);
 	}
 
-	public synchronized void stepFinished(Step<?> step, boolean success) {
-		final Step.State newState = Step.State.DONE;
+	public synchronized void stepFinished(ObservableStep step, boolean success) {
+		final ObservableStep.State newState = ObservableStep.State.DONE;
 //		final Step.State expectedCurrentState = State.RUNNING;
 		stepSuccesses.put(step, success);
 //		checkConsistity(step, expectedCurrentState, newState);
 		changeStepState(step, newState);
 	}
 
-	public synchronized void stepRegistered(Step<?> step) {
-		final Step.State newState = Step.State.REGISTERED;
+	public synchronized void stepRegistered(ObservableStep step) {
+		final ObservableStep.State newState = ObservableStep.State.REGISTERED;
 //		final Step.State expectedCurrentState = Step.State.LOOSE;
 //		checkConsistity(step, expectedCurrentState, newState);
 		changeStepState(step, newState);
 
 	}
 
-	public synchronized void stepStarted(Step<?> step) {
-		final Step.State newState = Step.State.RUNNING;
+	public synchronized void stepStarted(ObservableStep step) {
+		final ObservableStep.State newState = ObservableStep.State.RUNNING;
 //		final Step.State expectedCurrentState = Step.State.WAIT_FOR_REQ;
 //		checkConsistity(step, expectedCurrentState, newState);
 		changeStepState(step, newState);
 	}
 
-	public synchronized void stepChecksNeedToRun(Step<?> step) {
-		final Step.State newState = Step.State.CHECK_NEED_TO_RUN;
+	public synchronized void stepChecksNeedToRun(ObservableStep step) {
+		final ObservableStep.State newState = ObservableStep.State.CHECK_NEED_TO_RUN;
 //		final Step.State expectedCurrentState = Step.State.REGISTERED;
 //		checkConsistity(step, expectedCurrentState, newState);
 		changeStepState(step, newState);
 
 	}
 
-	public synchronized void stepWaitForReq(Step<?> step) {
-		final Step.State newState = Step.State.WAIT_FOR_REQ;
+	public synchronized void stepWaitForReq(ObservableStep step) {
+		final ObservableStep.State newState = ObservableStep.State.WAIT_FOR_REQ;
 //		final Step.State expectedCurrentState = Step.State.CHECK_NEED_TO_RUN;
 //		checkConsistity(step, expectedCurrentState, newState);
 		changeStepState(step, newState);

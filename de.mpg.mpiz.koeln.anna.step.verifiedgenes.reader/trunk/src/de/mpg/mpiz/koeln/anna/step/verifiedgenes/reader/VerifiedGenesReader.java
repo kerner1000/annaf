@@ -16,16 +16,15 @@ import de.bioutils.gff.file.NewGFFFile;
 import de.bioutils.gff.file.NewGFFFileImpl;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
+import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.step.AbstractGFF3Step;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
-import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
-public class VerifiedGenesReader extends AbstractGFF3Step {
+public class VerifiedGenesReader extends AbstractGFF3AnnaStep {
 
 	private final static String FASTA_KEY = "anna.step.verified.fasta";
 	private final static String GTF_KEY = "anna.step.verified.gtf";
@@ -61,14 +60,10 @@ public class VerifiedGenesReader extends AbstractGFF3Step {
 		return true;
 	}
 
-	public boolean run(DataProxy<GFF3DataBean> data, StepProcessObserver observer) throws StepExecutionException {
-		observer.setProgress(0, 100);
+	public boolean run(DataProxy<GFF3DataBean> data) throws StepExecutionException {
 		try {
-			observer.setProgress(30, 100);
 			doFasta(data);
-			observer.setProgress(60, 100);
 			doGtf(data);
-			observer.setProgress(100, 100);
 		} catch (Throwable t) {
 			StepUtils.handleException(this, t, logger);
 			// cannot be reached

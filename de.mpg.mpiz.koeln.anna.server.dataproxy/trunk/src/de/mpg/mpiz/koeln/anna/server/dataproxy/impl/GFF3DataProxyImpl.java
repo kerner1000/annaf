@@ -14,6 +14,12 @@ import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.GFF3DataProxy;
 
+/**
+ * 
+ * @author Alexander Kerner
+ * @lastVisit 2009-09-21
+ *
+ */
 public class GFF3DataProxyImpl implements GFF3DataProxy{
 	
 	final static String WORKING_DIR_KEY = "anna.server.data.workingDir";

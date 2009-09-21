@@ -1,11 +1,11 @@
 package de.mpg.mpiz.koeln.anna.server;
 
-import de.mpg.mpiz.koeln.anna.step.Step;
+import de.mpg.mpiz.koeln.anna.step.ExecutableStep;
 
-public interface ExecutorServer<V> extends Server<V> {
+public interface ExecutorServer extends Server {
 	
-	void registerStep(Step<V> step);
+	void registerStep(ExecutableStep step);
 
-	void unregisterStep(Step<V> step);
+	void unregisterStep(ExecutableStep step);
 
 }

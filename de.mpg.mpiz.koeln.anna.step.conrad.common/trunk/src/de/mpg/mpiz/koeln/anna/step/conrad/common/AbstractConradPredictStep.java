@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.osgi.framework.BundleContext;
+
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
-import de.bioutils.gff.element.*;
+import de.bioutils.gff.element.NewGFFElement;
 import de.bioutils.gff.file.NewGFFFileImpl;
 import de.kerner.commons.StringUtils;
 import de.kerner.commons.file.FileUtils;
@@ -18,7 +19,6 @@ import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
-import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
 /**
@@ -70,6 +70,7 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		}
 	}
 
+	@Override
 	public boolean canBeSkipped(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		try {
@@ -90,6 +91,7 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		}
 	}
 
+	@Override
 	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		try {
@@ -121,8 +123,8 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		}
 	}
 
-	public boolean run(DataProxy<GFF3DataBean> data,
-			StepProcessObserver listener) throws StepExecutionException {
+	@Override
+	public boolean run(DataProxy<GFF3DataBean> data) throws StepExecutionException {
 		boolean success = true;
 		try {
 			createFiles(data);
