@@ -62,6 +62,10 @@ public class GFF3DataProxyImpl implements GFF3DataProxy{
 	}
 
 	private GFF3DataBean getData() throws DataBeanAccessException {
+		if(!FileUtils.fileCheck(file, false)){
+			logger.info(this, "file " + file + " not there, creating new data");
+			return strategy.getNewDataBean();
+		}
 		return strategy.readDataBean(file, GFF3DataBean.class);
 	}
 	

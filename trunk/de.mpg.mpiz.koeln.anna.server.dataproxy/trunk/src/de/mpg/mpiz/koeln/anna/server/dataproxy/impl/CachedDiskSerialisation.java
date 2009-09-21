@@ -13,7 +13,7 @@ import de.mpg.mpiz.koeln.anna.server.data.impl.GFF3DataBeanImpl;
  * @lastVisit 2009-09-21
  *
  */
-class CachedDiskSerialisation extends AbstractDiskSerialisation {
+class CachedDiskSerialisation extends GFF3DiskSerialisation {
 	
 	CachedDiskSerialisation() {
 		super();
@@ -24,7 +24,6 @@ class CachedDiskSerialisation extends AbstractDiskSerialisation {
 	}
 
 	private volatile boolean dirty = false;
-	private volatile DataBean data = new GFF3DataBeanImpl();
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -42,13 +41,6 @@ class CachedDiskSerialisation extends AbstractDiskSerialisation {
 		this.dirty = true;
 		logger.debug(this, "writing data");
 		super.writeDataBean(v, file);
-	}
-
-	@SuppressWarnings("unchecked")
-	public <V extends DataBean> V getNewDataBean() {
-		logger.debug(this, "creating new data");
-		// TODO: WHY CAST ?!?
-		return (V) new GFF3DataBeanImpl();
 	}
 	
 	@Override

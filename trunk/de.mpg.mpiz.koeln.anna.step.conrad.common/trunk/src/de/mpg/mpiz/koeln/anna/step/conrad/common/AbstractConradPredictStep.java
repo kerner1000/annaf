@@ -96,7 +96,7 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 			throws StepExecutionException {
 		try {
 			final boolean trainingFile = (data.viewData().getCustom().get(
-					"conrad.training.file") != null && ((File) data.viewData()
+					TRAINING_FILE) != null && ((File) data.viewData()
 					.getCustom().get(TRAINING_FILE)).exists());
 
 			final boolean trainingFileRead = (data.viewData().getCustom().get(
@@ -106,6 +106,9 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 			final boolean inputSequences = (data.viewData().getInputSequence() != null);
 			final boolean inputSequencesSize = (data.viewData().getInputSequence().size() != 0);
 
+			logger.debug(this, StringUtils.getString(
+					"requirements: trainingFile=", data.viewData()
+					.getCustom().get(TRAINING_FILE)));
 			logger.debug(this, StringUtils.getString(
 					"requirements: trainingFile=", trainingFile));
 			logger.debug(this, StringUtils.getString(
