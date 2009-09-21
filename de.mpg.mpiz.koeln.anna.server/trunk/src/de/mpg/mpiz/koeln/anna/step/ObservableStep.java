@@ -4,7 +4,7 @@ public interface ObservableStep {
 	
 	public enum State {
 		LOOSE, REGISTERED, CHECK_NEED_TO_RUN, WAIT_FOR_REQ, RUNNING, DONE,
-		ERROR
+		ERROR, SKIPPED
 	}
 
 	State getState();

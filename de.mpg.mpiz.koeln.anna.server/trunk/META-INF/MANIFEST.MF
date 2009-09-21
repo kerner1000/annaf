@@ -8,6 +8,7 @@ Import-Package: de.kerner.commons,
  de.kerner.commons.file,
  de.kerner.osgi.commons.logger.dispatcher,
  de.kerner.osgi.commons.utils,
+ de.mpg.koeln.anna.core.events,
  de.mpg.mpiz.koeln.anna.server,
  de.mpg.mpiz.koeln.anna.server.data,
  de.mpg.mpiz.koeln.anna.server.dataproxy,
@@ -18,5 +19,6 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .,
  lib/xstream-1.3.1.jar,
  lib/xpp3-1.1.4c.jar
-Export-Package: de.mpg.mpiz.koeln.anna.server,
+Export-Package: de.mpg.koeln.anna.core.events,
+ de.mpg.mpiz.koeln.anna.server,
  de.mpg.mpiz.koeln.anna.step
