@@ -98,9 +98,6 @@ public class Activator implements BundleActivator {
 			return result;
 		}
 	}
-
-	private final static String PLUGINS_PATH_0 = System.getProperty("user.dir")
-			+ "/00-framework/";
 	private final static String PLUGINS_PATH_1 = System.getProperty("user.dir")
 	+ "/01-libs/";
 	private final static String PLUGINS_PATH_2 = System.getProperty("user.dir")

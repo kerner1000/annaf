@@ -100,7 +100,7 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 					.getCustom().get(TRAINING_FILE)).exists());
 
 			final boolean trainingFileRead = (data.viewData().getCustom().get(
-					"conrad.training.file") != null && ((File) data.viewData()
+					TRAINING_FILE) != null && ((File) data.viewData()
 					.getCustom().get(TRAINING_FILE)).canRead());
 
 			final boolean inputSequences = (data.viewData().getInputSequence() != null);
