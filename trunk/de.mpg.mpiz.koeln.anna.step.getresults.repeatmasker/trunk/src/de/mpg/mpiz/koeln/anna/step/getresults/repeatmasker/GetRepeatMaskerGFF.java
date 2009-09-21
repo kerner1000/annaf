@@ -10,14 +10,13 @@ import de.bioutils.gff.file.NewGFFFile;
 import de.bioutils.gff.file.NewGFFFileImpl;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
+import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
 import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.step.AbstractGFF3Step;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
-import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
-public class GetRepeatMaskerGFF extends AbstractGFF3Step {
+public class GetRepeatMaskerGFF extends AbstractGFF3AnnaStep {
 	
 	private final static String OUT_DIR_KEY = "anna.step.getResults.outDir";
 	private final static String OUT_FILE_NAME_KEY = "anna.step.getResults.repeatMasker.fileName";
@@ -51,7 +50,7 @@ public class GetRepeatMaskerGFF extends AbstractGFF3Step {
 		}
 	}
 
-	public boolean run(DataProxy<GFF3DataBean> data, StepProcessObserver listener)
+	public boolean run(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		boolean success = false;
 		try {

@@ -7,6 +7,12 @@ import de.mpg.mpiz.koeln.anna.server.data.DataBean;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.data.impl.GFF3DataBeanImpl;
 
+/**
+ * 
+ * @author Alexander Kerner
+ * @lastVisit 2009-09-21
+ *
+ */
 class CachedDiskSerialisation extends AbstractDiskSerialisation {
 	
 	CachedDiskSerialisation() {

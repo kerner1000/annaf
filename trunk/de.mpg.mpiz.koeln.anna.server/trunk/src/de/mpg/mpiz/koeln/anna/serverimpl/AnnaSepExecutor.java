@@ -1,26 +1,30 @@
 package de.mpg.mpiz.koeln.anna.serverimpl;
 
+import java.util.concurrent.Callable;
+
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.mpg.mpiz.koeln.anna.server.GFF3Server;
-import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
-import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.step.AbstractGFF3Step;
-import de.mpg.mpiz.koeln.anna.step.Step;
+import de.mpg.mpiz.koeln.anna.server.AnnaServer;
+import de.mpg.mpiz.koeln.anna.step.AnnaStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
-import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
-class GFF3SepExecutor extends AbstractStepExecutor<GFF3DataBean> {
+class AnnaSepExecutor implements Callable<Boolean> {
 
-	GFF3SepExecutor(Step<GFF3DataBean> step, GFF3Server server, LogDispatcher logger) {
-		super(step, server, logger);
+	private final AnnaServer server;
+	private final AnnaStep step;
+	private final LogDispatcher logger;
+	
+	AnnaSepExecutor(AnnaStep step, AnnaServer server, LogDispatcher logger) {
+		this.server = server;
+		this.step = step;
+		this.logger = logger;
 	}
 
 	public Boolean call() throws Exception {
 		boolean success = true;
 		try{
 		server.getStepStateObserver().stepChecksNeedToRun(step);
-		final boolean b = step.canBeSkipped(server.getDataProxy());
+		final boolean b = step.canBeSkipped();
 		if (b) {
 			logger.info(this, "step " + step
 					+ " does not need to run, skipping");
@@ -32,8 +36,7 @@ class GFF3SepExecutor extends AbstractStepExecutor<GFF3DataBean> {
 		server.getStepStateObserver().stepWaitForReq(step);
 		synchronized (server) {
 			try {
-				while (!step.requirementsSatisfied((DataProxy<GFF3DataBean>) server
-						.getDataProxy())) {
+				while (!step.requirementsSatisfied()) {
 					logger.debug(this, "requirements for step " + step
 							+ " not satisfied, putting it to sleep");
 					server.wait();
@@ -54,17 +57,16 @@ class GFF3SepExecutor extends AbstractStepExecutor<GFF3DataBean> {
 		// catch other Exceptions?
 		}catch(StepExecutionException e){
 			logger.info(this, "executing step " + step + " was erroneous", e);
-			step.setState(AbstractGFF3Step.State.ERROR);
+			step.setState(AnnaStep.State.ERROR);
 		}
 		return success;
 	}
 	
 	private boolean runStep() throws StepExecutionException {
-		final StepProcessObserver listener = new StepProgressObserverImpl();
 		logger.debug(this, "step " + step + "running");
 		server.getStepStateObserver().stepStarted(step);
 		return step
-				.run(server.getDataProxy(), listener);
+				.run();
 	}
 
 	private void stepFinished(boolean success){

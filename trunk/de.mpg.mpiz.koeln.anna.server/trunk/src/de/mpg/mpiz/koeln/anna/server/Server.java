@@ -2,8 +2,7 @@ package de.mpg.mpiz.koeln.anna.server;
 
 import java.util.Properties;
 
-import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.serverimpl.GFF3StepStateObserver;
+import de.mpg.mpiz.koeln.anna.serverimpl.StepStateObserver;
 
 /**
  * 
@@ -11,16 +10,10 @@ import de.mpg.mpiz.koeln.anna.serverimpl.GFF3StepStateObserver;
  * @author Alexander Kerner
  *
  */
-public interface Server<V> {
-
-	final static String PROPERTIES_KEY_PREFIX = "anna.server.";
-	final static String WORKING_DIR_KEY = PROPERTIES_KEY_PREFIX
-			+ "workingdir";	
+public interface Server {
 
 	Properties getServerProperties();
 
-	GFF3StepStateObserver getStepStateObserver();
-	
-	DataProxy<V> getDataProxy();
+	StepStateObserver getStepStateObserver();
 
 }

@@ -5,7 +5,12 @@ import java.io.File;
 import de.mpg.mpiz.koeln.anna.server.data.DataBean;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 
-
+/**
+ * 
+ * @author Alexander Kerner
+ * @lastVisit 2009-09-21
+ *
+ */
 interface SerialisationStrategy {
 
 	<V extends DataBean> V readDataBean(File file, Class<V> v) throws DataBeanAccessException;
