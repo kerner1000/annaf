@@ -33,4 +33,8 @@ class DummyStep extends AbstractGFF3AnnaStep {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public boolean isCyclic() {
+		return false;
+	}
 }

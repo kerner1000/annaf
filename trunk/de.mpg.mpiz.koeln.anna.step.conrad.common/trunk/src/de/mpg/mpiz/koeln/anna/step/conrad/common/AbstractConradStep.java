@@ -45,4 +45,8 @@ public abstract class AbstractConradStep extends AbstractGFF3AnnaStep {
 		return this.getClass().getSimpleName();
 	}
 	
+	public boolean isCyclic() {
+		return false;
+	}
+	
 }

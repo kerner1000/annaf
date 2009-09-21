@@ -68,5 +68,9 @@ public class InputSequenceReader extends AbstractGFF3AnnaStep {
 	public String toString() {
 		return this.getClass().getSimpleName();
 	}
+	
+	public boolean isCyclic() {
+		return false;
+	}
 
 }
