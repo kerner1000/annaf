@@ -21,7 +21,7 @@ public class GFF3DataProxyActivator implements BundleActivator {
 
 	public void start(BundleContext context) throws Exception {
 		logger = new LogDispatcherImpl(context);
-		GFF3DataProxy proxy = new GFF3DataProxyImpl(new CachedDiskSerialisation(logger));
+		GFF3DataProxy proxy = new GFF3DataProxyImpl(new SimpleDiskSerialisation(logger));
 		context.registerService(GFF3DataProxy.class.getName(), proxy,
 				new Hashtable<Object, Object>());
 	}
