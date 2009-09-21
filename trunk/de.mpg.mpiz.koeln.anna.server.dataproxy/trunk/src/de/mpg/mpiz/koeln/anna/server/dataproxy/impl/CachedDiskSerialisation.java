@@ -5,7 +5,6 @@ import java.io.File;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.server.data.DataBean;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
-import de.mpg.mpiz.koeln.anna.server.data.impl.GFF3DataBeanImpl;
 
 /**
  * 

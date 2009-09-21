@@ -175,8 +175,14 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 	protected void update(DataProxy<GFF3DataBean> data) throws DataBeanAccessException {
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
+				logger.debug(this, "using custom slot: key=" + TRAINING_FILE + ", value="+trainingFile.getAbsoluteFile());
 				v.getCustom().put(TRAINING_FILE, trainingFile.getAbsoluteFile());	
 			}
 		});
+	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
 	}
 }

@@ -5,7 +5,6 @@ import java.util.concurrent.Callable;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.server.AnnaServer;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
-import de.mpg.mpiz.koeln.anna.step.ExecutableStep;
 
 /**
  * 
