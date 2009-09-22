@@ -3,6 +3,7 @@ package de.mpg.mpiz.koeln.anna.step.getresults.predictedgenes;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class GetPredictedGenes extends AbstractGFF3AnnaStep {
 	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		try {
-			final ArrayList<? extends NewGFFElement> elements = data.viewData()
+			final Collection<? extends NewGFFElement> elements = data.viewData()
 					.getPredictedGenesGFF();
 			// TODO predicted genes may be size==0
 			return (elements != null && elements.size() != 0);
@@ -62,7 +63,7 @@ public class GetPredictedGenes extends AbstractGFF3AnnaStep {
 	}
 
 	private void writeAllToSeparateFile(File outDir, DataProxy<GFF3DataBean> data) throws DataBeanAccessException, IOException {
-		ArrayList<? extends NewGFFElement> ele = data.viewData().getPredictedGenesGFF();
+		Collection<? extends NewGFFElement> ele = data.viewData().getPredictedGenesGFF();
 		final NewGFFFile file = new NewGFFFileImpl(ele);
 		Map<String, List<NewGFFElement>> set = splitToSeqNames(file);
 		for(Entry<String, List<NewGFFElement>> e : set.entrySet()){

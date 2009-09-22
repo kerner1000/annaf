@@ -1,33 +1,33 @@
 package de.mpg.mpiz.koeln.anna.server.data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 import de.bioutils.fasta.FASTAElement;
 import de.bioutils.gff.element.NewGFFElement;
 
-public interface GFF3DataBean extends DataBean{
+public interface GFF3DataBean extends DataBean {
 	
-	public ArrayList<FASTAElement> getInputSequence();
+	public Collection<FASTAElement> getInputSequence();
 	
-	public void setInputSequence(ArrayList<FASTAElement> inputSequence);
+	public void setInputSequence(Collection<FASTAElement> inputSequence);
 	
-	public ArrayList<FASTAElement> getVerifiedGenesFasta();
+	public Collection<FASTAElement> getVerifiedGenesFasta();
 	
-	public void setVerifiedGenesFasta(ArrayList<FASTAElement> verifiedGenesFasta);
+	public void setVerifiedGenesFasta(Collection<FASTAElement> verifiedGenesFasta);
 	
-	public ArrayList<NewGFFElement> getVerifiedGenesGFF();
+	public Collection<NewGFFElement> getVerifiedGenesGFF();
 	
-	public void setVerifiedGenesGFF(ArrayList<NewGFFElement> verifiedGenesGFF);
+	public void setVerifiedGenesGFF(Collection<NewGFFElement> verifiedGenesGFF);
 	
-	public ArrayList<NewGFFElement> getPredictedGenesGFF();
+	public Collection<NewGFFElement> getPredictedGenesGFF();
 	
-	public void setPredictedGenesGFF(ArrayList<NewGFFElement> predictedGenesGFF);
+	public void setPredictedGenesGFF(Collection<NewGFFElement> predictedGenesGFF);
 	
-	public ArrayList<NewGFFElement> getRepeatMaskerGFF();
+	public Collection<NewGFFElement> getRepeatMaskerGFF();
 	
-	public void setRepeatMaskerGFF(ArrayList<NewGFFElement> repeatMaskerGFF);
+	public void setRepeatMaskerGFF(Collection<NewGFFElement> repeatMaskerGFF);
 	
 	public Map<String, Serializable> getCustom();
 	

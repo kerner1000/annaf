@@ -2,6 +2,7 @@ package de.mpg.mpiz.koeln.anna.server.data.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,35 +20,40 @@ public class GFF3DataBeanImpl implements GFF3DataBean {
 	private ArrayList<NewGFFElement> repeatMaskerGFF = new ArrayList<NewGFFElement>();
 	private Map<String, Serializable> custom = new HashMap<String, Serializable>();
 	
-	public ArrayList<FASTAElement> getInputSequence() {
+	public Collection<FASTAElement> getInputSequence() {
 		return inputSequence;
 	}
-	public void setInputSequence(ArrayList<FASTAElement> inputSequence) {
-		this.inputSequence = inputSequence;
+	public void setInputSequence(Collection<FASTAElement> inputSequence) {
+		this.inputSequence.clear();
+		this.inputSequence.addAll(inputSequence);
 	}
-	public ArrayList<FASTAElement> getVerifiedGenesFasta() {
+	public Collection<FASTAElement> getVerifiedGenesFasta() {
 		return verifiedGenesFasta;
 	}
-	public void setVerifiedGenesFasta(ArrayList<FASTAElement> verifiedGenesFasta) {
-		this.verifiedGenesFasta = verifiedGenesFasta;
+	public void setVerifiedGenesFasta(Collection<FASTAElement> verifiedGenesFasta) {
+		this.verifiedGenesFasta.clear();
+		this.verifiedGenesFasta.addAll(verifiedGenesFasta);
 	}
-	public ArrayList<NewGFFElement> getVerifiedGenesGFF() {
+	public Collection<NewGFFElement> getVerifiedGenesGFF() {
 		return verifiedGenesGFF;
 	}
-	public void setVerifiedGenesGFF(ArrayList<NewGFFElement> verifiedGenesGFF) {
-		this.verifiedGenesGFF = verifiedGenesGFF;
+	public void setVerifiedGenesGFF(Collection<NewGFFElement> verifiedGenesGFF) {
+		this.verifiedGenesGFF.clear();
+		this.verifiedGenesGFF.addAll(verifiedGenesGFF);
 	}
-	public ArrayList<NewGFFElement> getPredictedGenesGFF() {
+	public Collection<NewGFFElement> getPredictedGenesGFF() {
 		return predictedGenesGFF;
 	}
-	public void setPredictedGenesGFF(ArrayList<NewGFFElement> predictedGenesGFF) {
-		this.predictedGenesGFF = predictedGenesGFF;
+	public void setPredictedGenesGFF(Collection<NewGFFElement> predictedGenesGFF) {
+		this.predictedGenesGFF.clear();
+		this.predictedGenesGFF.addAll(predictedGenesGFF);
 	}
-	public ArrayList<NewGFFElement> getRepeatMaskerGFF() {
+	public Collection<NewGFFElement> getRepeatMaskerGFF() {
 		return repeatMaskerGFF;
 	}
-	public void setRepeatMaskerGFF(ArrayList<NewGFFElement> repeatMaskerGFF) {
-		this.repeatMaskerGFF = repeatMaskerGFF;
+	public void setRepeatMaskerGFF(Collection<NewGFFElement> repeatMaskerGFF) {
+		this.repeatMaskerGFF.clear();
+		this.repeatMaskerGFF.addAll(repeatMaskerGFF);
 	}
 	public Map<String, Serializable> getCustom() {
 		return custom;
