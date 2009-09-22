@@ -9,10 +9,6 @@ public interface ObservableStep {
 
 	State getState();
 
-	boolean wasSkipped();
-
-	void setSkipped(boolean skipped);
-
 	void setState(State state);
 
 }

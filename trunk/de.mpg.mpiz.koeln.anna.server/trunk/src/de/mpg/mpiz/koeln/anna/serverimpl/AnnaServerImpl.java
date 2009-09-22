@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,19 +14,28 @@ import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.koeln.anna.core.events.AnnaEvent;
-import de.mpg.koeln.anna.core.events.StepRegisteredEvent;
+import de.mpg.koeln.anna.core.events.StepStateChangeEvent;
 import de.mpg.mpiz.koeln.anna.server.AnnaEventListener;
 import de.mpg.mpiz.koeln.anna.server.AnnaServer;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
 import de.mpg.mpiz.koeln.anna.step.ExecutableStep;
+import de.mpg.mpiz.koeln.anna.step.ObservableStep.State;
 
+/**
+ * 
+ * @author Alexander Kerner
+ * @lastVisit 2009-09-22
+ * @thradSave custom
+ *
+ */
 public class AnnaServerImpl implements AnnaServer {
 	
 	// TODO path
 	private final static File PROPERTIES_FILE = new File(FileUtils.WORKING_DIR,
 			"configuration"
 					+ File.separatorChar + "server.properties");
-	private final EventHandler handler = new EventHandler();
+	private final Collection<AnnaStep> registeredSteps = new HashSet<AnnaStep>();
+	private final EventHandler handler;
 	private final Properties properties;
 	private final ExecutorService exe = Executors.newCachedThreadPool();
 	private final LogDispatcher logger;
@@ -36,14 +47,18 @@ public class AnnaServerImpl implements AnnaServer {
 			this.logger = new ConsoleLogger();
 		properties = getPropertes();
 		logger.debug(this, "loaded properties: " + properties);
+		handler = new EventHandler(registeredSteps);
 	}
 
 	public void unregisterStep(ExecutableStep step) {
 		// TODO Auto-generated method stub
 	}
 
+	// threadsave
 	public void registerStep(ExecutableStep step) {
-		broadcastEvent(new StepRegisteredEvent(this, (AnnaStep) step));
+		registeredSteps.add((AnnaStep) step);
+		((AnnaStep) step).setState(State.REGISTERED);
+		logger.debug(this, "registered step " + step);
 		StepSheduler ss;
 		if(step.isCyclic()){
 			ss = new CyclicStepSheduler((AnnaStep) step, handler, logger);
@@ -53,23 +68,27 @@ public class AnnaServerImpl implements AnnaServer {
 		synchronized (exe) {
 			exe.submit(ss);
 		}
-		logger.debug(this, "registered step " + step);
 	}
 
-	// properties is final
-	public Properties getServerProperties() {
+	public synchronized Properties getServerProperties() {
 		return new Properties(properties);
 	}
 	
+	// handler threadsave
 	public void addEventListener(AnnaEventListener observer) {
 		handler.addEventListener(observer);
+	}
+	
+	// handler threadsave
+	public void removeEventListener(AnnaEventListener observer) {
+		handler.removeEventListener(observer);
 	}
 
 	public String toString() {
 		return this.getClass().getSimpleName();
 	}
 
-	private Properties getPropertes() {
+	private synchronized Properties getPropertes() {
 		final Properties defaultProperties = initDefaults();
 		final Properties pro = new Properties(defaultProperties);
 		try {
@@ -90,13 +109,9 @@ public class AnnaServerImpl implements AnnaServer {
 		return pro;
 	}
 
-	private Properties initDefaults() {
+	private synchronized Properties initDefaults() {
 		Properties pro = new Properties();
 		// pro.setProperty(WORKING_DIR_KEY, WORKING_DIR_VALUE);
 		return pro;
-	}
-	
-	private void broadcastEvent(AnnaEvent event){
-		handler.broadcastEvent(event);
 	}
 }

@@ -6,6 +6,13 @@ import de.mpg.koeln.anna.core.events.StepStateChangeEvent;
 import de.mpg.mpiz.koeln.anna.server.AnnaEventListener;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
 
+/**
+ * 
+ * @author Alexander Kerner
+ * @lastVisit 2009-09-22
+ * @thradSave custom
+ *
+ */
 public class CyclicStepSheduler extends StepSheduler implements
 		AnnaEventListener {
 
@@ -17,11 +24,12 @@ public class CyclicStepSheduler extends StepSheduler implements
 	public Void call() throws Exception {
 		synchronized (this) {
 			while (true) {
-				System.err.println(this + "running");
+				logger.debug(this,"running " + step);
 				this.exe = new AnnaSepExecutor(step, handler, logger);
-				System.err.println(this + "done, waiting");
+				exe.call();
+				logger.debug(this,"done, waiting");
 				this.wait();
-				System.err.println(this + "awake again");
+				logger.debug(this,"awake again");
 			}
 		}
 	}

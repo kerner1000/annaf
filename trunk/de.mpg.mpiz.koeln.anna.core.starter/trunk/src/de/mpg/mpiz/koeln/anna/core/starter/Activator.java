@@ -15,11 +15,11 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 
 public class Activator implements BundleActivator {
-	
+
 	private class BundleStarter implements Callable<Void> {
-		
+
 		private final Collection<Bundle> installedBundles;
-		
+
 		BundleStarter(Collection<Bundle> installedBundles) {
 			this.installedBundles = installedBundles;
 		}
@@ -28,13 +28,17 @@ public class Activator implements BundleActivator {
 			startBundles(installedBundles);
 			return null;
 		}
-		
-		private void startBundles(Collection<Bundle> installedBundles) throws BundleException {
-			if (installedBundles.size() == 0){
+
+		private void startBundles(Collection<Bundle> installedBundles)
+				throws BundleException {
+			if (installedBundles.size() == 0) {
 				System.err.println("no plugins started");
-				return;}
+				return;
+			}
 			for (Bundle b : installedBundles) {
-				b.start();
+				synchronized (Activator.class) {
+					b.start();
+				}
 			}
 		}
 	}
@@ -57,24 +61,32 @@ public class Activator implements BundleActivator {
 
 		private Collection<Bundle> installBundles(
 				Collection<String> bundlePathes) throws BundleException {
-			if (bundlePathes.size() == 0){
+			if (bundlePathes.size() == 0) {
 				System.err.println("no plugins installed");
-				return Collections.emptyList();}
-			final List<Bundle> result = new ArrayList<Bundle>();
-			for (String p : bundlePathes) {
-				System.err.println("installing " + p);
-				final Bundle b = context.installBundle(p);
-				result.add(b);
+				return Collections.emptyList();
 			}
-			return result;
+			synchronized (Activator.class) {
+				final List<Bundle> result = new ArrayList<Bundle>();
+				for (String p : bundlePathes) {
+					System.err.println("installing " + p);
+					synchronized (context) {
+						final Bundle b = context.installBundle(p);
+						result.add(b);
+					}
+				}
+				return result;
+			}
 		}
 
-		private Collection<String> getBundlePathes(File path) throws NoPluginsFoundException {
+		private Collection<String> getBundlePathes(File path)
+				throws NoPluginsFoundException {
 			final List<String> result = new ArrayList<String>();
 			final File[] content = path.listFiles();
 			if (content == null || content.length == 0) {
-				System.err.println("content of dir ="+content);
-//				throw new NoPluginsFoundException("Could not find any plugins in " + path);
+				System.err.println("content of dir =" + content);
+				// throw new
+				// NoPluginsFoundException("Could not find any plugins in " +
+				// path);
 				return Collections.emptyList();
 			} else {
 				for (File f : content) {
@@ -98,41 +110,49 @@ public class Activator implements BundleActivator {
 			return result;
 		}
 	}
+
 	private final static String PLUGINS_PATH_1 = System.getProperty("user.dir")
-	+ "/01-libs/";
+			+ "/01-libs/";
 	private final static String PLUGINS_PATH_2 = System.getProperty("user.dir")
-	+ "/02-anna-libs/";
+			+ "/02-anna-libs/";
 	private final static String PLUGINS_PATH_3 = System.getProperty("user.dir")
-	+ "/03-anna-core/";
+			+ "/03-anna-core/";
 	private final static String PLUGINS_PATH_4 = System.getProperty("user.dir")
-	+ "/04-anna-dataserver/";
+			+ "/04-anna-dataserver/";
 	private final static String PLUGINS_PATH_5 = System.getProperty("user.dir")
-	+ "/05-anna-server/";
+			+ "/05-anna-server/";
 	private final static String PLUGINS_PATH_6 = System.getProperty("user.dir")
-	+ "/06-anna-steps/";
+			+ "/06-anna-steps/";
 	private final ExecutorService exe = Executors.newSingleThreadExecutor();
+
 	public void start(final BundleContext context) throws Exception {
-		exe.submit(new Runnable(){
+		exe.submit(new Runnable() {
 			public void run() {
 				try {
-//					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_0)).call()).call();
-					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_1)).call()).call();
-					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_2)).call()).call();
-					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_3)).call()).call();
-					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_4)).call()).call();
-					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_5)).call()).call();
-					new BundleStarter(new BundleInstaller(context, new File(PLUGINS_PATH_6)).call()).call();
+					// new BundleStarter(new BundleInstaller(context, new
+					// File(PLUGINS_PATH_0)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(
+							PLUGINS_PATH_1)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(
+							PLUGINS_PATH_2)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(
+							PLUGINS_PATH_3)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(
+							PLUGINS_PATH_4)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(
+							PLUGINS_PATH_5)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(
+							PLUGINS_PATH_6)).call()).call();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-		}
-		);
+		});
 	}
 
 	public void stop(BundleContext context) throws Exception {
-		System.out.println(this + " stopping");
+		System.err.println(this + " stopping");
 	}
 
 }
