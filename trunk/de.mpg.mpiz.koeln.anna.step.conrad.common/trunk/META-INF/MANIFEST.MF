@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Conrad-Commons
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.conrad.common
-Bundle-Version: 0.2.0
+Bundle-Version: 0.2.1
 Import-Package: de.bioutils,
  de.bioutils.fasta,
  de.bioutils.gff,

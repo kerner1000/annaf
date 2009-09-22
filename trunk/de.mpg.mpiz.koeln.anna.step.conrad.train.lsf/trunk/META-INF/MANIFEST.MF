@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Conrad-Train-LSF
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.conrad.train.lsf
-Bundle-Version: 0.2.1
+Bundle-Version: 0.2.2
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: de.bioutils,
  de.bioutils.fasta,

@@ -26,7 +26,6 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 			"configuration" + File.separatorChar + "step.properties");
 	private volatile ServiceTracker tracker;
 	private volatile Properties properties;
-	private boolean skipped = false;
 	protected volatile LogDispatcher logger = new ConsoleLogger();
 	private State state = State.LOOSE;
 
@@ -140,14 +139,6 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 
 	public final synchronized State getState() {
 		return state;
-	}
-
-	public final synchronized boolean wasSkipped() {
-		return skipped;
-	}
-
-	public final synchronized void setSkipped(boolean skipped) {
-		this.skipped = skipped;
 	}
 
 	public final synchronized void setState(State state) {
