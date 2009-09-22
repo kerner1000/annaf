@@ -11,9 +11,9 @@ import de.bioutils.fasta.FASTAElement;
 import de.bioutils.fasta.NewFASTAFile;
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
-import de.bioutils.gff.element.NewGFFElement;
-import de.bioutils.gff.file.NewGFFFile;
-import de.bioutils.gff.file.NewGFFFileImpl;
+import de.bioutils.gff3.element.GFF3Element;
+import de.bioutils.gff3.file.GFF3File;
+import de.bioutils.gff3.file.GFF3FileImpl;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
@@ -75,13 +75,13 @@ public class VerifiedGenesReader extends AbstractGFF3AnnaStep {
 	private void doGtf(DataProxy<GFF3DataBean> data) throws IOException,
 			GFFFormatErrorException, DataBeanAccessException {
 		logger.info(this, "reading GTF file " + gtf);
-		final NewGFFFile gtfFile = NewGFFFileImpl.parseFile(gtf);
-		final Collection<? extends NewGFFElement> elements = gtfFile
+		final GFF3File gtfFile = GFF3FileImpl.convertFromGFF(gtf);
+		final Collection<? extends GFF3Element> elements = gtfFile
 				.getElements();
 		logger.info(this, "done reading gtf");
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
-				v.setVerifiedGenesGFF(new ArrayList<NewGFFElement>(elements));	
+				v.setVerifiedGenesGFF(new ArrayList<GFF3Element>(elements));	
 			}
 		});
 	}
@@ -108,7 +108,7 @@ public class VerifiedGenesReader extends AbstractGFF3AnnaStep {
 			// TODO size == 0 sub-optimal indicator
 			final Collection<? extends FASTAElement> list1 = data.viewData()
 					.getVerifiedGenesFasta();
-			final Collection<? extends NewGFFElement> list2 = data.viewData()
+			final Collection<? extends GFF3Element> list2 = data.viewData()
 					.getVerifiedGenesGFF();
 			return (list1 != null && list1.size() != 0 && list2 != null && list2
 					.size() != 0);

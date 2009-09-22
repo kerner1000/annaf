@@ -3,7 +3,6 @@ package de.mpg.mpiz.koeln.anna.step.conrad.common;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.osgi.framework.BundleContext;
@@ -11,9 +10,9 @@ import org.osgi.framework.BundleContext;
 import de.bioutils.fasta.FASTAElement;
 import de.bioutils.fasta.NewFASTAFile;
 import de.bioutils.fasta.NewFASTAFileImpl;
-import de.bioutils.gff.element.NewGFFElement;
-import de.bioutils.gff.file.NewGFFFile;
-import de.bioutils.gff.file.NewGFFFileImpl;
+import de.bioutils.gff3.element.GFF3Element;
+import de.bioutils.gff3.file.GFF3File;
+import de.bioutils.gff3.file.GFF3FileImpl;
 import de.kerner.commons.StringUtils;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
@@ -133,10 +132,10 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 			logger.debug(this, "ref.gtf=" + inGff);
 
 			logger.debug(this, "getting gtfs for veryfied genes");
-			final Collection<? extends NewGFFElement> gtfs = data.viewData()
+			final Collection<? extends GFF3Element> gtfs = data.viewData()
 					.getVerifiedGenesGFF();
 
-			final NewGFFFile gtfFile = new NewGFFFileImpl(gtfs);
+			final GFF3File gtfFile = new GFF3FileImpl(gtfs);
 
 			logger.debug(this, "writing gtfs to " + inGff);
 			gtfFile.write(inGff);

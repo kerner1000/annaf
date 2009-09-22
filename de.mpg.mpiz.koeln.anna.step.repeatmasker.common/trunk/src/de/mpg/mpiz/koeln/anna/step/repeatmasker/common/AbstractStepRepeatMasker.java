@@ -8,8 +8,8 @@ import org.osgi.framework.BundleContext;
 
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
-import de.bioutils.gff.element.NewGFFElement;
-import de.bioutils.gff.file.NewGFFFileImpl;
+import de.bioutils.gff3.element.GFF3Element;
+import de.bioutils.gff3.file.GFF3FileImpl;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
@@ -117,8 +117,8 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3AnnaStep {
 	
 	private void update(DataProxy<GFF3DataBean> data, final File outFile) throws DataBeanAccessException, IOException, GFFFormatErrorException{
 		logger.debug(this, "updating data");
-		final ArrayList<NewGFFElement> result = new ArrayList<NewGFFElement>();
-		result.addAll(NewGFFFileImpl.parseFile(outFile).getElements());
+		final ArrayList<GFF3Element> result = new ArrayList<GFF3Element>();
+		result.addAll(GFF3FileImpl.convertFromGFF(outFile).getElements());
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
 				v.setRepeatMaskerGFF(result);	
