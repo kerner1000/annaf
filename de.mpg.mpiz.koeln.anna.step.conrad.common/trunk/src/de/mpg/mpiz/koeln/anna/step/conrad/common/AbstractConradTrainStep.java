@@ -10,6 +10,7 @@ import org.osgi.framework.BundleContext;
 import de.bioutils.fasta.FASTAElement;
 import de.bioutils.fasta.NewFASTAFile;
 import de.bioutils.fasta.NewFASTAFileImpl;
+import de.bioutils.gff.file.NewGFFFile;
 import de.bioutils.gff3.element.GFF3Element;
 import de.bioutils.gff3.file.GFF3File;
 import de.bioutils.gff3.file.GFF3FileImpl;
@@ -21,6 +22,7 @@ import de.mpg.mpiz.koeln.anna.server.dataproxy.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
+import de.mpg.mpiz.koeln.anna.step.conrad.converter.gff3.GFF3ConverterImpl;
 
 /**
  * @lastVisit 2009-08-12
@@ -116,29 +118,8 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 	private void createFiles(DataProxy<GFF3DataBean> data) throws DataBeanAccessException,
 			IOException {
 		try {
-			inFasta = new File(workingDir, "ref.fasta");
-			logger.debug(this, "ref.fasta=" + inFasta);
-
-			logger.debug(this, "getting fastas for veryfied genes");
-			final Collection<? extends FASTAElement> fastas = data.viewData()
-					.getVerifiedGenesFasta();
-
-			final NewFASTAFile fastaFile = new NewFASTAFileImpl(fastas);
-
-			logger.debug(this, "writing fastas to " + inFasta);
-			fastaFile.write(inFasta);
-
-			final File inGff = new File(workingDir, "ref.gtf");
-			logger.debug(this, "ref.gtf=" + inGff);
-
-			logger.debug(this, "getting gtfs for veryfied genes");
-			final Collection<? extends GFF3Element> gtfs = data.viewData()
-					.getVerifiedGenesGFF();
-
-			final GFF3File gtfFile = new GFF3FileImpl(gtfs);
-
-			logger.debug(this, "writing gtfs to " + inGff);
-			gtfFile.write(inGff);
+			createFastas(data);
+			createGFFs(data);
 
 			// inFasta.deleteOnExit();
 			// inGff.deleteOnExit();
@@ -146,6 +127,36 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 			t.printStackTrace();
 			System.exit(15);
 		}
+	}
+
+	private void createGFFs(DataProxy<GFF3DataBean> data) throws DataBeanAccessException, IOException {
+		final File inGff = new File(workingDir, "ref.gtf");
+		logger.debug(this, "ref.gtf=" + inGff);
+
+		logger.debug(this, "getting gtfs for veryfied genes");
+		final Collection<? extends GFF3Element> gtfs = data.viewData()
+				.getVerifiedGenesGFF();
+
+		final GFF3File gtfFile = new GFF3FileImpl(gtfs);
+		final NewGFFFile newFile = new GFF3ConverterImpl().convert(gtfFile);
+
+		logger.debug(this, "writing gtfs to " + inGff);
+		newFile.write(inGff);
+		
+	}
+
+	private void createFastas(DataProxy<GFF3DataBean> data) throws DataBeanAccessException, IOException {
+		inFasta = new File(workingDir, "ref.fasta");
+		logger.debug(this, "ref.fasta=" + inFasta);
+
+		logger.debug(this, "getting fastas for veryfied genes");
+		final Collection<? extends FASTAElement> fastas = data.viewData()
+				.getVerifiedGenesFasta();
+
+		final NewFASTAFile fastaFile = new NewFASTAFileImpl(fastas);
+
+		logger.debug(this, "writing fastas to " + inFasta);
+		fastaFile.write(inFasta);
 	}
 
 	@Override
