@@ -7,11 +7,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import de.bioutils.gff.element.NewGFFElement;
 import de.bioutils.gff.file.NewGFFFile;
-import de.bioutils.gff.file.NewGFFFileImpl;
+import de.bioutils.gff3.element.GFF3Element;
+import de.bioutils.gff3.file.GFF3File;
+import de.bioutils.gff3.file.GFF3FileImpl;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
@@ -27,7 +28,7 @@ public class GetPredictedGenes extends AbstractGFF3AnnaStep {
 	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		try {
-			final Collection<? extends NewGFFElement> elements = data.viewData()
+			final Collection<? extends GFF3Element> elements = data.viewData()
 					.getPredictedGenesGFF();
 			// TODO predicted genes may be size==0
 			return (elements != null && elements.size() != 0);
@@ -63,22 +64,24 @@ public class GetPredictedGenes extends AbstractGFF3AnnaStep {
 	}
 
 	private void writeAllToSeparateFile(File outDir, DataProxy<GFF3DataBean> data) throws DataBeanAccessException, IOException {
-		Collection<? extends NewGFFElement> ele = data.viewData().getPredictedGenesGFF();
-		final NewGFFFile file = new NewGFFFileImpl(ele);
-		Map<String, List<NewGFFElement>> set = splitToSeqNames(file);
-		for(Entry<String, List<NewGFFElement>> e : set.entrySet()){
-			String fileName = super.getStepProperties()
-			.getProperty(OUT_FILE_NAME_KEY);
-			final int dot = fileName.lastIndexOf(".");
-			final String s1 = fileName.substring(0, dot);
-			final String s2 = fileName.substring(dot);
-			fileName = s1 + "_" + e.getKey() + s2;
-			final File outFile = new File(outDir, fileName);
-			logger.info(this, ": writing predicted genes to "
-					+ outFile);
-			final NewGFFFile file2 = new NewGFFFileImpl(e.getValue());
-			file2.write(outFile);
-		}
+		Collection<? extends GFF3Element> ele = data.viewData().getPredictedGenesGFF();
+//		final GFF3File file = new GFF3FileImpl(ele);
+//		Map<String, List<NewGFFElement>> set = splitToSeqNames(file);
+//		for(Entry<String, List<NewGFFElement>> e : set.entrySet()){
+//			String fileName = super.getStepProperties()
+//			.getProperty(OUT_FILE_NAME_KEY);
+//			final int dot = fileName.lastIndexOf(".");
+//			final String s1 = fileName.substring(0, dot);
+//			final String s2 = fileName.substring(dot);
+//			fileName = s1 + "_" + e.getKey() + s2;
+//			final File outFile = new File(outDir, fileName);
+//			logger.info(this, ": writing predicted genes to "
+//					+ outFile);
+//			final NewGFFFile file2 = new NewGFFFileImpl(e.getValue());
+//			file2.write(outFile);
+//		}
+		
+		logger.warn(this, "\"writeAllToSeparateFile\" not implemented!");
 		
 	}
 
@@ -102,7 +105,7 @@ public class GetPredictedGenes extends AbstractGFF3AnnaStep {
 				.getProperty(OUT_FILE_NAME_KEY));
 		logger.info(this, ": writing predicted genes to "
 				+ outFile);
-		final NewGFFFile file = new NewGFFFileImpl(data.viewData()
+		final GFF3File file = new GFF3FileImpl(data.viewData()
 				.getPredictedGenesGFF());
 		file.write(outFile);	
 	}

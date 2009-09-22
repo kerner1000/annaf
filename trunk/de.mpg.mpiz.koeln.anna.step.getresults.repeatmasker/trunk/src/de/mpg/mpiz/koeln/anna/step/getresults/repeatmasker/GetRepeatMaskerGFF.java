@@ -9,6 +9,9 @@ import org.osgi.framework.BundleContext;
 import de.bioutils.gff.element.NewGFFElement;
 import de.bioutils.gff.file.NewGFFFile;
 import de.bioutils.gff.file.NewGFFFileImpl;
+import de.bioutils.gff3.element.GFF3Element;
+import de.bioutils.gff3.file.GFF3File;
+import de.bioutils.gff3.file.GFF3FileImpl;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
@@ -39,7 +42,7 @@ public class GetRepeatMaskerGFF extends AbstractGFF3AnnaStep {
 	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		try {
-			final Collection<? extends NewGFFElement> elements = data.viewData()
+			final Collection<? extends GFF3Element> elements = data.viewData()
 					.getRepeatMaskerGFF();
 			// TODO predicted genes may be size==0
 			logger.debug(this, "requirements satisfied="+(elements != null && elements.size() != 0));
@@ -63,7 +66,7 @@ public class GetRepeatMaskerGFF extends AbstractGFF3AnnaStep {
 			if (success) {
 				System.out.println(this + ": writing repeatmasker gff to "
 						+ outFile);
-				final NewGFFFile file = new NewGFFFileImpl(data.viewData()
+				final GFF3File file = new GFF3FileImpl(data.viewData()
 						.getRepeatMaskerGFF());
 				file.write(outFile);
 			}

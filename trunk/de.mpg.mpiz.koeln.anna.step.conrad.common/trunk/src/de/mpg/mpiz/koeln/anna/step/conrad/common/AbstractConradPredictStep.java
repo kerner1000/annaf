@@ -10,8 +10,8 @@ import org.osgi.framework.BundleContext;
 
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
-import de.bioutils.gff.element.NewGFFElement;
-import de.bioutils.gff.file.NewGFFFileImpl;
+import de.bioutils.gff3.element.GFF3Element;
+import de.bioutils.gff3.file.GFF3FileImpl;
 import de.kerner.commons.StringUtils;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
@@ -146,11 +146,10 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 	private void update(File resultFile, DataProxy<GFF3DataBean> data)
 			throws IOException, GFFFormatErrorException,
 			DataBeanAccessException {
-		final Collection<? extends NewGFFElement> c = NewGFFFileImpl.parseFile(
-				resultFile).getElements();
+		final Collection<? extends GFF3Element> c = GFF3FileImpl.convertFromGFF(resultFile).getElements();
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
-				v.setPredictedGenesGFF(new ArrayList<NewGFFElement>(c));
+				v.setPredictedGenesGFF(new ArrayList<GFF3Element>(c));
 			}
 		});
 	}
