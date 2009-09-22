@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Conrad-Train-Local
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.conrad.train.local
-Bundle-Version: 0.2.1
+Bundle-Version: 0.2.2
 Import-Package: de.bioutils.fasta,
  de.bioutils.gff,
  de.kerner.commons,

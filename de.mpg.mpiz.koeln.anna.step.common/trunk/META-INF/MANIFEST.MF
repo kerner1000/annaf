@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Step-Commons
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.common
-Bundle-Version: 0.0.3
+Bundle-Version: 0.0.4
 Import-Package: de.kerner.commons.file,
  de.kerner.osgi.commons.logger.dispatcher,
  org.osgi.framework;version="1.3.0"
