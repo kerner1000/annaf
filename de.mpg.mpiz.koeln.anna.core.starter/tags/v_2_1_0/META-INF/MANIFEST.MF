@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Starter
+Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.core.starter
+Bundle-Version: 2.1.0
+Bundle-Activator: de.mpg.mpiz.koeln.anna.core.starter.Activator
+Import-Package: org.osgi.framework;version="1.3.0"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
