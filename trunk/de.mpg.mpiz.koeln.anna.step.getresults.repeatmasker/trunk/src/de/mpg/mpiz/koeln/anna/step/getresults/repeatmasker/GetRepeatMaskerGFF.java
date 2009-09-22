@@ -2,6 +2,7 @@ package de.mpg.mpiz.koeln.anna.step.getresults.repeatmasker;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.osgi.framework.BundleContext;
 
@@ -38,7 +39,7 @@ public class GetRepeatMaskerGFF extends AbstractGFF3AnnaStep {
 	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		try {
-			final ArrayList<? extends NewGFFElement> elements = data.viewData()
+			final Collection<? extends NewGFFElement> elements = data.viewData()
 					.getRepeatMaskerGFF();
 			// TODO predicted genes may be size==0
 			logger.debug(this, "requirements satisfied="+(elements != null && elements.size() != 0));

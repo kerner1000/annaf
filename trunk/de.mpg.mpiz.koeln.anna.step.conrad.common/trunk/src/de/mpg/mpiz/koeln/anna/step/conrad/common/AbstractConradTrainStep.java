@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.osgi.framework.BundleContext;
 
@@ -120,7 +121,7 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 			logger.debug(this, "ref.fasta=" + inFasta);
 
 			logger.debug(this, "getting fastas for veryfied genes");
-			final ArrayList<? extends FASTAElement> fastas = data.viewData()
+			final Collection<? extends FASTAElement> fastas = data.viewData()
 					.getVerifiedGenesFasta();
 
 			final NewFASTAFile fastaFile = new NewFASTAFileImpl(fastas);
@@ -132,7 +133,7 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 			logger.debug(this, "ref.gtf=" + inGff);
 
 			logger.debug(this, "getting gtfs for veryfied genes");
-			final ArrayList<? extends NewGFFElement> gtfs = data.viewData()
+			final Collection<? extends NewGFFElement> gtfs = data.viewData()
 					.getVerifiedGenesGFF();
 
 			final NewGFFFile gtfFile = new NewGFFFileImpl(gtfs);
