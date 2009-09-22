@@ -16,7 +16,7 @@ public abstract class StepSheduler implements Callable<Void> {
 	protected final AnnaStep step;
 	protected final EventHandler handler;
 	protected final LogDispatcher logger;
-	protected AnnaSepExecutor exe;
+	protected volatile AnnaSepExecutor exe;
 
 	StepSheduler(AnnaStep step, EventHandler handler, LogDispatcher logger) {
 		this.step = step;

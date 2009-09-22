@@ -22,13 +22,13 @@ public class CyclicStepSheduler extends StepSheduler implements
 	}
 
 	public Void call() throws Exception {
-		synchronized (this) {
+		synchronized (exe) {
 			while (true) {
 				logger.debug(this,"running " + step);
 				this.exe = new AnnaSepExecutor(step, handler, logger);
 				exe.call();
 				logger.debug(this,"done, waiting");
-				this.wait();
+				exe.wait();
 				logger.debug(this,"awake again");
 			}
 		}
@@ -38,8 +38,8 @@ public class CyclicStepSheduler extends StepSheduler implements
 		if (event instanceof StepStateChangeEvent) {
 			StepStateChangeEvent c = (StepStateChangeEvent) event;
 			if (!c.getStep().equals(this)) {
-				synchronized (this) {
-					this.notifyAll();
+				synchronized (exe) {
+					exe.notifyAll();
 				}
 			}
 		}
