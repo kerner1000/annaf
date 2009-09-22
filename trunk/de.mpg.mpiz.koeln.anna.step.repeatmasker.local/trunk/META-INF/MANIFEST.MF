@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Repeatmasker
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.repeatmasker.local
 Bundle-Version: 0.2.2
-Bundle-Activator: de.mpg.mpiz.koeln.anna.step.repeatmasker.local.StepRepeatMaskerLocal
+Bundle-Activator: de.mpg.mpiz.koeln.anna.step.repeatmasker.local.RepeatMaskerLocal
 Import-Package: de.bioutils,
  de.bioutils.fasta,
  de.bioutils.gff,
