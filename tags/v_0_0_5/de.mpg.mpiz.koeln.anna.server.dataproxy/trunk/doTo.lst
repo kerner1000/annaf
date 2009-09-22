@@ -1,0 +1,5 @@
+give DataProxyImpl serialization stragegy
+review service tracking
+DataBean and AbstractStep should be in same plugin,
+	because of abstract methods with DataBean as type
+"verifiedGenes"(FASTA/GTF) should be one object 
