@@ -1,18 +1,24 @@
 package de.mpg.koeln.anna.core.events;
 
+import java.util.Collection;
+
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
 import de.mpg.mpiz.koeln.anna.step.ObservableStep.State;
 
+/**
+ * 
+ * @lastVisit 2009-09-22
+ * @author Alexander Kerner
+ *
+ */
 public class StepStateChangeEvent extends AnnaEvent {
 
 	private static final long serialVersionUID = 4513665226131110643L;
 	private final AnnaStep step;
-	private final State state;
 
-	public StepStateChangeEvent(Object source, AnnaStep step, State state) {
-		super(source);
+	public StepStateChangeEvent(Object source, Collection<AnnaStep> steps, AnnaStep step) {
+		super(source, steps);
 		this.step = step;
-		this.state = state;
 	}
 
 	public AnnaStep getStep() {
@@ -20,14 +26,14 @@ public class StepStateChangeEvent extends AnnaEvent {
 	}
 
 	public State getState() {
-		return state;
+		return step.getState();
 	}
 	
 	@Override
 	public String toString() {
 		return new StringBuilder().append(super.toString()).append("[").append(
 				"step").append("=").append(step).append("]").append("[").append(
-				"state").append("=").append(state).append("]").toString();
+				"state").append("=").append(step.getState()).append("]").toString();
 	}
 
 }

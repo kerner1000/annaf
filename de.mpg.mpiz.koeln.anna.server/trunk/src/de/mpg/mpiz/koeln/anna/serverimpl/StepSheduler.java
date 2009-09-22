@@ -5,6 +5,12 @@ import java.util.concurrent.Callable;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
 
+/**
+ * 
+ * @author Alexander Kerner
+ * @lastVisit 2009-09-22
+ *
+ */
 public abstract class StepSheduler implements Callable<Void> {
 	
 	protected final AnnaStep step;
