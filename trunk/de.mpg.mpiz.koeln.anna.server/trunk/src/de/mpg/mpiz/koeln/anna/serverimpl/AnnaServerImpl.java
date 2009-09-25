@@ -54,8 +54,7 @@ public class AnnaServerImpl implements AnnaServer {
 		// TODO Auto-generated method stub
 	}
 
-	// threadsave
-	public void registerStep(ExecutableStep step) {
+	public synchronized void registerStep(ExecutableStep step) {
 		registeredSteps.add((AnnaStep) step);
 		((AnnaStep) step).setState(State.REGISTERED);
 		logger.debug(this, "registered step " + step);
@@ -65,9 +64,7 @@ public class AnnaServerImpl implements AnnaServer {
 		} else {
 			ss = new ImmediateStepSheduler((AnnaStep) step, handler, logger);
 		}
-		synchronized (exe) {
 			exe.submit(ss);
-		}
 	}
 
 	public synchronized Properties getServerProperties() {
@@ -109,7 +106,7 @@ public class AnnaServerImpl implements AnnaServer {
 		return pro;
 	}
 
-	private synchronized Properties initDefaults() {
+	private Properties initDefaults() {
 		Properties pro = new Properties();
 		// pro.setProperty(WORKING_DIR_KEY, WORKING_DIR_VALUE);
 		return pro;
