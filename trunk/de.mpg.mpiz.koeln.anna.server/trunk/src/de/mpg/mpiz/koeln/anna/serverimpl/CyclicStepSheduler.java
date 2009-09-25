@@ -36,9 +36,13 @@ public class CyclicStepSheduler extends StepSheduler implements
 
 	public void eventOccoured(AnnaEvent event) {
 		if (event instanceof StepStateChangeEvent) {
+			logger.debug(this,"received step state changed event");
 			StepStateChangeEvent c = (StepStateChangeEvent) event;
-			if (!c.getStep().equals(this)) {
+			if (c.getStep().equals(step)) {
+				logger.debug(this,"it was us, ignoring");
+			} else {
 				synchronized (exe) {
+					logger.debug(this,"it was someone else, trying to wake up (if asleep)");
 					exe.notifyAll();
 				}
 			}
