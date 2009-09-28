@@ -25,11 +25,11 @@ class EventHandler {
 		this.registeredSteps = registeredSteps;
 	}
 	
-	public void stepStateChanged(AnnaStep step){
+	public synchronized void stepStateChanged(AnnaStep step){
 		broadcastEvent(new StepStateChangeEvent(this, registeredSteps, step));
 	}
 
-	private synchronized void broadcastEvent(AnnaEvent event) {
+	private void broadcastEvent(AnnaEvent event) {
 		if (observers.isEmpty())
 			return;
 		for (AnnaEventListener l : observers) {

@@ -19,6 +19,7 @@ import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
+import de.mpg.mpiz.koeln.anna.step.repeatmasker.adapter.ResultsPreprocessor;
 
 public abstract class AbstractStepRepeatMasker extends AbstractGFF3AnnaStep {
 	
@@ -118,6 +119,7 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3AnnaStep {
 	private void update(DataProxy<GFF3DataBean> data, final File outFile) throws DataBeanAccessException, IOException, GFFFormatErrorException{
 		logger.debug(this, "updating data");
 		final ArrayList<GFF3Element> result = new ArrayList<GFF3Element>();
+		new ResultsPreprocessor().process(outFile, outFile);
 		result.addAll(GFF3FileImpl.convertFromGFF(outFile).getElements());
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {

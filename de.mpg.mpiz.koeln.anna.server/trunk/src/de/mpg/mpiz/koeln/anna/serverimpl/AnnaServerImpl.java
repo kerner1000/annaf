@@ -50,7 +50,7 @@ public class AnnaServerImpl implements AnnaServer {
 		handler = new EventHandler(registeredSteps);
 	}
 
-	public void unregisterStep(ExecutableStep step) {
+	public synchronized void unregisterStep(ExecutableStep step) {
 		// TODO Auto-generated method stub
 	}
 
