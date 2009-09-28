@@ -5,6 +5,7 @@ import java.util.concurrent.Callable;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.server.Server;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
+import de.mpg.mpiz.koeln.anna.step.ObservableStep;
 import de.mpg.mpiz.koeln.anna.step.ObservableStep.State;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 
@@ -15,7 +16,7 @@ import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
  * @thradSave custom
  * 
  */
-class AnnaSepExecutor implements Callable<Boolean> {
+class AnnaSepExecutor implements Callable<Void> {
 
 	private final AnnaStep step;
 	private final LogDispatcher logger;
@@ -27,57 +28,49 @@ class AnnaSepExecutor implements Callable<Boolean> {
 		this.handler = handler;
 	}
 
-	public Boolean call() throws Exception {
+	public Void call() throws Exception {
 		boolean success = true;
-		try {
-			stepStateChanged(State.CHECK_NEED_TO_RUN);
-			final boolean b = step.canBeSkipped();
-			if (b) {
-				logger.info(this, "step " + step
-						+ " does not need to run, skipping");
-				stepStateChanged(State.SKIPPED);
-				// success == true;
-				return success;
-			}
-			logger.debug(this, "step " + step + " needs to run");
-			stepStateChanged(State.WAIT_FOR_REQ);
-			synchronized (Server.class) {
-				while (!step.requirementsSatisfied()) {
-					logger.debug(this, "requirements for step " + step
-							+ " not satisfied, putting it to sleep");
-					Server.class.wait();
-				}
-				logger.debug(this, "requirements for step " + step
-						+ " satisfied");
-				logger.debug(this, "notifying others");
-				Server.class.notifyAll();
-			}
-			success = runStep();
+		stepStateChanged(State.CHECK_NEED_TO_RUN);
+		final boolean b = step.canBeSkipped();
+		if (b) {
+			logger.info(this, "step " + step
+					+ " does not need to run, skipping");
+			stepStateChanged(State.SKIPPED);
 			stepFinished(success);
-		} catch (Exception e) {
-			logger.info(this, "executing step " + step + " was erroneous", e);
-			stepStateChanged(State.ERROR);
+			return null;
 		}
-		return success;
+		logger.debug(this, "step " + step + " needs to run");
+		stepStateChanged(State.WAIT_FOR_REQ);
+		synchronized (Server.class) {
+			while (!step.requirementsSatisfied()) {
+				logger.debug(this, "requirements for step " + step
+						+ " not satisfied, putting it to sleep");
+				Server.class.wait();
+			}
+			logger.debug(this, "requirements for step " + step + " satisfied");
+		}
+		success = runStep();
+		stepFinished(success);
+		return null;
 	}
 
-	private synchronized boolean runStep() throws StepExecutionException {
-		logger.debug(this, "step " + step + "running");
+	private boolean runStep() throws StepExecutionException {
+		logger.debug(this, "step " + step + " running");
 		stepStateChanged(State.RUNNING);
 		return step.run();
 	}
-	
-	private synchronized void stepStateChanged(State state){
+
+	private void stepStateChanged(State state) {
 		step.setState(state);
 		handler.stepStateChanged(step);
 	}
 
 	private void stepFinished(boolean success) {
 		logger.debug(this, "step " + step + " done running");
-		if (success) {
-			stepStateChanged(State.DONE);
-		} else {
-			stepStateChanged(State.ERROR);
+		if(success && !(step.getState().equals(ObservableStep.State.SKIPPED))){
+			stepStateChanged(ObservableStep.State.DONE);
+		} else if (!success && !(step.getState().equals(ObservableStep.State.SKIPPED))) {
+			stepStateChanged(ObservableStep.State.ERROR);
 		}
 		synchronized (Server.class) {
 			logger.debug(this, "notifying others");

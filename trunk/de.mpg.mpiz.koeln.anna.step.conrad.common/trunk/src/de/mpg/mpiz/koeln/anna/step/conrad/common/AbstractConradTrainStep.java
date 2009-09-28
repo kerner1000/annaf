@@ -22,7 +22,7 @@ import de.mpg.mpiz.koeln.anna.server.dataproxy.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
-import de.mpg.mpiz.koeln.anna.step.conrad.converter.gff3.GFF3ConverterImpl;
+import de.mpg.mpiz.koeln.anna.step.conrad.data.adapter.GFF3ConverterImpl;
 
 /**
  * @lastVisit 2009-08-12

@@ -2,6 +2,7 @@ package de.mpg.mpiz.koeln.anna.serverimpl;
 
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
+import de.mpg.mpiz.koeln.anna.step.ObservableStep;
 
 /**
  * 

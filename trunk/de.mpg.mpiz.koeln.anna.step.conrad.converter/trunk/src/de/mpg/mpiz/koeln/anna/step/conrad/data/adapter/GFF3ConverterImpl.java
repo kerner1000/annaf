@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.anna.step.conrad.converter.gff3;
+package de.mpg.mpiz.koeln.anna.step.conrad.data.adapter;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import de.bioutils.gff.element.NewGFFElement;
 import de.bioutils.gff.element.NewGFFElementBuilder;
 import de.bioutils.gff.file.NewGFFFile;
 import de.bioutils.gff.file.NewGFFFileImpl;
-import de.bioutils.gff3.AttributeLine;
+import de.bioutils.gff3.attribute.AttributeLine;
 import de.bioutils.gff3.element.GFF3Element;
 import de.bioutils.gff3.file.GFF3File;
 import de.bioutils.gff3.file.GFF3FileImpl;

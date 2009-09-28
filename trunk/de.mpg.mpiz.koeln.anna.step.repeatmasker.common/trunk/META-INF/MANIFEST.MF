@@ -26,4 +26,5 @@ Import-Package: de.bioutils,
  de.mpg.mpiz.koeln.anna.server.dataproxy,
  de.mpg.mpiz.koeln.anna.step,
  de.mpg.mpiz.koeln.anna.step.common,
+ de.mpg.mpiz.koeln.anna.step.repeatmasker.adapter,
  org.osgi.framework

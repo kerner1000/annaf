@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.anna.step.conrad.converter.gff3;
+package de.mpg.mpiz.koeln.anna.step.conrad.data.adapter;
 
 import de.bioutils.gff.file.NewGFFFile;
 import de.bioutils.gff3.file.GFF3File;
