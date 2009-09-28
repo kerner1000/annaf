@@ -1,6 +1,8 @@
 package de.mpg.mpiz.koeln.anna.serverimpl;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
@@ -13,6 +15,7 @@ import de.mpg.mpiz.koeln.anna.step.AnnaStep;
  */
 public abstract class StepSheduler implements Callable<Void> {
 	
+	private final ExecutorService pool = Executors.newSingleThreadExecutor();
 	protected final AnnaStep step;
 	protected final EventHandler handler;
 	protected final LogDispatcher logger;
@@ -29,6 +32,10 @@ public abstract class StepSheduler implements Callable<Void> {
 	public String toString() {
 		return this.getClass().getSimpleName() + ":"
 				+ exe.getClass().getSimpleName();
+	}
+	
+	public synchronized void start(){
+		pool.submit(exe);
 	}
 
 }

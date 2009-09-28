@@ -17,36 +17,26 @@ public class CyclicStepSheduler extends ImmediateStepSheduler implements
 
 	@Override
 	public Void call() throws Exception {
-		synchronized (step) {
-			while (step.isCyclic()) {
-				// maybe check state of cyclic step before executing it again?
-				exe = new AnnaSepExecutor(step, handler, logger);
-				super.call();
-				logger.debug(this, "done, waiting");
-				step.wait();
-				logger.debug(this, "awake again");
-			}
-		}
+		// do nothing until some other steps are done
 		return null;
 	}
 
 	public void eventOccoured(AnnaEvent event) {
 		if (event instanceof StepStateChangeEvent) {
-			logger.debug(this, "received step state changed event");
+			logger.debug(this, "received step state changed event " + event);
 			final StepStateChangeEvent c = (StepStateChangeEvent) event;
 			if (c.getStep().equals(step)) {
 				logger.debug(this, "it was us, ignoring");
-			} else if (!c.getStep().getState()
-					.equals(ObservableStep.State.DONE)) {
+			} else if (!(c.getStep().getState().equals(
+					ObservableStep.State.DONE) || c.getStep().getState()
+					.equals(ObservableStep.State.SKIPPED))) {
 				logger.debug(this, "step state change was not to state "
-						+ ObservableStep.State.DONE + ", ignoring");
+						+ ObservableStep.State.DONE + "/"
+						+ ObservableStep.State.SKIPPED + ", ignoring");
 			} else {
-				synchronized (step) {
-					logger
-							.debug(this,
-									"someone else finished, trying to wake up (if asleep)");
-					step.notifyAll();
-				}
+				logger.debug(this, "someone else finished, starting");
+				exe = new AnnaSepExecutor(step, handler, logger);
+				start();
 			}
 		}
 	}

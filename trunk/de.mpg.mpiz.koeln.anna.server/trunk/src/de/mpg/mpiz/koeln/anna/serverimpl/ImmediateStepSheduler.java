@@ -19,10 +19,7 @@ class ImmediateStepSheduler extends StepSheduler {
 	}
 
 	public Void call() throws Exception {
-		// call "call()" directly to run in same thread
-		synchronized (this) {
-			exe.call();
-		}
+		start();
 		return null;
 	}
 }
