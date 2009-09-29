@@ -112,16 +112,18 @@ public class Activator implements BundleActivator {
 	}
 
 	private final static String PLUGINS_PATH_1 = System.getProperty("user.dir")
-			+ "/01-libs/";
+			+ "/01-libs00/";
 	private final static String PLUGINS_PATH_2 = System.getProperty("user.dir")
-			+ "/02-anna-libs/";
+			+ "/01-libs01/";
 	private final static String PLUGINS_PATH_3 = System.getProperty("user.dir")
-			+ "/03-anna-core/";
+			+ "/02-anna-libs/";
 	private final static String PLUGINS_PATH_4 = System.getProperty("user.dir")
-			+ "/04-anna-dataserver/";
+			+ "/03-anna-core/";
 	private final static String PLUGINS_PATH_5 = System.getProperty("user.dir")
-			+ "/05-anna-server/";
+			+ "/04-anna-dataserver/";
 	private final static String PLUGINS_PATH_6 = System.getProperty("user.dir")
+			+ "/05-anna-server/";
+	private final static String PLUGINS_PATH_7 = System.getProperty("user.dir")
 			+ "/06-anna-steps/";
 	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 
@@ -134,6 +136,8 @@ public class Activator implements BundleActivator {
 					new BundleStarter(new BundleInstaller(context, new File(
 							PLUGINS_PATH_1)).call()).call();
 					new BundleStarter(new BundleInstaller(context, new File(
+							PLUGINS_PATH_1)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(
 							PLUGINS_PATH_2)).call()).call();
 					new BundleStarter(new BundleInstaller(context, new File(
 							PLUGINS_PATH_3)).call()).call();
@@ -143,6 +147,8 @@ public class Activator implements BundleActivator {
 							PLUGINS_PATH_5)).call()).call();
 					new BundleStarter(new BundleInstaller(context, new File(
 							PLUGINS_PATH_6)).call()).call();
+					new BundleStarter(new BundleInstaller(context, new File(
+							PLUGINS_PATH_7)).call()).call();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
