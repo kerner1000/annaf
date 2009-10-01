@@ -43,22 +43,33 @@ public class GetResults extends AbstractGFF3AnnaStep {
 				.getPredictedGenesGFF();
 		logger.debug(this, "retrieving GFF for predicted genes done (elements="
 				+ predicted.size() + ")");
+		
 		logger.debug(this, "retrieving GFF for repetetive elements");
 		final Collection<GFF3Element> repeat = proxy.viewData()
 				.getRepeatMaskerGFF();
 		logger.debug(this,
 				"retrieving GFF for repetetive elements done (elements="
 						+ repeat.size() + ")");
+		
+		logger.debug(this, "retrieving GFF for mapped ests");
+		final Collection<GFF3Element> ests = proxy.viewData()
+				.getMappedESTs();
+		logger.debug(this,
+				"retrieving GFF for mapped ests done (elements="
+						+ ests.size() + ")");
+		
 		logger.debug(this, "merging");
 		final Collection<GFF3Element> merged = new ArrayList<GFF3Element>();
 		if(predicted.size() != 0)
 			merged.addAll(predicted);
 		if(repeat.size() != 0)
 			merged.addAll(repeat);
+		if(ests.size() != 0)
+			merged.addAll(ests);
 		logger.debug(this, "merging done (elements="
 						+ merged.size() + ")");
 		if(merged.size() == 0){
-			logger.debug(this, "nothing to write");
+			logger.info(this, "nothing to write");
 			return;
 		}
 		final File outFile = new File(outDir, super.getStepProperties()
