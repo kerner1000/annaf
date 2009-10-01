@@ -23,6 +23,8 @@ public abstract class AbstractStepProcessBuilder {
 	protected final File executableDir;
 	protected final File workingDir;
 	private final LogDispatcher logger;
+	
+	// TODO: remove this. Let this completely be handled from "WrapperStep"
 	private final Map<File, Boolean> outFiles = new ConcurrentHashMap<File, Boolean>();
 
 	protected AbstractStepProcessBuilder(File executableDir, File workingDir) {
