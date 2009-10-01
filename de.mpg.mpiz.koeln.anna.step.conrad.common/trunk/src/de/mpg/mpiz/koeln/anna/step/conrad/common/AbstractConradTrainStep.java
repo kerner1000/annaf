@@ -75,13 +75,13 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 	public boolean canBeSkipped(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
 		try {
-			final boolean trainingFile = (data.viewData().getCustom().get(
+			final boolean trainingFile = (data.viewData().getCustom(
 					TRAINING_FILE) != null && ((File) data.viewData()
-					.getCustom().get(TRAINING_FILE)).exists());
+					.getCustom(TRAINING_FILE)).exists());
 
-			final boolean trainingFileRead = (data.viewData().getCustom().get(
+			final boolean trainingFileRead = (data.viewData().getCustom(
 					TRAINING_FILE) != null && ((File) data.viewData()
-							.getCustom().get(TRAINING_FILE)).canRead());
+					.getCustom(TRAINING_FILE)).canRead());
 
 			logger.debug(this, "need to run: trainingFile=" + trainingFile);
 			logger.debug(this, "need to run: trainingFileRead="
@@ -100,9 +100,11 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 			throws StepExecutionException {
 		try {
 			final boolean fastas = (data.viewData().getVerifiedGenesFasta() != null);
-			final boolean fastasSize = (data.viewData().getVerifiedGenesFasta().size() != 0);
+			final boolean fastasSize = (data.viewData().getVerifiedGenesFasta()
+					.size() != 0);
 			final boolean gtf = (data.viewData().getVerifiedGenesGFF() != null);
-			final boolean gtfSize = (data.viewData().getVerifiedGenesGFF().size() != 0);
+			final boolean gtfSize = (data.viewData().getVerifiedGenesGFF()
+					.size() != 0);
 			logger.debug(this, "requirements: fastas=" + fastas);
 			logger.debug(this, "requirements: fastasSize=" + fastasSize);
 			logger.debug(this, "requirements: gtf=" + gtf);
@@ -115,8 +117,8 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		}
 	}
 
-	private void createFiles(DataProxy<GFF3DataBean> data) throws DataBeanAccessException,
-			IOException {
+	private void createFiles(DataProxy<GFF3DataBean> data)
+			throws DataBeanAccessException, IOException {
 		try {
 			createFastas(data);
 			createGFFs(data);
@@ -129,7 +131,8 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		}
 	}
 
-	private void createGFFs(DataProxy<GFF3DataBean> data) throws DataBeanAccessException, IOException {
+	private void createGFFs(DataProxy<GFF3DataBean> data)
+			throws DataBeanAccessException, IOException {
 		final File inGff = new File(workingDir, "ref.gtf");
 		logger.debug(this, "ref.gtf=" + inGff);
 
@@ -142,10 +145,11 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 
 		logger.debug(this, "writing gtfs to " + inGff);
 		newFile.write(inGff);
-		
+
 	}
 
-	private void createFastas(DataProxy<GFF3DataBean> data) throws DataBeanAccessException, IOException {
+	private void createFastas(DataProxy<GFF3DataBean> data)
+			throws DataBeanAccessException, IOException {
 		inFasta = new File(workingDir, "ref.fasta");
 		logger.debug(this, "ref.fasta=" + inFasta);
 
@@ -183,15 +187,17 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		return success;
 	}
 
-	protected void update(DataProxy<GFF3DataBean> data) throws DataBeanAccessException {
+	protected void update(DataProxy<GFF3DataBean> data)
+			throws DataBeanAccessException {
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
-				logger.debug(this, "using custom slot: key=" + TRAINING_FILE + ", value="+trainingFile.getAbsoluteFile());
-				v.getCustom().put(TRAINING_FILE, trainingFile.getAbsoluteFile());	
+				logger.debug(this, "using custom slot: key=" + TRAINING_FILE
+						+ ", value=" + trainingFile.getAbsoluteFile());
+				v.addCustom(TRAINING_FILE, trainingFile.getAbsoluteFile());
 			}
 		});
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName();
