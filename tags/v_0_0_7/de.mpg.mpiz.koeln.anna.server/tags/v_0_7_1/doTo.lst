@@ -1,0 +1,5 @@
+properties are case sensitive
+
+rename interface "Server".
+	DataProxy and StepExecutor are not clearly separated.
+	Mabye introduce tow interfaces, "StepExecutoService" and "DataProxyProviderService".
