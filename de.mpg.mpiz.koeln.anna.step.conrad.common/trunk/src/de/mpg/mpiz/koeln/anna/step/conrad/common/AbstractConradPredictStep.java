@@ -6,11 +6,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 import org.osgi.framework.BundleContext;
 
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
+import de.bioutils.gff3.converter.BasicConverter;
+import de.bioutils.gff3.converter.UniqueIDExtender;
 import de.bioutils.gff3.element.GFF3Element;
+import de.bioutils.gff3.file.GFF3File;
 import de.bioutils.gff3.file.GFF3FileImpl;
 import de.kerner.commons.StringUtils;
 import de.kerner.commons.file.FileUtils;
@@ -20,6 +24,7 @@ import de.mpg.mpiz.koeln.anna.server.dataproxy.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
+import de.mpg.mpiz.koeln.anna.step.conrad.data.adapter.ConradGeneParentExtender;
 
 /**
  * @lastVisit 2009-08-12
@@ -148,8 +153,13 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 	private void update(File resultFile, DataProxy<GFF3DataBean> data)
 			throws IOException, GFFFormatErrorException,
 			DataBeanAccessException {
-		final Collection<? extends GFF3Element> c = GFF3FileImpl
-				.convertFromGFF(resultFile).getElements();
+		GFF3File file = GFF3FileImpl
+		.convertFromGFF(resultFile);
+		final BasicConverter converter = new BasicConverter();
+		converter.clearElementExtenders();
+		converter.addGFF3ElementExtender(new UniqueIDExtender(true));
+		converter.addGFF3ElementExtender(new ConradGeneParentExtender());
+		final Collection<? extends GFF3Element> c = file.getElements();
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
 				v.setPredictedGenesGFF(new ArrayList<GFF3Element>(c));
@@ -181,6 +191,6 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		// logger.debug(this, "copied files: old=" + file2.length() + ",new="
 		// + trainingFile.length());
 		// trainingFile.deleteOnExit();
-		file.deleteOnExit();
+//		file.deleteOnExit();
 	}
 }
