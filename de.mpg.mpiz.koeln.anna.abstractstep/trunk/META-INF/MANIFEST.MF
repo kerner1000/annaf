@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Abstractstep
+Bundle-Name: AbstractStep
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.abstractstep
-Bundle-Version: 0.0.2
+Bundle-Version: 0.0.3
 Import-Package: de.kerner.commons,
  de.kerner.commons.file,
  de.kerner.osgi.commons.logger.dispatcher,
