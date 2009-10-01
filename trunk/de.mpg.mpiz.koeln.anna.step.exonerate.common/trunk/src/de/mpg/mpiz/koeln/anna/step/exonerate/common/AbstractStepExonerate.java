@@ -9,7 +9,12 @@ import org.osgi.framework.BundleContext;
 
 import de.bioutils.fasta.FASTAElement;
 import de.bioutils.fasta.NewFASTAFileImpl;
+import de.bioutils.gff.file.NewGFFFile;
+import de.bioutils.gff3.converter.GFF3FileExtender;
 import de.bioutils.gff3.element.GFF3Element;
+import de.bioutils.gff3.element.GFF3ElementBuilder;
+import de.bioutils.gff3.element.GFF3ElementGroup;
+import de.bioutils.gff3.file.GFF3File;
 import de.bioutils.gff3.file.GFF3FileImpl;
 import de.kerner.commons.StringUtils;
 import de.kerner.osgi.commons.utils.ServiceNotAvailabeException;
@@ -22,6 +27,20 @@ import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
 public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
+	
+	private final class DataAdapter implements GFF3FileExtender {
+
+		public GFF3File extend(GFF3File gff3File) {
+			final GFF3ElementGroup g = new GFF3ElementGroup();
+			for(GFF3Element e : gff3File.getElements()){
+				final String source = e.getSource();
+				final String sourceNew = source.replaceAll(":", "");
+				logger.debug(this, "changing source identifier from \"" + source + "\" to \"" + sourceNew + "\"");
+				g.add(new GFF3ElementBuilder(e).setSource(sourceNew).build());
+			}
+			return new GFF3FileImpl(g);
+		}
+	}
 
 	@Override
 	protected void init(BundleContext context) throws StepExecutionException {
@@ -57,8 +76,10 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 
 	public boolean update() throws StepExecutionException {
 		try{
-		DataProxy<GFF3DataBean> p = getDataProxy();		
-		final Collection<? extends GFF3Element> result = GFF3FileImpl.convertFromGFF(new File(workingDir, ExonerateConstants.RESULT_FILENAME)).getElements();
+		DataProxy<GFF3DataBean> p = getDataProxy();	
+		GFF3File file = GFF3FileImpl.convertFromGFF(new File(workingDir, ExonerateConstants.RESULT_FILENAME));
+		file = new DataAdapter().extend(file);
+		final Collection<? extends GFF3Element> result = file.getElements();
 		p.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
 				v.setMappedESTs(new ArrayList<GFF3Element>(result));

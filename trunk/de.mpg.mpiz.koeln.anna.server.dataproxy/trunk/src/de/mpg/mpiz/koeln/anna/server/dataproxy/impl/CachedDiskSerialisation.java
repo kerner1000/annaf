@@ -2,6 +2,7 @@ package de.mpg.mpiz.koeln.anna.server.dataproxy.impl;
 
 import java.io.File;
 
+import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.server.data.DataBean;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
@@ -10,6 +11,8 @@ import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
  * 
  * @author Alexander Kerner
  * @lastVisit 2009-09-21
+ * @threadSave no need to synchronize (data is volatile), methods from "super"
+ *             already are threadsave.
  * 
  */
 class CachedDiskSerialisation extends GFF3DiskSerialisation {
@@ -22,12 +25,14 @@ class CachedDiskSerialisation extends GFF3DiskSerialisation {
 		super(logger);
 	}
 
-	private volatile boolean dirty = false;
+	private volatile boolean dirty = true;
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized <V extends DataBean> V readDataBean(File file,
-			Class<V> v) throws DataBeanAccessException {
+	public <V extends DataBean> V readDataBean(File file, Class<V> v)
+			throws DataBeanAccessException {
+		if (FileUtils.fileCheck(file, true))
+			;
 		if (dirty) {
 			logger.debug(this, "data dirty, reading from disk");
 			data = super.readDataBean(file, v);
@@ -38,11 +43,14 @@ class CachedDiskSerialisation extends GFF3DiskSerialisation {
 		return (V) data;
 	}
 
-	public synchronized <V extends DataBean> void writeDataBean(V v, File file)
+	public <V extends DataBean> void writeDataBean(V v, File file)
 			throws DataBeanAccessException {
-		this.dirty = true;
 		logger.debug(this, "writing data");
-		super.writeDataBean(v, file);
+		try {
+			super.writeDataBean(v, file);
+		} finally {
+			this.dirty = true;
+		}
 	}
 
 	@Override
