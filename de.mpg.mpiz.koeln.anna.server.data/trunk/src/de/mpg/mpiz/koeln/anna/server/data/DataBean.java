@@ -1,12 +1,11 @@
 package de.mpg.mpiz.koeln.anna.server.data;
 
 import java.io.Serializable;
-import java.util.Map;
 
 public interface DataBean extends Serializable {
 	
-	public Map<String, Serializable> getCustom();
+	public Serializable getCustom(String ident);
 	
-	public void setCustom(Map<String, Serializable> custom);
+	public void addCustom(String ident, Serializable custom);
 
 }
