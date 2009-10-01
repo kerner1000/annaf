@@ -65,6 +65,9 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 				out = FileUtils.getOutputStreamForFile(outFile);
 			}			
 			success = p.createAndStartProcess(out, err);
+			if(outFile != null){
+				out.close();
+			}
 			if (success) {
 				final boolean hh = update();
 				if (hh) {
