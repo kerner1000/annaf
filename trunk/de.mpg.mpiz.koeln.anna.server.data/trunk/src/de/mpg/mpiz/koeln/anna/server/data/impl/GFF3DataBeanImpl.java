@@ -3,8 +3,8 @@ package de.mpg.mpiz.koeln.anna.server.data.impl;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import de.bioutils.fasta.FASTAElement;
 import de.bioutils.gff3.element.GFF3Element;
@@ -14,11 +14,14 @@ public class GFF3DataBeanImpl implements GFF3DataBean {
 	
 	private static final long serialVersionUID = -8241571899555002582L;
 	private ArrayList<FASTAElement> inputSequence = new ArrayList<FASTAElement>();
+	private ArrayList<FASTAElement> ests = new ArrayList<FASTAElement>();
 	private ArrayList<FASTAElement> verifiedGenesFasta = new ArrayList<FASTAElement>();
 	private ArrayList<GFF3Element> verifiedGenesGFF = new ArrayList<GFF3Element>();
 	private ArrayList<GFF3Element> predictedGenesGFF = new ArrayList<GFF3Element>();
 	private ArrayList<GFF3Element> repeatMaskerGFF = new ArrayList<GFF3Element>();
-	private Map<String, Serializable> custom = new HashMap<String, Serializable>();
+	private ArrayList<GFF3Element> mappedESTs = new ArrayList<GFF3Element>();
+	
+	private Map<String, Serializable> custom = new ConcurrentHashMap<String, Serializable>();
 	
 	public Collection<FASTAElement> getInputSequence() {
 		return inputSequence;
@@ -55,15 +58,30 @@ public class GFF3DataBeanImpl implements GFF3DataBean {
 		this.repeatMaskerGFF.clear();
 		this.repeatMaskerGFF.addAll(repeatMaskerGFF);
 	}
-	public Map<String, Serializable> getCustom() {
-		return custom;
+	public Serializable getCustom(String ident) {
+		return custom.get(ident);
 	}
-	public void setCustom(Map<String, Serializable> custom) {
-		this.custom = custom;
+	public void addCustom(String ident, Serializable custom) {
+		this.custom.put(ident, custom);
 	}
 	
 	@Override
 	public String toString(){
 		return this.getClass().getSimpleName();
+	}
+	public Collection<FASTAElement> getESTs() {
+		return ests;
+	}
+	public void setESTs(Collection<FASTAElement> ests) {
+		this.ests.clear();
+		this.ests.addAll(ests);
+		
+	}
+	public Collection<GFF3Element> getMappedESTs() {
+		return mappedESTs;
+	}
+	public void setMappedESTs(Collection<GFF3Element> mappedESTs) {
+		this.mappedESTs.clear();
+		this.mappedESTs.addAll(mappedESTs);
 	}
 }
