@@ -10,12 +10,18 @@ import de.mpg.mpiz.koeln.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
+/**
+ * <p> Helper class to create a WrapperStep for an external programm.</p>
+ * @author Alexander Kerner
+ * @param <T> type of {@link de.mpg.mpiz.koeln.anna.server.data.DataBean}
+ */
 public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 
 	protected volatile File exeDir;
 	protected volatile File workingDir;
+	private volatile File outFile = null;
+	private volatile File errFile = null;
 	protected List<File> shortCutFiles = new ArrayList<File>();
-	private File outFile = null;
 
 	/**
 	 * <p>
@@ -45,8 +51,12 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 		shortCutFiles.add(file);
 	}
 
-	public void setOutFile(File file) {
+	public void redirectOutStreamToFile(File file) {
 		this.outFile = file;
+	}
+	
+	public void redirectErrStreamToFile(File file) {
+		this.errFile = file;
 	}
 
 	private boolean doItFinally() throws StepExecutionException {
@@ -64,9 +74,15 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 			if (outFile != null) {
 				out = FileUtils.getOutputStreamForFile(outFile);
 			}
+			if (errFile != null) {
+				err = FileUtils.getOutputStreamForFile(errFile);
+			}
 			success = p.createAndStartProcess(out, err);
 			if (outFile != null) {
 				out.close();
+			}
+			if (errFile != null) {
+				err.close();
 			}
 			if (success) {
 				final boolean hh = update();
@@ -83,7 +99,7 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 		return success;
 	}
 
-	private boolean takeShortCut() {
+	private synchronized boolean takeShortCut() {
 		logger.debug(this, "checking for shortcut available");
 		if (shortCutFiles.isEmpty()) {
 			logger.debug(this, "no shortcut files defined");
