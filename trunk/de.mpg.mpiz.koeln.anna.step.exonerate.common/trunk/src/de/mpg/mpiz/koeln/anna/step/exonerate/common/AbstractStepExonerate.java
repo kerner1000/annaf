@@ -54,7 +54,6 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 	public void prepare() throws Exception {
 		createInputFile();
 		createESTFasta();
-		super.setOutFile(new File(workingDir, ExonerateConstants.RESULT_FILENAME));
 	}
 
 	private void createESTFasta() throws DataBeanAccessException,
@@ -96,6 +95,7 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 			throws StepExecutionException {
 		logger.debug(this, "starting");
 		super.addShortCutFile(new File(workingDir, ExonerateConstants.RESULT_FILENAME));
+		super.setOutFile(new File(workingDir, ExonerateConstants.RESULT_FILENAME));
 		return super.start();
 	}
 
