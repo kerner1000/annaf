@@ -11,8 +11,8 @@ import de.mpg.mpiz.koeln.anna.step.AnnaStep;
 
 public class ProgressMonitor extends AbstractEventListener {
 
-	private final static String PRE_LINE =  "+++++++++++++++ MONITOR +++++++++++++++";
-	private final static String POST_LINE = "+++++++++++++++++++++++++++++++++++++++";
+	private final static String PRE_LINE =  " MONITOR +++++++++++++++";
+	private final static String POST_LINE = "+++++++++++++++++++++++++++++++++++++++++++++++";
 
 	public void eventOccoured(AnnaEvent event) {
 		AnnaStep lastChanged = null;
@@ -26,7 +26,9 @@ public class ProgressMonitor extends AbstractEventListener {
 	
 	private synchronized void printStepStates(AnnaEvent event, AnnaStep lastChangedStep) {
 		final Collection<AnnaStep> steps = event.getRegisteredSteps();
-		logger.info(this, PRE_LINE);
+		final StringBuilder hans = new StringBuilder();
+		hans.append(PRE_LINE);
+		hans.append(FileUtils.NEW_LINE);
 		for (AnnaStep s :steps) {
 			final String s1 = s.toString();
 			final String s2 = "state=" + s.getState();	
@@ -38,9 +40,11 @@ public class ProgressMonitor extends AbstractEventListener {
 			if (lastChangedStep != null && lastChangedStep.equals(s)) {
 				sb.append("\t(changed)");
 			}
-			logger.info(this, sb.toString());
+			hans.append(sb.toString());
+			hans.append(FileUtils.NEW_LINE);
 		}
-		logger.info(this, POST_LINE);
+		hans.append(POST_LINE);
+		logger.info(this, hans.toString());
 	}
 	
 	@Override
