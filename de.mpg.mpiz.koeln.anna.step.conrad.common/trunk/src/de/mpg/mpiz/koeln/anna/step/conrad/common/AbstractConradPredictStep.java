@@ -6,16 +6,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 import org.osgi.framework.BundleContext;
 
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
+import de.bioutils.gff.file.NewGFFFile;
+import de.bioutils.gff.file.NewGFFFileImpl;
 import de.bioutils.gff3.converter.BasicConverter;
 import de.bioutils.gff3.converter.UniqueIDExtender;
 import de.bioutils.gff3.element.GFF3Element;
 import de.bioutils.gff3.file.GFF3File;
-import de.bioutils.gff3.file.GFF3FileImpl;
 import de.kerner.commons.StringUtils;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
@@ -153,13 +153,14 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 	private void update(File resultFile, DataProxy<GFF3DataBean> data)
 			throws IOException, GFFFormatErrorException,
 			DataBeanAccessException {
-		GFF3File file = GFF3FileImpl
-		.convertFromGFF(resultFile);
+		final NewGFFFile file = NewGFFFileImpl
+		.parseFile(resultFile);
 		final BasicConverter converter = new BasicConverter();
 		converter.clearElementExtenders();
 		converter.addGFF3ElementExtender(new UniqueIDExtender(true));
 		converter.addGFF3ElementExtender(new ConradGeneParentExtender());
-		final Collection<? extends GFF3Element> c = file.getElements();
+		final GFF3File file2 = converter.convert(file);
+		final Collection<? extends GFF3Element> c = file2.getElements();
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
 				v.setPredictedGenesGFF(new ArrayList<GFF3Element>(c));

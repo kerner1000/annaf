@@ -40,17 +40,20 @@ public abstract class AbstractStepProcessBuilder {
 		this.logger = logger;
 	}
 
+	@Deprecated
 	public void addResultFile(boolean takeShortCutIfAlreadyThere,
 			String fileName) {
 		addResultFile(takeShortCutIfAlreadyThere, new File(fileName));
 	}
 	
+	@Deprecated
 	public void addAllResultFiles(Map<File, Boolean> m) {
 		if(m.isEmpty())
 			return;
 		outFiles.putAll(m);
 	}
 	
+	@Deprecated
 	public void addResultFile(boolean takeShortCutIfAlreadyThere, File file) {
 		if (file == null)
 			throw new NullPointerException(
@@ -94,6 +97,7 @@ public abstract class AbstractStepProcessBuilder {
 		return createAndStartProcess(System.out, System.err);
 	}
 	
+	@Deprecated
 	private boolean takeShortCut() {
 		logger.debug(this, "checking for shortcut available");
 		if(outFiles.isEmpty()){
