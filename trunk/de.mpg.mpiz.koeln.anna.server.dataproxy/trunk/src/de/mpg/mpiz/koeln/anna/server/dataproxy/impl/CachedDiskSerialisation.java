@@ -6,6 +6,7 @@ import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.server.data.DataBean;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.anna.server.data.impl.GFF3DataBeanImpl;
 
 /**
  * 
@@ -51,6 +52,12 @@ class CachedDiskSerialisation extends GFF3DiskSerialisation {
 		} finally {
 			this.dirty = true;
 		}
+	}
+	
+	protected <V extends DataBean> V handleCorruptData(File file, Throwable t) {
+		dirty = true;
+		data = new GFF3DataBeanImpl();
+		return super.handleCorruptData(file, t);
 	}
 
 	@Override
