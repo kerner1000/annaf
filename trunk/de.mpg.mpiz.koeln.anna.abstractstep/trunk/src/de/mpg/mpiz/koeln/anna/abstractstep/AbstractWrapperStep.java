@@ -13,6 +13,8 @@ import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 /**
  * <p> Helper class to create a WrapperStep for an external programm.</p>
  * @author Alexander Kerner
+ * @threadSave custom
+ * @lastVisit 2009-10-02
  * @param <T> type of {@link de.mpg.mpiz.koeln.anna.server.data.DataBean}
  */
 public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
@@ -59,6 +61,7 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 		this.errFile = file;
 	}
 
+	// fields volatile
 	private boolean doItFinally() throws StepExecutionException {
 		boolean success = false;
 		try {
@@ -118,6 +121,7 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 		return true;
 	}
 
+	// fields volatile
 	private void validateProperties() throws StepExecutionException {
 		if (!FileUtils.dirCheck(exeDir, false))
 			throw new StepExecutionException("cannot access exe dir");
@@ -125,6 +129,7 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 			throw new StepExecutionException("cannot access working dir");
 	}
 
+	// fields volatile
 	private void printProperties() {
 		logger.debug(this, " created, properties:");
 		logger.debug(this, "\tstepWorkingDir=" + workingDir);

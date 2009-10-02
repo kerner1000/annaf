@@ -29,6 +29,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 	protected volatile LogDispatcher logger = new ConsoleLogger();
 	private State state = State.LOOSE;
 
+	// fields volatile
 	protected void init(BundleContext context) throws StepExecutionException {
 		this.logger = new LogDispatcherImpl(context);
 		tracker = new ServiceTracker(context, AnnaServer.class.getName(), null);

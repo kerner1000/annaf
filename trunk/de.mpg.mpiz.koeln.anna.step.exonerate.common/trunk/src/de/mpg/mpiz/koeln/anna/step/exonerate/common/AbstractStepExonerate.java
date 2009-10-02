@@ -45,15 +45,14 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 		}
 	}
 
+	// fields volatile
 	@Override
 	protected void init(BundleContext context) throws StepExecutionException {
 		super.init(context);
-		synchronized (this) {
 			workingDir = new File(getStepProperties().getProperty(
 					ExonerateConstants.WORKING_DIR_KEY));
 			exeDir = new File(getStepProperties().getProperty(
 					ExonerateConstants.EXE_DIR_KEY));
-		}
 	}
 
 	public void prepare() throws Exception {
@@ -61,6 +60,7 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 		createESTFasta();
 	}
 
+	// workingDir volatile
 	private void createESTFasta() throws DataBeanAccessException,
 			ServiceNotAvailabeException, IOException {
 		final Collection<FASTAElement> ests = (Collection<FASTAElement>) getDataProxy()
@@ -71,6 +71,7 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 				+ f2.getAbsolutePath());
 	}
 
+	// workingDir volatile
 	private void createInputFile() throws Exception {
 		final Collection<FASTAElement> inFastas = getDataProxy().viewData()
 				.getInputSequence();
@@ -80,6 +81,7 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 				+ f1.getAbsolutePath());
 	}
 
+	// workingDir volatile
 	public boolean update() throws StepExecutionException {
 		try {
 			DataProxy<GFF3DataBean> p = getDataProxy();
@@ -109,7 +111,7 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 		} else {
 			logger.info(this, file + " is invalid, will not do shortcut");
 		}
-		super.setOutFile(file);
+		super.redirectOutStreamToFile(file);
 		return super.start();
 	}
 
