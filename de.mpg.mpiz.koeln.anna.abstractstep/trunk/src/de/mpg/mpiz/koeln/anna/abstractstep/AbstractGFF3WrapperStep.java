@@ -14,6 +14,7 @@ public abstract class AbstractGFF3WrapperStep extends AbstractWrapperStep<GFF3Da
 	
 	private volatile ServiceTracker tracker;
 
+	// tracker volatile
 	@Override
 	protected void init(BundleContext context) throws StepExecutionException {
 		super.init(context);
@@ -22,6 +23,7 @@ public abstract class AbstractGFF3WrapperStep extends AbstractWrapperStep<GFF3Da
 		tracker.open();
 	}
 
+	// tracker volatile
 	@Override
 	public DataProxy<GFF3DataBean> getDataProxy()
 			throws ServiceNotAvailabeException {
