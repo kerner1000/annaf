@@ -12,6 +12,7 @@ public interface Server {
 
 	Properties getServerProperties();
 	
+	// TODO: AnnaEventListener does not match this interface abstraction
 	void addEventListener(AnnaEventListener observer);
 	
 	void removeEventListener(AnnaEventListener observer);

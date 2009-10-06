@@ -2,6 +2,7 @@ package de.mpg.mpiz.koeln.anna.server.dataproxy;
 
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 
+// TODO: should be <V extends DataBean>
 public interface DataProxy<V> {
 
 	/**
@@ -21,7 +22,7 @@ public interface DataProxy<V> {
 	 * 
 	 * <p>
 	 * Use this method for reading data only. If you make changes to the data
-	 * you get from this method, these changes will not be synchronized! If you
+	 * you get from this method, these changes will not be updated! If you
 	 * want to write data, use {@link modifiyData()} instead.
 	 * 
 	 * @return the data object.
