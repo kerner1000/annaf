@@ -19,6 +19,7 @@ import de.bioutils.gff3.element.GFF3ElementGroup;
 import de.bioutils.gff3.file.GFF3File;
 import de.bioutils.gff3.file.GFF3FileImpl;
 import de.kerner.commons.StringUtils;
+import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.utils.ServiceNotAvailabeException;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3WrapperStep;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
@@ -106,7 +107,7 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 		logger.debug(this, "starting");
 		final File file = new File(workingDir,
 				ExonerateConstants.RESULT_FILENAME);
-		if (outFileIsValid(file)) {
+		if (FileUtils.fileCheck(file, false) && outFileIsValid(file)) {
 			super.addShortCutFile(file);
 		} else {
 			logger.info(this, file + " is invalid, will not do shortcut");

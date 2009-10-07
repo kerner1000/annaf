@@ -11,11 +11,15 @@ import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
 /**
- * <p> Helper class to create a WrapperStep for an external programm.</p>
+ * <p>
+ * Helper class to create a WrapperStep for an external programm.
+ * </p>
+ * 
  * @author Alexander Kerner
  * @threadSave custom
  * @lastVisit 2009-10-02
- * @param <T> type of {@link de.mpg.mpiz.koeln.anna.server.data.DataBean}
+ * @param <T>
+ *            type of {@link de.mpg.mpiz.koeln.anna.server.data.DataBean}
  */
 public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 
@@ -34,16 +38,25 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	 */
 	public boolean start() throws StepExecutionException {
 		boolean success = false;
-		try{
-		printProperties();
-		validateProperties();
-		prepare();
-		if(takeShortCut()){
-			success = true;
-		} else {
-			success = doItFinally();
-		}
-		}catch (Exception e) {
+		try {
+			printProperties();
+			validateProperties();
+			prepare();
+			if (takeShortCut()) {
+				success = true;
+			} else {
+				success = doItFinally();
+			}
+			if (success) {
+				final boolean hh = update();
+				if (hh) {
+					logger.debug(this, "updated databean");
+				} else {
+					logger.warn(this, "updating databean failed!");
+				}
+				success = hh;
+			}
+		} catch (Exception e) {
 			StepUtils.handleException(this, e);
 		}
 		return success;
@@ -56,7 +69,7 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	public void redirectOutStreamToFile(File file) {
 		this.outFile = file;
 	}
-	
+
 	public void redirectErrStreamToFile(File file) {
 		this.errFile = file;
 	}
@@ -86,15 +99,6 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 			}
 			if (errFile != null) {
 				err.close();
-			}
-			if (success) {
-				final boolean hh = update();
-				if (hh) {
-					logger.debug(this, "updated databean");
-				} else {
-					logger.warn(this, "updating databean failed!");
-				}
-				success = hh;
 			}
 		} catch (Exception e) {
 			StepUtils.handleException(this, e);
