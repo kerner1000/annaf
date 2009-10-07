@@ -24,7 +24,7 @@ public class PredictLocal extends AbstractConradPredictStep {
 		}
 
 		@Override
-		protected List<String> getCommandList() {
+		protected synchronized List<String> getCommandList() {
 			final CommandStringBuilder builder = new CommandStringBuilder(new File(
 					executableDir, ConradConstants.CONRAD_EXE).getAbsolutePath());
 			builder.addFlagCommand("predict");
@@ -37,7 +37,7 @@ public class PredictLocal extends AbstractConradPredictStep {
 	}
 
 	@Override
-	protected AbstractStepProcessBuilder getProcess() {
+	protected synchronized AbstractStepProcessBuilder getProcess() {
 		return new Process(exeDir, workingDir, logger);
 	}
 

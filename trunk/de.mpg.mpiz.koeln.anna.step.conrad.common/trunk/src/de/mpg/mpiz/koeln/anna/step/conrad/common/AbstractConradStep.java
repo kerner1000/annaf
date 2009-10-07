@@ -22,16 +22,16 @@ public abstract class AbstractConradStep extends AbstractGFF3AnnaStep {
 	public static final String TRAINING_FILE = "conrad.trainingfile";
 	
 	// assigned in init(), after that only read 
-	protected File exeDir;
+	protected volatile File exeDir;
 	
 	// TODO dangerous. must be initialized by extending class
 	// TODO not synchronized
-	protected AbstractStepProcessBuilder process;
+	protected volatile AbstractStepProcessBuilder process;
 	
 	// TODO dangerous. must be initialized by extending class
-	protected File workingDir;
+	protected volatile File workingDir;
 	
-	protected synchronized void init(BundleContext context) throws StepExecutionException {
+	protected void init(BundleContext context) throws StepExecutionException {
 			super.init(context);
 		exeDir = new File(super.getStepProperties()
 				.getProperty(ConradConstants.CONRAD_DIR_KEY));
