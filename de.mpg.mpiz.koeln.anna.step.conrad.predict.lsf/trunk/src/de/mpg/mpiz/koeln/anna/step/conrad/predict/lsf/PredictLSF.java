@@ -25,7 +25,7 @@ public class PredictLSF extends AbstractConradPredictStep {
 		}
 
 		@Override
-		protected List<String> getCommandList() {
+		protected synchronized List<String> getCommandList() {
 			final CommandStringBuilder builder = new CommandStringBuilder(
 					LSF.BSUB_EXE);
 			builder.addAllFlagCommands(LSF.getBsubFlagCommandStrings());
@@ -45,7 +45,7 @@ public class PredictLSF extends AbstractConradPredictStep {
 	}
 
 	@Override
-	protected AbstractStepProcessBuilder getProcess() {
+	protected synchronized AbstractStepProcessBuilder getProcess() {
 		return new Process(exeDir, workingDir, logger);
 	}
 }

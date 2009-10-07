@@ -82,6 +82,9 @@ public abstract class AbstractStepProcessBuilder {
 			FileUtils.inputStreamToOutputStream(p.getInputStream(), out);
 			FileUtils.inputStreamToOutputStream(p.getErrorStream(), err);
 			final int exit = p.waitFor();
+//			logger.debug(this, "performing LSF buffer timeout...");
+//			Thread.sleep(1000);
+//			logger.debug(this, "continuing");
 			logger.debug(this, "process " + p + " exited with exit code " + exit);
 			if (exit != 0)
 				return false;

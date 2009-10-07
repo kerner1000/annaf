@@ -41,9 +41,9 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 			+ TRAIN_PREFIX_KEY + "workingDir";
 
 	// assigned in init(), after that only read
-	protected File trainingFile;
+	protected volatile File trainingFile;
 	// assigned in init(), after that only read
-	protected File resultFile;
+	protected volatile File resultFile;
 
 	@Override
 	protected synchronized void init(BundleContext context)
@@ -141,7 +141,7 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 			process.addResultFile(true, resultFile.getAbsoluteFile());
 			success = process.createAndStartProcess();
 			if (success)
-				update(resultFile.getAbsoluteFile(), data);
+				update(data);
 		} catch (Throwable t) {
 			StepUtils.handleException(this, t, logger);
 			// cannot be reached
@@ -150,11 +150,11 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		return success;
 	}
 
-	private void update(File resultFile, DataProxy<GFF3DataBean> data)
+	private void update(DataProxy<GFF3DataBean> data)
 			throws IOException, GFFFormatErrorException,
 			DataBeanAccessException {
 		final NewGFFFile file = NewGFFFileImpl
-		.parseFile(resultFile);
+		.parseFile(resultFile.getAbsoluteFile());
 		final BasicConverter converter = new BasicConverter();
 		converter.clearElementExtenders();
 		converter.addGFF3ElementExtender(new UniqueIDExtender(true));
