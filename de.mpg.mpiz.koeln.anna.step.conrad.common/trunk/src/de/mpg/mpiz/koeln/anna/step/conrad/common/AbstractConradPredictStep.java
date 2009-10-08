@@ -153,6 +153,7 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 	private void update(DataProxy<GFF3DataBean> data)
 			throws IOException, GFFFormatErrorException,
 			DataBeanAccessException {
+		checkFile();
 		final NewGFFFile file = NewGFFFileImpl
 		.parseFile(resultFile.getAbsoluteFile());
 		final BasicConverter converter = new BasicConverter();
@@ -166,6 +167,13 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 				v.setPredictedGenesGFF(new ArrayList<GFF3Element>(c));
 			}
 		});
+	}
+
+	private void checkFile() {
+		logger.debug(this, "file is there=" + resultFile.exists());
+		logger.debug(this, "file is file=" + resultFile.isFile());
+		logger.debug(this, "file can read=" + resultFile.canRead());
+		logger.debug(this, "file can write=" + resultFile.canWrite());
 	}
 
 	private void createFiles(DataProxy<GFF3DataBean> data)

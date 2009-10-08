@@ -2,7 +2,6 @@ package de.mpg.mpiz.koeln.anna.serverimpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 import de.mpg.koeln.anna.core.events.AnnaEvent;
 import de.mpg.koeln.anna.core.events.StepStateChangeEvent;

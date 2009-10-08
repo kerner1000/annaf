@@ -18,6 +18,7 @@ import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
  */
 class AnnaSepExecutor implements Callable<Void> {
 
+	public final static Object LOCK = Server.class;
 	private final AnnaStep step;
 	private final LogDispatcher logger;
 	private final EventHandler handler;
@@ -41,11 +42,11 @@ class AnnaSepExecutor implements Callable<Void> {
 		}
 		logger.debug(this, "step " + step + " needs to run");
 		stepStateChanged(State.WAIT_FOR_REQ);
-		synchronized (Server.class) {
+		synchronized (LOCK) {
 			while (!step.requirementsSatisfied()) {
 				logger.debug(this, "requirements for step " + step
 						+ " not satisfied, putting it to sleep");
-				Server.class.wait();
+				LOCK.wait();
 			}
 			logger.debug(this, "requirements for step " + step + " satisfied");
 		}
@@ -71,10 +72,6 @@ class AnnaSepExecutor implements Callable<Void> {
 			stepStateChanged(ObservableStep.State.DONE);
 		} else if (!success && !(step.getState().equals(ObservableStep.State.SKIPPED))) {
 			stepStateChanged(ObservableStep.State.ERROR);
-		}
-		synchronized (Server.class) {
-			logger.debug(this, "notifying others");
-			Server.class.notifyAll();
 		}
 	}
 
