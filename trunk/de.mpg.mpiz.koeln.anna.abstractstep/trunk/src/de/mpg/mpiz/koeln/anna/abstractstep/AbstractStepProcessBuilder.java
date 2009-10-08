@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.anna.step.common;
+package de.mpg.mpiz.koeln.anna.abstractstep;
 
 import java.io.File;
 import java.io.OutputStream;

@@ -6,7 +6,7 @@ import org.osgi.framework.BundleContext;
 
 import de.kerner.commons.StringUtils;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
-import de.mpg.mpiz.koeln.anna.step.common.AbstractStepProcessBuilder;
+import de.mpg.mpiz.koeln.anna.abstractstep.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 
 /**

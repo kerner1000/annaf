@@ -9,7 +9,6 @@ import org.osgi.framework.BundleContext;
 
 import de.bioutils.fasta.FASTAElement;
 import de.bioutils.fasta.NewFASTAFileImpl;
-import de.bioutils.gff.GFFFormatErrorException;
 import de.bioutils.gff.file.NewGFFFile;
 import de.bioutils.gff.file.NewGFFFileImpl;
 import de.bioutils.gff3.converter.GFF3FileExtender;
@@ -106,13 +105,15 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 			throws StepExecutionException {
 		logger.debug(this, "starting");
 		final File file = new File(workingDir,
-				ExonerateConstants.RESULT_FILENAME);
+				ExonerateConstants.RESULT_FILENAME);		
 		if (FileUtils.fileCheck(file, false) && outFileIsValid(file)) {
 			super.addShortCutFile(file);
 		} else {
-			logger.info(this, file + " is invalid, will not do shortcut");
+			logger.info(this, file + " is not there or invalid, will not do shortcut");
 		}
 		super.redirectOutStreamToFile(file);
+		super.addResultFileToWaitFor(new File(workingDir,
+					ExonerateConstants.RESULT_FILENAME));
 		return super.start();
 	}
 
