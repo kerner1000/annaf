@@ -47,6 +47,7 @@ public class AnnaServerImpl implements AnnaServer {
 		properties = getPropertes();
 		logger.debug(this, "loaded properties: " + properties);
 		handler = new EventHandler(registeredSteps);
+		handler.addEventListener(new NotifyOthersListener(logger));
 	}
 
 	public synchronized void unregisterStep(ExecutableStep step) {
@@ -62,16 +63,8 @@ public class AnnaServerImpl implements AnnaServer {
 			ss = new CyclicStepSheduler((AnnaStep) step, handler, logger);
 		} else {
 			ss = new ImmediateStepSheduler((AnnaStep) step, handler, logger);
-		}try{
-			exe.submit(ss);
-		}catch(Exception e){
-			if(e instanceof StepExecutionException){
-				logger.warn(this, e.getLocalizedMessage(), e);
-			} else {
-				logger.error(this, e.getLocalizedMessage(), e);
-			}
-			setStepState(step, State.ERROR);
 		}
+			exe.submit(ss);
 	}
 
 	public synchronized Properties getServerProperties() {
