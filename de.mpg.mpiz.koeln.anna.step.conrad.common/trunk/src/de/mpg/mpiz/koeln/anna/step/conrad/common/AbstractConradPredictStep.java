@@ -153,7 +153,24 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 	private void update(DataProxy<GFF3DataBean> data)
 			throws IOException, GFFFormatErrorException,
 			DataBeanAccessException {
-		checkFile();
+		
+		// TODO: dirty workaround for a "FileNotFoundException" thrown, if we dont wait.
+		synchronized(resultFile){
+			checkFile();
+			while(!resultFile.canRead()){
+				try {
+					logger.debug(this, "file not there, sleeping");
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			checkFile();
+			logger.debug(this, "file there!");
+		}
+		/////// dirty workaround /////////
+		
 		final NewGFFFile file = NewGFFFileImpl
 		.parseFile(resultFile.getAbsoluteFile());
 		final BasicConverter converter = new BasicConverter();
@@ -170,6 +187,7 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 	}
 
 	private void checkFile() {
+		logger.debug(this, "file is=" + resultFile.getAbsolutePath());
 		logger.debug(this, "file is there=" + resultFile.exists());
 		logger.debug(this, "file is file=" + resultFile.isFile());
 		logger.debug(this, "file can read=" + resultFile.canRead());

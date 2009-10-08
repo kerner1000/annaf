@@ -50,7 +50,17 @@ class AnnaSepExecutor implements Callable<Void> {
 			}
 			logger.debug(this, "requirements for step " + step + " satisfied");
 		}
-		success = runStep();
+		try {
+			success = runStep();
+		} catch (Exception e) {
+			if (e instanceof StepExecutionException) {
+				logger.warn(this, e.getLocalizedMessage(), e);
+			} else {
+				logger.error(this, e.getLocalizedMessage(), e);
+			}
+			stepStateChanged(State.ERROR);
+			success = false;
+		}
 		stepFinished(success);
 		return null;
 	}
@@ -68,9 +78,10 @@ class AnnaSepExecutor implements Callable<Void> {
 
 	private void stepFinished(boolean success) {
 		logger.debug(this, "step " + step + " done running");
-		if(success && !(step.getState().equals(ObservableStep.State.SKIPPED))){
+		if (success && !(step.getState().equals(ObservableStep.State.SKIPPED))) {
 			stepStateChanged(ObservableStep.State.DONE);
-		} else if (!success && !(step.getState().equals(ObservableStep.State.SKIPPED))) {
+		} else if (!success
+				&& !(step.getState().equals(ObservableStep.State.SKIPPED))) {
 			stepStateChanged(ObservableStep.State.ERROR);
 		}
 	}
