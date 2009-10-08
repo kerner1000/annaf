@@ -13,13 +13,12 @@ import java.util.concurrent.Executors;
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.mpg.koeln.anna.core.events.AnnaEvent;
-import de.mpg.koeln.anna.core.events.StepStateChangeEvent;
 import de.mpg.mpiz.koeln.anna.server.AnnaEventListener;
 import de.mpg.mpiz.koeln.anna.server.AnnaServer;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
 import de.mpg.mpiz.koeln.anna.step.ExecutableStep;
 import de.mpg.mpiz.koeln.anna.step.ObservableStep.State;
+import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 
 /**
  * 
@@ -56,15 +55,23 @@ public class AnnaServerImpl implements AnnaServer {
 
 	public synchronized void registerStep(ExecutableStep step) {
 		registeredSteps.add((AnnaStep) step);
-		((AnnaStep) step).setState(State.REGISTERED);
+		setStepState(step, State.REGISTERED);
 		logger.debug(this, "registered step " + step);
 		StepSheduler ss;
 		if(step.isCyclic()){
 			ss = new CyclicStepSheduler((AnnaStep) step, handler, logger);
 		} else {
 			ss = new ImmediateStepSheduler((AnnaStep) step, handler, logger);
-		}
+		}try{
 			exe.submit(ss);
+		}catch(Exception e){
+			if(e instanceof StepExecutionException){
+				logger.warn(this, e.getLocalizedMessage(), e);
+			} else {
+				logger.error(this, e.getLocalizedMessage(), e);
+			}
+			setStepState(step, State.ERROR);
+		}
 	}
 
 	public synchronized Properties getServerProperties() {
@@ -110,5 +117,10 @@ public class AnnaServerImpl implements AnnaServer {
 		Properties pro = new Properties();
 		// pro.setProperty(WORKING_DIR_KEY, WORKING_DIR_VALUE);
 		return pro;
+	}
+	
+	private void setStepState(ExecutableStep step, State state) {
+		((AnnaStep) step).setState(state);
+		handler.stepStateChanged((AnnaStep) step);
 	}
 }

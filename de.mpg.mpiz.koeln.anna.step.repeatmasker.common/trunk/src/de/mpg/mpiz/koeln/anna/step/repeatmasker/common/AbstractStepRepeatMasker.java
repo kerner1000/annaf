@@ -46,10 +46,10 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3AnnaStep {
 
 	private void validateProperties() throws StepExecutionException {
 		if (!FileUtils.dirCheck(exeDir, false))
-			throw new StepExecutionException(
+			throw new StepExecutionException(this, 
 					"cannot access repeatmasker working dir");
 		if (!FileUtils.dirCheck(workingDir, true))
-			throw new StepExecutionException("cannot access step working dir");
+			throw new StepExecutionException(this, "cannot access step working dir");
 	}
 
 	private void printProperties() {
