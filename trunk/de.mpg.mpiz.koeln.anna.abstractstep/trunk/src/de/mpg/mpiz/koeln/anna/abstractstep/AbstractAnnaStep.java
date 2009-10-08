@@ -86,7 +86,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 			proxy = getDataProxy();
 		} catch (ServiceNotAvailabeException e) {
 			logger.error(this, e.getLocalizedMessage(), e);
-			throw new StepExecutionException(e);
+			throw new StepExecutionException(this, e);
 		}
 		return requirementsSatisfied(proxy);
 	}
@@ -97,7 +97,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 			proxy = getDataProxy();
 		} catch (ServiceNotAvailabeException e) {
 			logger.error(this, e.getLocalizedMessage(), e);
-			throw new StepExecutionException(e);
+			throw new StepExecutionException(this, e);
 		}
 		return canBeSkipped(proxy);
 	}
@@ -108,7 +108,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 			proxy = getDataProxy();
 		} catch (ServiceNotAvailabeException e) {
 			logger.error(this, e.getLocalizedMessage(), e);
-			throw new StepExecutionException(e);
+			throw new StepExecutionException(this, e);
 		}
 		return run(proxy);
 	}

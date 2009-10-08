@@ -46,7 +46,6 @@ class CachedDiskSerialisation extends GFF3DiskSerialisation {
 
 	public <V extends DataBean> void writeDataBean(V v, File file)
 			throws DataBeanAccessException {
-		logger.debug(this, "writing data");
 		try {
 			super.writeDataBean(v, file);
 		} finally {

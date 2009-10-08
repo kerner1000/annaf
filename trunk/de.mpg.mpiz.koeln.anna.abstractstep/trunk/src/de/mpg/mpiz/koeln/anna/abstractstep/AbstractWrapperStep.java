@@ -128,9 +128,9 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	// fields volatile
 	private void validateProperties() throws StepExecutionException {
 		if (!FileUtils.dirCheck(exeDir, false))
-			throw new StepExecutionException("cannot access exe dir");
+			throw new StepExecutionException(this, "cannot access exe dir");
 		if (!FileUtils.dirCheck(workingDir, true))
-			throw new StepExecutionException("cannot access working dir");
+			throw new StepExecutionException(this, "cannot access working dir");
 	}
 
 	// fields volatile
