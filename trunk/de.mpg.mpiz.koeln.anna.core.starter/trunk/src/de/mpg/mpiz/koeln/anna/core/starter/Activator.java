@@ -68,18 +68,21 @@ public class Activator implements BundleActivator {
 			synchronized (Activator.class) {
 				final List<Bundle> result = new ArrayList<Bundle>();
 				for (String p : bundlePathes) {
-					System.err.println("installing " + p);
+//					System.err.println("installing " + p);
 					synchronized (context) {
+						try{
 						final Bundle b = context.installBundle(p);
 						result.add(b);
+						}catch(Exception e){
+							System.err.println(e.getLocalizedMessage());
+						}
 					}
 				}
 				return result;
 			}
 		}
 
-		private Collection<String> getBundlePathes(File path)
-				throws NoPluginsFoundException {
+		private Collection<String> getBundlePathes(File path) {
 			final List<String> result = new ArrayList<String>();
 			final File[] content = path.listFiles();
 			if (content == null || content.length == 0) {
@@ -94,8 +97,8 @@ public class Activator implements BundleActivator {
 						if (f.canRead()) {
 							final String s = f.toURI().toString();
 							if (s.endsWith(".jar")) {
-								System.err.println("Adding " + f
-										+ " to known plugins list.");
+//								System.err.println("Adding " + f
+//										+ " to known plugins list.");
 								result.add(s);
 							}
 						} else {
