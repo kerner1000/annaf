@@ -3,6 +3,7 @@ package de.mpg.mpiz.koeln.anna.abstractstep;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
@@ -152,14 +153,23 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 		return Collections.emptyList();
 	}
 	
-	public List<String> requirementsNeeded() throws Exception {
+	public List<String> requirementsNeeded() {
 		DataProxy<V> proxy;
 		try {
 			proxy = getDataProxy();
-		} catch (ServiceNotAvailabeException e) {
+		} catch (Exception e) {
 			logger.error(this, e.getLocalizedMessage(), e);
-			throw new StepExecutionException(this, e);
+			final ArrayList<String> r = new ArrayList<String>();
+			r.add("error while receiving dataproxy");
+			return r;
 		}
-		return requirementsNeeded(proxy);
+		try {
+			return requirementsNeeded(proxy);
+		} catch (Exception e) {
+			logger.error(this, e.getLocalizedMessage(), e);
+			final ArrayList<String> r = new ArrayList<String>();
+			r.add("error while getting requirements informations");
+			return r;
+		}
 	}
 }
