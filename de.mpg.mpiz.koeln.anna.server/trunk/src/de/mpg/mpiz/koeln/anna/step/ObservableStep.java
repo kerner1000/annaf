@@ -16,6 +16,6 @@ public interface ObservableStep {
 
 	void setState(State state);
 
-	List<String> requirementsNeeded() throws Exception;
+	List<String> requirementsNeeded();
 	
 }
