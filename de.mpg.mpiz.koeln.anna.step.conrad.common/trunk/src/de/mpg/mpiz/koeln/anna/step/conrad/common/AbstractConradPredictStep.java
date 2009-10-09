@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.osgi.framework.BundleContext;
 
@@ -93,6 +94,25 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 			// cannot be reached
 			return false;
 		}
+	}
+	
+	@Override
+	public List<String> requirementsNeeded(DataProxy<GFF3DataBean> data) throws DataBeanAccessException {
+		final List<String> r = new ArrayList<String>();
+		final boolean trainingFileRead = (data.viewData()
+				.getCustom(TRAINING_FILE)) != null
+				&& ((File) data.viewData().getCustom(TRAINING_FILE))
+						.canRead();
+		if(!trainingFileRead){
+			r.add("training file");
+		}
+		final boolean inputSequences = (data.viewData().getInputSequence() != null);
+		final boolean inputSequencesSize = (data.viewData()
+				.getInputSequence().size() != 0);
+		if(!inputSequences || !inputSequencesSize){
+			r.add("input sequence");
+		}
+		return r;
 	}
 
 	@Override

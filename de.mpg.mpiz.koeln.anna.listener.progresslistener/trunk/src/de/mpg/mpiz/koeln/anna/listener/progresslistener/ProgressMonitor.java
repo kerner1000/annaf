@@ -8,6 +8,7 @@ import de.mpg.koeln.anna.core.events.AnnaEvent;
 import de.mpg.koeln.anna.core.events.StepStateChangeEvent;
 import de.mpg.mpiz.koeln.anna.listener.abstractlistener.AbstractEventListener;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
+import de.mpg.mpiz.koeln.anna.step.ObservableStep.State;
 
 public class ProgressMonitor extends AbstractEventListener {
 
@@ -36,6 +37,14 @@ public class ProgressMonitor extends AbstractEventListener {
 			// TODO better: String.format();
 			final Formatter f = new Formatter();
 			sb.append(f.format("\t%-28s\t%-22s", s1, s2).toString());
+			
+			if(s.getState().equals(State.WAIT_FOR_REQ)){
+				try {
+					sb.append(s.requirementsNeeded());
+				} catch (Exception e) {
+					logger.error(this, "cannot print needed requirements for step " + s, e);
+				}
+			}
 			
 			if (lastChangedStep != null && lastChangedStep.equals(s)) {
 				sb.append("\t(changed)");
