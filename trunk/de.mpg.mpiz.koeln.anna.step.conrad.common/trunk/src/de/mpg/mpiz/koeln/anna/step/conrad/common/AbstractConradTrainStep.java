@@ -3,7 +3,9 @@ package de.mpg.mpiz.koeln.anna.step.conrad.common;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.osgi.framework.BundleContext;
 
@@ -93,6 +95,25 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 			// cannot be reached
 			return false;
 		}
+	}
+	
+	@Override
+	public List<String> requirementsNeeded(DataProxy<GFF3DataBean> data)
+			throws Exception {
+		final List<String> r = new ArrayList<String>();
+		final boolean fastas = (data.viewData().getVerifiedGenesFasta() != null);
+		final boolean fastasSize = (data.viewData().getVerifiedGenesFasta()
+				.size() != 0);
+		final boolean gtf = (data.viewData().getVerifiedGenesGFF() != null);
+		final boolean gtfSize = (data.viewData().getVerifiedGenesGFF()
+				.size() != 0);
+		if(!fastas || !fastasSize){
+			r.add("verified genes sequences");
+		}
+		if(!gtf || !gtfSize){
+			r.add("verified genes annotations");
+		}
+		return r;
 	}
 
 	@Override

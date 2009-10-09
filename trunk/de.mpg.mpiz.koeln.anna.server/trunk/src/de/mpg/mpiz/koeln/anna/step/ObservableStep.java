@@ -1,5 +1,7 @@
 package de.mpg.mpiz.koeln.anna.step;
 
+import java.util.List;
+
 public interface ObservableStep {
 	
 	public enum State {
@@ -14,4 +16,6 @@ public interface ObservableStep {
 
 	void setState(State state);
 
+	List<String> requirementsNeeded() throws Exception;
+	
 }

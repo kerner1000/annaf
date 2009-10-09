@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.osgi.framework.BundleContext;
 
@@ -147,6 +148,28 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 			// cannot be reached
 			return false;
 		}
+	}
+	
+	@Override
+	public List<String> requirementsNeeded(DataProxy<GFF3DataBean> data)
+			throws Exception {
+		final List<String> r = new ArrayList<String>();
+		
+		final boolean ests = (data.viewData().getESTs() != null && (data
+				.viewData().getESTs().size() != 0));
+
+		final boolean inseq = (data.viewData().getInputSequence() != null && data
+				.viewData().getInputSequence().size() != 0);
+		
+		if(!ests){
+			r.add("EST sequences");
+		}
+		
+		if(!inseq){
+			r.add("input sequence(s)");
+		}
+		
+		return r;
 	}
 
 	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data)

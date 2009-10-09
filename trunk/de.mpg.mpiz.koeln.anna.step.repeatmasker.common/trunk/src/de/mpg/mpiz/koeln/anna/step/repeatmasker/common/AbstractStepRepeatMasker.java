@@ -3,6 +3,7 @@ package de.mpg.mpiz.koeln.anna.step.repeatmasker.common;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.osgi.framework.BundleContext;
 
@@ -72,6 +73,19 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3AnnaStep {
 			// cannot be reached
 			return false;
 		}
+	}
+	
+	@Override
+	public List<String> requirementsNeeded(DataProxy<GFF3DataBean> data)
+			throws Exception {
+		final List<String> r = new ArrayList<String>();
+		final boolean sequence = (data.viewData().getInputSequence() != null);
+		final boolean sequenceSize = (data.viewData()
+				.getInputSequence().size() != 0);
+		if(!sequence || !sequenceSize){
+			r.add("input sequences");
+		}
+		return r;
 	}
 
 	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data)
