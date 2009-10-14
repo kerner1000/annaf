@@ -25,4 +25,4 @@ Import-Package: de.bioutils,
  de.kerner.osgi.commons.logger.dispatcher,
  de.kerner.osgi.commons.utils
 Export-Package: de.mpg.mpiz.koeln.anna.server.data,
- de.mpg.mpiz.koeln.anna.server.data.impl
+ de.mpg.mpiz.koeln.anna.server.data.impl;uses:="de.mpg.mpiz.koeln.anna.server.data"

@@ -19,4 +19,4 @@ Import-Package: de.bioutils,
  de.bioutils.gff3.file,
  de.bioutils.gff3.filter,
  de.bioutils.gff3.parser
-Export-Package: de.mpg.mpiz.koeln.anna.step.conrad.data.adapter
+Export-Package: de.mpg.mpiz.koeln.anna.step.conrad.data.adapter;uses:="de.bioutils.gff3.file,de.bioutils.gff3.converter,de.bioutils.gff.file"
