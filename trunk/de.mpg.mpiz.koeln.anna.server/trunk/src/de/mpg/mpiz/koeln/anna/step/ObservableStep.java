@@ -9,7 +9,20 @@ public interface ObservableStep {
 		LOOSE, REGISTERED, CHECK_NEED_TO_RUN, WAIT_FOR_REQ, RUNNING,
 		
 		// finished steps
-		DONE, ERROR, SKIPPED
+		DONE, ERROR, SKIPPED;
+		
+		public boolean isFinished(){
+			switch (this) {
+			case DONE:
+				return true;
+			case ERROR:
+				return true;
+			case SKIPPED:
+				return true;
+			default:
+				return false;
+			}
+		}
 	}
 
 	State getState();
