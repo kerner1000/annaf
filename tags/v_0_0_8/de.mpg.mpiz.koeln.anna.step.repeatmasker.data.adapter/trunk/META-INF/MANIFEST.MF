@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RepeatMasker DataAdapter
+Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.repeatmasker.data.adapter
+Bundle-Version: 0.0.1
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Import-Package: de.bioutils,
+ de.bioutils.gff3,
+ de.bioutils.gff3.converter,
+ de.bioutils.gff3.element,
+ de.bioutils.gff3.file,
+ de.kerner.commons,
+ de.kerner.commons.file
+Export-Package: de.mpg.mpiz.koeln.anna.step.repeatmasker.adapter

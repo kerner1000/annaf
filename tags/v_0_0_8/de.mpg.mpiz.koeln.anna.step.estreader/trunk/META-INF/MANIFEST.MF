@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EST reader
+Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.estreader
+Bundle-Version: 0.0.1
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Import-Package: de.bioutils,
+ de.bioutils.fasta,
+ de.kerner.commons,
+ de.kerner.commons.file,
+ de.kerner.osgi.commons.logger.dispatcher,
+ de.kerner.osgi.commons.utils,
+ de.mpg.mpiz.koeln.anna.abstractstep,
+ de.mpg.mpiz.koeln.anna.server,
+ de.mpg.mpiz.koeln.anna.server.data,
+ de.mpg.mpiz.koeln.anna.server.data.impl,
+ de.mpg.mpiz.koeln.anna.server.dataproxy,
+ de.mpg.mpiz.koeln.anna.step,
+ de.mpg.mpiz.koeln.anna.step.common,
+ org.osgi.framework;version="1.4.0"
+Bundle-Activator: de.mpg.mpiz.koeln.anna.step.estreader.ESTReader
