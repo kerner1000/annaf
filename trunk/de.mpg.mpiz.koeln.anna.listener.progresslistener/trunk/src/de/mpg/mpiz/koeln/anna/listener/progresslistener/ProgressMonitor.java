@@ -12,8 +12,8 @@ import de.mpg.mpiz.koeln.anna.step.ObservableStep.State;
 
 public class ProgressMonitor extends AbstractEventListener {
 
-	private final static String PRE_LINE =  " MONITOR +++++++++++++++";
-	private final static String POST_LINE = "+++++++++++++++++++++++++++++++++++++++++++++++";
+	private final static String PRE_LINE =  " MONITOR ++++++++++++++++++++++++++++++++++++++++++";
+	private final static String POST_LINE = "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
 
 	public void eventOccoured(AnnaEvent event) {
 		AnnaStep lastChanged = null;
