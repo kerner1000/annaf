@@ -127,9 +127,9 @@ public class Activator implements BundleActivator {
 	private final static String PLUGINS_PATH_6 = System.getProperty("user.dir")
 			+ "/05-anna-server/";
 	private final static String PLUGINS_PATH_7 = System.getProperty("user.dir")
-			+ "/06-anna-steps/";
+			+ "/06-anna-listeners/";
 	private final static String PLUGINS_PATH_8 = System.getProperty("user.dir")
-	+ "/07-anna-listeners/";
+	+ "/07-anna-steps/";
 	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 
 	public void start(final BundleContext context) throws Exception {
@@ -138,8 +138,6 @@ public class Activator implements BundleActivator {
 				try {
 					// new BundleStarter(new BundleInstaller(context, new
 					// File(PLUGINS_PATH_0)).call()).call();
-					new BundleStarter(new BundleInstaller(context, new File(
-							PLUGINS_PATH_1)).call()).call();
 					new BundleStarter(new BundleInstaller(context, new File(
 							PLUGINS_PATH_1)).call()).call();
 					new BundleStarter(new BundleInstaller(context, new File(
