@@ -31,7 +31,7 @@ public class FinishedListener extends AbstractEventListener {
 	private boolean areWeDone(AnnaEvent event){
 		final Collection<AnnaStep> eventList = event.getRegisteredSteps();
 		for(AnnaStep s : eventList){
-			if(!(s.getState().equals(State.DONE) || s.getState().equals(State.SKIPPED) || s.getState().equals(State.ERROR))){
+			if(!(s.getState().isFinished())){
 				return false;
 			}
 			if(s.getState().equals(State.ERROR)){
