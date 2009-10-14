@@ -31,4 +31,4 @@ Import-Package: de.bioutils,
  de.mpg.mpiz.koeln.anna.step,
  de.mpg.mpiz.koeln.anna.step.common,
  org.osgi.framework;version="1.4.0"
-Export-Package: de.mpg.mpiz.koeln.anna.step.exonerate.common
+Export-Package: de.mpg.mpiz.koeln.anna.step.exonerate.common;uses:="de.mpg.mpiz.koeln.anna.server.dataproxy,org.osgi.framework,de.mpg.mpiz.koeln.anna.abstractstep"

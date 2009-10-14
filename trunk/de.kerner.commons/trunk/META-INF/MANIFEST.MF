@@ -8,5 +8,5 @@ Bundle-ClassPath: .,
  lib/kerner-commons-0.0.9.jar
 Export-Package: de.kerner.commons,
  de.kerner.commons.file,
- de.kerner.commons.xml,
- de.kerner.commons.zip
+ de.kerner.commons.xml;uses:="net.n3.nanoxml",
+ de.kerner.commons.zip;uses:="de.kerner.commons.file"

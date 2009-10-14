@@ -18,7 +18,6 @@ import de.mpg.mpiz.koeln.anna.server.AnnaServer;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
 import de.mpg.mpiz.koeln.anna.step.ExecutableStep;
 import de.mpg.mpiz.koeln.anna.step.ObservableStep.State;
-import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 
 /**
  * 

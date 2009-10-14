@@ -16,3 +16,4 @@ Import-Package: de.kerner.commons,
  de.mpg.mpiz.koeln.anna.step.exonerate.common,
  org.osgi.framework;version="1.4.0"
 Bundle-Activator: de.mpg.mpiz.koeln.anna.step.exonerate.lsf.ExonerateLSF
+Export-Package: de.mpg.mpiz.koeln.anna.step.exonerate.lsf;uses:="de.mpg.mpiz.koeln.anna.step.exonerate.common"
