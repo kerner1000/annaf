@@ -47,22 +47,23 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 	}
 
 	@Override
-	public void init() throws Exception {
+	public void init(BundleContext context) throws StepExecutionException {
+		super.init(context);
 		workingDir = new File(getStepProperties().getProperty(
 				ExonerateConstants.WORKING_DIR_KEY));
 		exeDir = new File(getStepProperties().getProperty(
 				ExonerateConstants.EXE_DIR_KEY));
 	}
 
-	public void prepare() throws Exception {
-		createInputFile();
-		createESTFasta();
+	public void prepare(DataProxy<GFF3DataBean> data) throws Exception {
+		createInputFile(data);
+		createESTFasta(data);
 	}
 
 	// workingDir volatile
-	private void createESTFasta() throws DataBeanAccessException,
+	private void createESTFasta(DataProxy<GFF3DataBean> data) throws DataBeanAccessException,
 			ServiceNotAvailabeException, IOException {
-		final Collection<FASTAElement> ests = (Collection<FASTAElement>) getDataProxy()
+		final Collection<FASTAElement> ests = (Collection<FASTAElement>) data
 				.viewData().getESTs();
 		final File f2 = new File(workingDir, ExonerateConstants.EST_FILENAME);
 		new NewFASTAFileImpl(ests).write(f2);
@@ -71,8 +72,8 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 	}
 
 	// workingDir volatile
-	private void createInputFile() throws Exception {
-		final Collection<FASTAElement> inFastas = getDataProxy().viewData()
+	private void createInputFile(DataProxy<GFF3DataBean> data) throws Exception {
+		final Collection<FASTAElement> inFastas = data.viewData()
 				.getInputSequence();
 		final File f1 = new File(workingDir, ExonerateConstants.INSEQ_FILENAME);
 		new NewFASTAFileImpl(inFastas).write(f1);
@@ -81,14 +82,13 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 	}
 
 	// workingDir volatile
-	public boolean update() throws StepExecutionException {
+	public boolean update(DataProxy<GFF3DataBean> data) throws StepExecutionException {
 		try {
-			DataProxy<GFF3DataBean> p = getDataProxy();
 			GFF3File file = GFF3FileImpl.convertFromGFF(new File(workingDir,
 					ExonerateConstants.RESULT_FILENAME));
 			file = new DataAdapter().extend(file);
 			final Collection<? extends GFF3Element> result = file.getElements();
-			p.modifiyData(new DataModifier<GFF3DataBean>() {
+			data.modifiyData(new DataModifier<GFF3DataBean>() {
 				public void modifiyData(GFF3DataBean v) {
 					v.setMappedESTs(new ArrayList<GFF3Element>(result));
 				}

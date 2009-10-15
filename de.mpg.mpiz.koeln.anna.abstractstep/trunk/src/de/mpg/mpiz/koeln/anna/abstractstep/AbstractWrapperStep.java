@@ -8,10 +8,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.osgi.framework.BundleContext;
-
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
+import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
@@ -27,18 +26,18 @@ import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
  *            type of {@link de.mpg.mpiz.koeln.anna.server.data.DataBean}
  */
 public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
-	
+
 	private class ThreaddedProcess implements Callable<Boolean> {
-		
+
 		private final AbstractStepProcessBuilder ps;
 		private final OutputStream out, err;
-		
-		ThreaddedProcess(File executableDir, File workingDir, OutputStream out, OutputStream err,
-				LogDispatcher logger){
+
+		ThreaddedProcess(File executableDir, File workingDir, OutputStream out,
+				OutputStream err, LogDispatcher logger) {
 			this.out = out;
 			this.err = err;
-			ps = new AbstractStepProcessBuilder(
-					executableDir, workingDir, logger) {
+			ps = new AbstractStepProcessBuilder(executableDir, workingDir,
+					logger) {
 				@Override
 				protected List<String> getCommandList() {
 					return getCmdList();
@@ -49,7 +48,7 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 		public Boolean call() throws Exception {
 			return ps.createAndStartProcess(out, err);
 		}
-		
+
 	}
 
 	private final ExecutorService exe = Executors.newSingleThreadExecutor();
@@ -60,16 +59,6 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	private volatile File errFile = null;
 	protected List<File> shortCutFiles = new ArrayList<File>();
 	protected List<File> resultFilesToWaitFor = new ArrayList<File>();
-	
-	@Override
-	protected void init(BundleContext context) throws StepExecutionException {
-		super.init(context);
-		try {
-			init();
-		} catch (Exception e) {
-			StepUtils.handleException(this, e);
-		}
-	}
 
 	/**
 	 * <p>
@@ -81,7 +70,8 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	public boolean start() throws StepExecutionException {
 		boolean success = false;
 		try {
-			prepare();
+			createIfAbsend();
+			prepare(getDataProxy());
 			printProperties();
 			validateProperties();
 			if (takeShortCut()) {
@@ -91,7 +81,7 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 			}
 			if (success) {
 				waitForFiles();
-				final boolean hh = update();
+				final boolean hh = update(getDataProxy());
 				if (hh) {
 					logger.debug(this, "updated databean");
 				} else {
@@ -105,14 +95,24 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 		return success;
 	}
 
+	protected void createIfAbsend() throws StepExecutionException {
+		if (!FileUtils.dirCheck(workingDir, true))
+			throw new StepExecutionException(this,
+					"cannot access working dir \"" + workingDir + "\"");
+		if (!FileUtils.dirCheck(exeDir, true))
+			throw new StepExecutionException(this,
+					"cannot access executable dir \"" + exeDir + "\"");
+
+	}
+
 	private void waitForFiles() throws InterruptedException {
-		if(resultFilesToWaitFor.isEmpty()){
+		if (resultFilesToWaitFor.isEmpty()) {
 			logger.debug(this, "no files to wait for");
 			return;
 		}
-		for(File f : resultFilesToWaitFor){
+		for (File f : resultFilesToWaitFor) {
 			synchronized (f) {
-				while(!f.exists()){
+				while (!f.exists()) {
 					logger.debug(this, "waiting for file \"" + f + " \"");
 					Thread.sleep(TIMEOUT);
 				}
@@ -132,7 +132,9 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 			if (errFile != null) {
 				err = FileUtils.getBufferedOutputStreamForFile(errFile);
 			}
-			success = exe.submit(new ThreaddedProcess(exeDir, workingDir, out, err, logger)).get();
+			success = exe.submit(
+					new ThreaddedProcess(exeDir, workingDir, out, err, logger))
+					.get();
 			if (outFile != null) {
 				out.close();
 			}
@@ -164,8 +166,6 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 		return true;
 	}
 
-	public abstract void init() throws Exception;
-	
 	/**
 	 * <p>
 	 * Preparation for running wrapped process. (e.g. creating required files in
@@ -174,19 +174,20 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	 * 
 	 * @throws Exception
 	 */
-	public abstract void prepare() throws Exception;
+	public abstract void prepare(DataProxy<T> data) throws Exception;
 
 	/**
 	 * @return List of command line arguments, that will passed to wrapped step.
 	 */
 	public abstract List<String> getCmdList();
 
-	public abstract boolean update() throws StepExecutionException;
-	
+	public abstract boolean update(DataProxy<T> data)
+			throws StepExecutionException;
+
 	public synchronized void addShortCutFile(File file) {
 		shortCutFiles.add(file);
 	}
-	
+
 	public synchronized void addResultFileToWaitFor(File file) {
 		resultFilesToWaitFor.add(file);
 	}
@@ -198,14 +199,14 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	public void redirectErrStreamToFile(File file) {
 		this.errFile = file;
 	}
-	
+
 	// fields volatile
 	private void printProperties() {
-		logger.debug(this, " created, properties:");
-		logger.debug(this, "\tstepWorkingDir=" + workingDir);
-		logger.debug(this, "\texeDir=" + exeDir);
+		logger.debug(this, " created, properties:" + FileUtils.NEW_LINE
+				+ "\tstepWorkingDir=" + workingDir + FileUtils.NEW_LINE
+				+ "\texeDir=" + exeDir);
 	}
-	
+
 	// fields volatile
 	private void validateProperties() throws StepExecutionException {
 		if (!FileUtils.dirCheck(exeDir, false))

@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.osgi.framework.BundleContext;
+
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff3.element.GFF3Element;
 import de.bioutils.gff3.file.GFF3FileImpl;
@@ -23,26 +25,42 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3WrapperStep {
 	protected volatile File outStr;
 	
 	@Override
-	public void init() throws Exception {
+	public void init(BundleContext context) throws StepExecutionException {
+		super.init(context);
 		exeDir = new File(getStepProperties().getProperty(RepeatMaskerConstants.EXE_DIR_KEY));
 		workingDir = new File(getStepProperties().getProperty(RepeatMaskerConstants.WORKING_DIR_KEY));
 		inFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME);
 		outFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME
 				+ RepeatMaskerConstants.OUTFILE_POSTFIX);
-		outStr = new File(workingDir, getStepProperties().getProperty(RepeatMaskerConstants.OUTSTREAM_FILE_KEY)); 
+		outStr = new File(workingDir, getStepProperties().getProperty(RepeatMaskerConstants.OUTSTREAM_FILE_KEY));
+		createIfAbsend();
 	}
 	
 	@Override
-	public void prepare() throws Exception {
-		new NewFASTAFileImpl(getDataProxy().viewData().getInputSequence())
+	protected void createIfAbsend() throws StepExecutionException {
+		super.createIfAbsend();
+		if (!FileUtils.fileCheck(inFile, true))
+			throw new StepExecutionException(this,
+					"cannot create file \"" + inFile + "\"");
+		if (!FileUtils.fileCheck(outFile, true))
+			throw new StepExecutionException(this,
+					"cannot create file \"" + outFile + "\"");
+		if (!FileUtils.fileCheck(outStr, true))
+			throw new StepExecutionException(this,
+					"cannot create file \"" + outStr + "\"");
+		
+	}
+
+	@Override
+	public void prepare(DataProxy<GFF3DataBean> data) throws Exception {
+		new NewFASTAFileImpl(data.viewData().getInputSequence())
 		.write(inFile);
 	}
 	
 	@Override
-	public boolean update() throws StepExecutionException {
+	public boolean update(DataProxy<GFF3DataBean> data) throws StepExecutionException {
 		try {
 		logger.debug(this, "updating data");
-		final DataProxy<GFF3DataBean> data = getDataProxy();
 		final ArrayList<GFF3Element> result = new ArrayList<GFF3Element>();
 		new ResultsPreprocessor().process(outFile, outFile);
 		result.addAll(GFF3FileImpl.convertFromGFF(outFile).getElements());
