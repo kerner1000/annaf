@@ -30,7 +30,7 @@ public class AnnaEvent extends EventObject {
 	
 	@Override
 	public String toString() {
-		return new StringBuilder().append(super.toString().substring(super.toString().lastIndexOf("."))).append("[").append(
+		return new StringBuilder().append("[").append(
 		"stepReg").append("=").append(registeredSteps).append("]").toString();
 	}
 }
