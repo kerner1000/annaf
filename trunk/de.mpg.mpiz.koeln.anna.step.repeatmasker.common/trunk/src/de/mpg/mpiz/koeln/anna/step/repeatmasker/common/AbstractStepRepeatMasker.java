@@ -27,7 +27,7 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3WrapperStep {
 		inFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME);
 		outFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME
 				+ RepeatMaskerConstants.OUTFILE_POSTFIX);
-		outStr = new File(workingDir, RepeatMaskerConstants.OUTSTREAM_FILE_KEY); 
+		outStr = new File(workingDir, getStepProperties().getProperty(RepeatMaskerConstants.OUTSTREAM_FILE_KEY)); 
 	}
 	
 	@Override
