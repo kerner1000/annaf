@@ -46,15 +46,6 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 		}
 	}
 
-	@Override
-	public void init(BundleContext context) throws StepExecutionException {
-		super.init(context);
-		workingDir = new File(getStepProperties().getProperty(
-				ExonerateConstants.WORKING_DIR_KEY));
-		exeDir = new File(getStepProperties().getProperty(
-				ExonerateConstants.EXE_DIR_KEY));
-	}
-
 	public void prepare(DataProxy<GFF3DataBean> data) throws Exception {
 		createInputFile(data);
 		createESTFasta(data);
