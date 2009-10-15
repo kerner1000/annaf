@@ -29,6 +29,8 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3WrapperStep {
 		super.init(context);
 		exeDir = new File(getStepProperties().getProperty(RepeatMaskerConstants.EXE_DIR_KEY));
 		workingDir = new File(getStepProperties().getProperty(RepeatMaskerConstants.WORKING_DIR_KEY));
+		logger.debug(this, "exeDir="+exeDir.getAbsolutePath());
+		logger.debug(this, "workingDir="+workingDir.getAbsolutePath());
 		inFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME);
 		outFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME
 				+ RepeatMaskerConstants.OUTFILE_POSTFIX);
