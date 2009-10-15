@@ -18,7 +18,9 @@ import de.mpg.mpiz.koeln.anna.step.repeatmasker.adapter.ResultsPreprocessor;
 
 public abstract class AbstractStepRepeatMasker extends AbstractGFF3WrapperStep {
 
-	protected volatile File outFile, inFile, outStr;
+	protected volatile File outFile;
+	protected volatile File inFile;
+	protected volatile File outStr;
 	
 	@Override
 	public void init() throws Exception {
