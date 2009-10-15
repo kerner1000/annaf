@@ -110,10 +110,10 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 		} else {
 			logger.info(this, file + " is not there or invalid, will not do shortcut");
 		}
-		super.redirectOutStreamToFile(file);
-		super.addResultFileToWaitFor(new File(workingDir,
+		redirectOutStreamToFile(file);
+		addResultFileToWaitFor(new File(workingDir,
 					ExonerateConstants.RESULT_FILENAME));
-		return super.start();
+		return start();
 	}
 
 	private boolean outFileIsValid(File file) {
