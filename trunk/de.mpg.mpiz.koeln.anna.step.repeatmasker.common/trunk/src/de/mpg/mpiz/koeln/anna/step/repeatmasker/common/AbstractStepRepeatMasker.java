@@ -21,14 +21,17 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3WrapperStep {
 	protected volatile File outFile, inFile, outStr;
 	
 	@Override
-	public void prepare() throws Exception {
+	public void init() throws Exception {
 		exeDir = new File(getStepProperties().getProperty(RepeatMaskerConstants.EXE_DIR_KEY));
 		workingDir = new File(getStepProperties().getProperty(RepeatMaskerConstants.WORKING_DIR_KEY));
 		inFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME);
 		outFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME
 				+ RepeatMaskerConstants.OUTFILE_POSTFIX);
 		outStr = new File(workingDir, RepeatMaskerConstants.OUTSTREAM_FILE_KEY); 
-		
+	}
+	
+	@Override
+	public void prepare() throws Exception {
 		new NewFASTAFileImpl(getDataProxy().viewData().getInputSequence())
 		.write(inFile);
 	}

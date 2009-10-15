@@ -8,6 +8,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.osgi.framework.BundleContext;
+
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
@@ -58,6 +60,16 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	private volatile File errFile = null;
 	protected List<File> shortCutFiles = new ArrayList<File>();
 	protected List<File> resultFilesToWaitFor = new ArrayList<File>();
+	
+	@Override
+	protected void init(BundleContext context) throws StepExecutionException {
+		super.init(context);
+		try {
+			init();
+		} catch (Exception e) {
+			StepUtils.handleException(this, e);
+		}
+	}
 
 	/**
 	 * <p>
@@ -152,6 +164,8 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 		return true;
 	}
 
+	public abstract void init() throws Exception;
+	
 	/**
 	 * <p>
 	 * Preparation for running wrapped process. (e.g. creating required files in
