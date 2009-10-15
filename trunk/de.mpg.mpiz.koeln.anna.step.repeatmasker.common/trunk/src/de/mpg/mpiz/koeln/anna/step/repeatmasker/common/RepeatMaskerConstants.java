@@ -9,5 +9,6 @@ public class RepeatMaskerConstants {
 	public final static String TMP_FILENAME = "repMask";
 	public final static String OUTFILE_POSTFIX = ".out.gff";
 	public final static String EXE = "RepeatMasker";
+	public final static String OUTSTREAM_FILE_KEY = "anna.step.repeatMasker.outstream.file";
 
 }
