@@ -46,14 +46,12 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 		}
 	}
 
-	// fields volatile
 	@Override
-	protected void init(BundleContext context) throws StepExecutionException {
-		super.init(context);
-			workingDir = new File(getStepProperties().getProperty(
-					ExonerateConstants.WORKING_DIR_KEY));
-			exeDir = new File(getStepProperties().getProperty(
-					ExonerateConstants.EXE_DIR_KEY));
+	public void init() throws Exception {
+		workingDir = new File(getStepProperties().getProperty(
+				ExonerateConstants.WORKING_DIR_KEY));
+		exeDir = new File(getStepProperties().getProperty(
+				ExonerateConstants.EXE_DIR_KEY));
 	}
 
 	public void prepare() throws Exception {
