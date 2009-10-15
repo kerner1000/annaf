@@ -69,9 +69,9 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	public boolean start() throws StepExecutionException {
 		boolean success = false;
 		try {
+			prepare();
 			printProperties();
 			validateProperties();
-			prepare();
 			if (takeShortCut()) {
 				success = true;
 			} else {
