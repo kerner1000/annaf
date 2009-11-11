@@ -1,13 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: slf4j over log4j
-Bundle-SymbolicName: org.slf4j.log4j
-Bundle-Version: 1.5.8
+Bundle-Name: log4j
+Bundle-SymbolicName: org.log4j
+Bundle-Version: 0.0.1
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-ClassPath: .,
- lib/slf4j-log4j12-1.5.8.jar
-Export-Package: org.slf4j.impl
-Import-Package: org.apache.log4j,
+Bundle-ClassPath: lib/log4j-1.2.15.jar,
+ .
+Export-Package: org.apache.log4j,
  org.apache.log4j.chainsaw,
  org.apache.log4j.config,
  org.apache.log4j.helpers,
@@ -25,8 +24,4 @@ Import-Package: org.apache.log4j,
  org.apache.log4j.or.sax,
  org.apache.log4j.spi,
  org.apache.log4j.varia,
- org.apache.log4j.xml,
- org.slf4j,
- org.slf4j.helpers,
- org.slf4j.impl,
- org.slf4j.spi
+ org.apache.log4j.xml
