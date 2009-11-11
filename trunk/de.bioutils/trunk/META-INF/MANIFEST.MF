@@ -10,3 +10,4 @@ Import-Package: de.kerner.commons.file,
  org.slf4j.helpers,
  org.slf4j.impl,
  org.slf4j.spi
+Export-Package: de.bioutils
