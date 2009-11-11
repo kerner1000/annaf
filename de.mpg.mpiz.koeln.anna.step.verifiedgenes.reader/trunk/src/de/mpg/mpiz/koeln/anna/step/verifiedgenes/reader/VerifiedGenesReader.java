@@ -14,8 +14,6 @@ import de.bioutils.gff.GFFFormatErrorException;
 import de.bioutils.gff3.element.GFF3Element;
 import de.bioutils.gff3.file.GFF3File;
 import de.bioutils.gff3.file.GFF3FileImpl;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
