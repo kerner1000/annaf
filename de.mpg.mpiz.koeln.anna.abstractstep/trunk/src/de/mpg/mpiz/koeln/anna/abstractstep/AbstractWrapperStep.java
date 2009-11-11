@@ -9,7 +9,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.kerner.commons.file.FileUtils;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
@@ -33,7 +32,7 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 		private final OutputStream out, err;
 
 		ThreaddedProcess(File executableDir, File workingDir, OutputStream out,
-				OutputStream err, LogDispatcher logger) {
+				OutputStream err, Log logger) {
 			this.out = out;
 			this.err = err;
 			ps = new AbstractStepProcessBuilder(executableDir, workingDir,

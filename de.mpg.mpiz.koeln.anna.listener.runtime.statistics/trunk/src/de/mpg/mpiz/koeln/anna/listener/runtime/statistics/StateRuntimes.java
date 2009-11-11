@@ -7,12 +7,11 @@ import java.util.concurrent.TimeUnit;
 
 import de.kerner.commons.StopWatch;
 import de.kerner.commons.file.FileUtils;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.step.ObservableStep.State;
 
 class StateRuntimes {
 
-	private final LogDispatcher logger;
+	private final static Log log = new Log(StateRuntimes.class);
 	private volatile State lastState;
 	private final Map<State, StopWatch> stateToStopWatch = new ConcurrentHashMap<State, StopWatch>();
 

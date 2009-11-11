@@ -6,7 +6,6 @@ Bundle-Version: 0.0.1
 Bundle-Activator: de.mpg.mpiz.koeln.anna.listener.runtime.statistics.Statistics
 Import-Package: de.kerner.commons,
  de.kerner.commons.file,
- de.kerner.osgi.commons.logger.dispatcher,
  de.mpg.koeln.anna.core.events,
  de.mpg.mpiz.koeln.anna.listener.abstractlistener,
  de.mpg.mpiz.koeln.anna.server,

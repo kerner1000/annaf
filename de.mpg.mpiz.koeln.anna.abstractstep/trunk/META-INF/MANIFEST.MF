@@ -4,8 +4,11 @@ Bundle-Name: AbstractStep
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.abstractstep
 Bundle-Version: 0.0.3
 Import-Package: de.kerner.commons,
+ de.kerner.commons.collection,
  de.kerner.commons.file,
- de.kerner.osgi.commons.logger.dispatcher,
+ de.kerner.commons.logging,
+ de.kerner.commons.xml,
+ de.kerner.commons.zip,
  de.kerner.osgi.commons.utils,
  de.mpg.mpiz.koeln.anna.server,
  de.mpg.mpiz.koeln.anna.server.data,

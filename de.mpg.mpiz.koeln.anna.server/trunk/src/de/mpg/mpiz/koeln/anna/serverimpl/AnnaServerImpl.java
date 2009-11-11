@@ -11,8 +11,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.kerner.commons.file.FileUtils;
-import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.server.AnnaEventListener;
 import de.mpg.mpiz.koeln.anna.server.AnnaServer;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
