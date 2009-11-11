@@ -12,16 +12,14 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
-import de.kerner.commons.StringUtils;
-import de.kerner.commons.file.FileUtils;
-import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.kerner.osgi.commons.utils.ServiceNotAvailabeException;
+import de.mpg.mpiz.koeln.anna.server.AnnaServer;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
-import de.mpg.mpiz.koeln.anna.server.AnnaServer;
+
+import de.kerner.commons.file.FileUtils;
+import de.kerner.commons.logging.Log; 
 
 public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 
@@ -29,7 +27,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 			"configuration" + File.separatorChar + "step.properties");
 	private volatile ServiceTracker tracker;
 	private volatile Properties properties;
-	protected volatile LogDispatcher logger = new ConsoleLogger();
+	protected volatile Log logger = new Log(AbstractAnnaStep.class);
 	private State state = State.LOOSE;
 
 	// fields volatile
