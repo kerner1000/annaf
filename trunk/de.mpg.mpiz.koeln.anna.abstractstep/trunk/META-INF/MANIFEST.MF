@@ -1,22 +1,25 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: AbstractStep
+Bundle-Name: anna abstract step
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.abstractstep
-Bundle-Version: 0.0.3
+Bundle-Version: 0.0.4.qualifier
 Import-Package: de.kerner.commons,
  de.kerner.commons.collection,
  de.kerner.commons.file,
  de.kerner.commons.logging,
- de.kerner.commons.xml,
- de.kerner.commons.zip,
- de.kerner.osgi.commons.utils,
+ de.kerner.commons.osgi.utils,
+ de.mpg.mpiz.koeln.anna.data,
+ de.mpg.mpiz.koeln.anna.data.impl,
  de.mpg.mpiz.koeln.anna.server,
  de.mpg.mpiz.koeln.anna.server.data,
- de.mpg.mpiz.koeln.anna.server.dataproxy,
+ de.mpg.mpiz.koeln.anna.server.data.impl,
  de.mpg.mpiz.koeln.anna.step,
- de.mpg.mpiz.koeln.anna.step.common,
  org.osgi.framework;version="1.3.0",
- org.osgi.util.tracker
+ org.osgi.util.tracker,
+ org.slf4j,
+ org.slf4j.helpers,
+ org.slf4j.impl,
+ org.slf4j.spi
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: de.mpg.mpiz.koeln.anna.abstractstep;
   uses:="de.mpg.mpiz.koeln.anna.server.dataproxy,

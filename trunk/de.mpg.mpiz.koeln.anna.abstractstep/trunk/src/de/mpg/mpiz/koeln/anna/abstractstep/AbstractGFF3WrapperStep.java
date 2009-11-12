@@ -3,11 +3,11 @@ package de.mpg.mpiz.koeln.anna.abstractstep;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
-import de.kerner.osgi.commons.utils.ServiceNotAvailabeException;
-import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
-import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.server.dataproxy.GFF3DataProxy;
-import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
+import de.kerner.commons.osgi.utils.ServiceNotAvailabeException;
+import de.mpg.mpiz.koeln.anna.data.GFF3DataBean;
+import de.mpg.mpiz.koeln.anna.server.data.DataProxy;
+import de.mpg.mpiz.koeln.anna.server.data.GFF3DataProxy;
+import de.mpg.mpiz.koeln.anna.step.StepExecutionException;
 
 // TODO: class implementation is duplicate to "AbstractGFF3AnnaStep". That is bad!
 public abstract class AbstractGFF3WrapperStep extends AbstractWrapperStep<GFF3DataBean>{

@@ -12,14 +12,14 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
-import de.kerner.osgi.commons.utils.ServiceNotAvailabeException;
-import de.mpg.mpiz.koeln.anna.server.AnnaServer;
-import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.step.AnnaStep;
-import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
-
+import de.kerner.commons.StringUtils;
 import de.kerner.commons.file.FileUtils;
-import de.kerner.commons.logging.Log; 
+import de.kerner.commons.logging.Log;
+import de.kerner.commons.osgi.utils.ServiceNotAvailabeException;
+import de.mpg.mpiz.koeln.anna.server.AnnaServer;
+import de.mpg.mpiz.koeln.anna.server.data.DataProxy;
+import de.mpg.mpiz.koeln.anna.step.AnnaStep;
+import de.mpg.mpiz.koeln.anna.step.StepExecutionException;
 
 public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 
@@ -32,20 +32,19 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 
 	// fields volatile
 	protected synchronized void init(BundleContext context) throws StepExecutionException {
-		this.logger = new LogDispatcherImpl(context);
 		tracker = new ServiceTracker(context, AnnaServer.class.getName(), null);
 		tracker.open();
 		try {
 			properties = getPropertes();
 		} catch (Exception e) {
-			logger.error(this, StringUtils.getString(
+			logger.error(StringUtils.getString(
 					"could not load settings from ", PROPERTIES_FILE
 							.getAbsolutePath(), ", using defaults"));
 		}
 	}
 	
 	public void start(BundleContext context) throws Exception {
-		logger.debug(this, "starting step " + this);
+		logger.debug("starting step " + this);
 		init(context);
 		try{
 		getAnnaServer().registerStep(this);
@@ -58,7 +57,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 	}
 
 	public void stop(BundleContext context) throws Exception {
-		logger.debug(this, "stopping service");
+		logger.debug("stopping service");
 		tracker.close();
 		tracker = null;
 	}
@@ -86,7 +85,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 		try {
 			proxy = getDataProxy();
 		} catch (ServiceNotAvailabeException e) {
-			logger.error(this, e.getLocalizedMessage(), e);
+			logger.error(e.getLocalizedMessage(), e);
 			throw new StepExecutionException(this, e);
 		}
 		return requirementsSatisfied(proxy);
@@ -97,7 +96,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 		try {
 			proxy = getDataProxy();
 		} catch (ServiceNotAvailabeException e) {
-			logger.error(this, e.getLocalizedMessage(), e);
+			logger.error(e.getLocalizedMessage(), e);
 			throw new StepExecutionException(this, e);
 		}
 		return canBeSkipped(proxy);
@@ -108,7 +107,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 		try {
 			proxy = getDataProxy();
 		} catch (ServiceNotAvailabeException e) {
-			logger.error(this, e.getLocalizedMessage(), e);
+			logger.error(e.getLocalizedMessage(), e);
 			throw new StepExecutionException(this, e);
 		}
 		return run(proxy);
@@ -123,7 +122,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 		final Properties pro = new Properties(defaultProperties);
 		FileInputStream fi = null;
 		try {
-			logger.info(this, StringUtils.getString("loading settings from ",
+			logger.info(StringUtils.getString("loading settings from ",
 					PROPERTIES_FILE));
 			fi = new FileInputStream(PROPERTIES_FILE);
 			pro.load(fi);
@@ -156,7 +155,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 		try {
 			proxy = getDataProxy();
 		} catch (Exception e) {
-			logger.error(this, e.getLocalizedMessage(), e);
+			logger.error(e.getLocalizedMessage(), e);
 			final ArrayList<String> r = new ArrayList<String>();
 			r.add("error while receiving dataproxy");
 			return r;
@@ -164,7 +163,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 		try {
 			return requirementsNeeded(proxy);
 		} catch (Exception e) {
-			logger.error(this, e.getLocalizedMessage(), e);
+			logger.error(e.getLocalizedMessage(), e);
 			final ArrayList<String> r = new ArrayList<String>();
 			r.add("error while getting requirements informations");
 			return r;
