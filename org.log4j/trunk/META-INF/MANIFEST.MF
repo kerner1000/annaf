@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: log4j
 Bundle-SymbolicName: org.log4j
-Bundle-Version: 0.0.1
+Bundle-Version: 1.2.15.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: lib/log4j-1.2.15.jar,
  .
