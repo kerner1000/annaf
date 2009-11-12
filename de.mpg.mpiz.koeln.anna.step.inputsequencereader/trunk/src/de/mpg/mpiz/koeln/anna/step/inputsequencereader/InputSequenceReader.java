@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import de.bioutils.fasta.FASTAElement;
+import de.bioutils.fasta.FASTAElementGroup;
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
-import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
-import de.mpg.mpiz.koeln.anna.server.dataproxy.DataModifier;
-import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
-import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
+import de.mpg.mpiz.koeln.anna.data.GFF3DataBean;
+import de.mpg.mpiz.koeln.anna.server.data.DataModifier;
+import de.mpg.mpiz.koeln.anna.server.data.DataProxy;
+import de.mpg.mpiz.koeln.anna.step.StepExecutionException;
+import de.mpg.mpiz.koeln.anna.step.StepUtils;
 
 public class InputSequenceReader extends AbstractGFF3AnnaStep {
 
@@ -19,17 +20,17 @@ public class InputSequenceReader extends AbstractGFF3AnnaStep {
 
 	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data)
 			throws StepExecutionException {
-		logger.debug(this, "no requirements needed");
+		logger.debug("no requirements needed");
 		return true;
 	}
 
 	public boolean canBeSkipped(DataProxy<GFF3DataBean> data) throws StepExecutionException {
 		try {
 			final boolean inputSequences = (data.viewData().getInputSequence() != null);
-			final boolean inputSequencesSize = (data.viewData().getInputSequence().size() != 0);
-			logger.debug(this, "need to run:");
-			logger.debug(this, "\tinputSequences=" + inputSequences);
-			logger.debug(this, "\tinputSequencesSize=" + inputSequencesSize);
+			final boolean inputSequencesSize = (!data.viewData().getInputSequence().isEmpty());
+			logger.debug("need to run:");
+			logger.debug("\tinputSequences=" + inputSequences);
+			logger.debug("\tinputSequencesSize=" + inputSequencesSize);
 			return (inputSequences && inputSequencesSize);
 		} catch (Exception e) {
 			StepUtils.handleException(this, e, logger);
@@ -43,17 +44,17 @@ public class InputSequenceReader extends AbstractGFF3AnnaStep {
 		try {
 			final File inFile = new File(getStepProperties().getProperty(
 					INFILE_KEY));
-			logger.debug(this, "reading file " + inFile);
-			final Collection<? extends FASTAElement> fastas = NewFASTAFileImpl.parse(inFile).getElements();
-			if (fastas == null || fastas.size() == 0) {
-				logger.warn(this, "file " + inFile + " is invalid");
+			logger.debug("reading file " + inFile);
+			final FASTAElementGroup fastas = NewFASTAFileImpl.parse(inFile).getElements();
+			if (fastas == null || fastas.isEmpty()) {
+				logger.warn("file " + inFile + " is invalid");
 				return false;
 			}
-			logger.debug(this, "got input sequences:"
+			logger.debug("got input sequences:"
 					+ fastas.iterator().next().getHeader() + " [...]");
 			data.modifiyData(new DataModifier<GFF3DataBean>() {
 				public void modifiyData(GFF3DataBean v) {
-					v.setInputSequence(new ArrayList<FASTAElement>(fastas));
+					v.setInputSequence(fastas);
 				}
 			});
 			return true;
