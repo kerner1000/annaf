@@ -7,17 +7,14 @@ import java.util.concurrent.TimeUnit;
 
 import de.kerner.commons.StopWatch;
 import de.kerner.commons.file.FileUtils;
+import de.kerner.commons.logging.Log;
 import de.mpg.mpiz.koeln.anna.step.ObservableStep.State;
 
 class StateRuntimes {
 
-	private final static Log log = new Log(StateRuntimes.class);
+	private final static Log logger = new Log(StateRuntimes.class);
 	private volatile State lastState;
 	private final Map<State, StopWatch> stateToStopWatch = new ConcurrentHashMap<State, StopWatch>();
-
-	StateRuntimes(LogDispatcher logger) {
-		this.logger = logger;
-	}
 	
 	boolean isEmpty(){
 		return stateToStopWatch.isEmpty();
@@ -37,8 +34,7 @@ class StateRuntimes {
 				// all good, get time and forget about this state.
 				oldWatch.stop();
 			} else {
-				logger.warn(this,
-						"inconsitent time measuring, stopwatch for state "
+				logger.warn("inconsitent time measuring, stopwatch for state "
 								+ state + " not running!");
 			}
 		}

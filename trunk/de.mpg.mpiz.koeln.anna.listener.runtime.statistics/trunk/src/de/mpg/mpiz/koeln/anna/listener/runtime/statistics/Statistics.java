@@ -7,13 +7,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import de.kerner.commons.file.FileUtils;
-import de.mpg.koeln.anna.core.events.AnnaEvent;
+import de.kerner.commons.logging.Log;
+import de.mpg.mpiz.koeln.anna.core.events.AnnaEvent;
 import de.mpg.mpiz.koeln.anna.listener.abstractlistener.AbstractEventListener;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
 import de.mpg.mpiz.koeln.anna.step.ObservableStep.State;
 
 public class Statistics extends AbstractEventListener {
 
+	private final static Log logger = new Log(Statistics.class);
 	public static final TimeUnit TIMEUNIT = TimeUnit.MILLISECONDS;
 	private final static String PRE_LINE = " RUNTIMES ++++++++++++++++++++++++++++++++++++++++++++++";
 	private final static String POST_LINE = "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
@@ -27,7 +29,7 @@ public class Statistics extends AbstractEventListener {
 				final StateRuntimes r = stepToStateRuntimes.get(s);
 				r.update(currentState);
 			} else {
-				stepToStateRuntimes.put(s, new StateRuntimes(logger));
+				stepToStateRuntimes.put(s, new StateRuntimes());
 			}
 		}
 		if (weAreDone(event))
@@ -52,7 +54,7 @@ public class Statistics extends AbstractEventListener {
 			}
 		}
 		sb.append(POST_LINE);
-		logger.info(this, sb.toString());
+		logger.info(sb.toString());
 	}
 
 	private boolean weAreDone(AnnaEvent event) {
