@@ -4,14 +4,16 @@ import java.util.Collection;
 import java.util.Formatter;
 
 import de.kerner.commons.file.FileUtils;
-import de.mpg.koeln.anna.core.events.AnnaEvent;
-import de.mpg.koeln.anna.core.events.StepStateChangeEvent;
+import de.kerner.commons.logging.Log;
+import de.mpg.mpiz.koeln.anna.core.events.AnnaEvent;
+import de.mpg.mpiz.koeln.anna.core.events.StepStateChangeEvent;
 import de.mpg.mpiz.koeln.anna.listener.abstractlistener.AbstractEventListener;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
 import de.mpg.mpiz.koeln.anna.step.ObservableStep.State;
 
-public class ProgressMonitor extends AbstractEventListener {
+public class ProgressListener extends AbstractEventListener {
 
+	private final static Log logger = new Log(ProgressListener.class);
 	private final static String PRE_LINE =  " MONITOR ++++++++++++++++++++++++++++++++++++++++++";
 	private final static String POST_LINE = "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
 
@@ -20,7 +22,7 @@ public class ProgressMonitor extends AbstractEventListener {
 		if (event instanceof StepStateChangeEvent){
 			lastChanged = ((StepStateChangeEvent) event).getStep();
 		} else {
-			logger.info(this, event);
+			logger.info(event);
 		}
 		printStepStates(event, lastChanged);
 	}
@@ -42,7 +44,7 @@ public class ProgressMonitor extends AbstractEventListener {
 				try {
 					sb.append(s.requirementsNeeded());
 				} catch (Exception e) {
-					logger.error(this, "cannot print needed requirements for step " + s, e);
+					logger.error("cannot print needed requirements for step " + s, e);
 				}
 			}
 			
@@ -53,7 +55,7 @@ public class ProgressMonitor extends AbstractEventListener {
 			hans.append(FileUtils.NEW_LINE);
 		}
 		hans.append(POST_LINE);
-		logger.info(this, hans.toString());
+		logger.info(hans);
 	}
 	
 	@Override
