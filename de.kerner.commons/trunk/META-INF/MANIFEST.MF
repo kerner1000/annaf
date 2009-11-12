@@ -2,18 +2,18 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: kerner-commons
 Bundle-SymbolicName: de.kerner.commons
-Bundle-Version: 0.0.10
+Bundle-Version: 0.0.10.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .,
  lib/kerner-commons-0.0.10.jar
-Import-Package: org.slf4j,
- org.slf4j.helpers,
- org.slf4j.impl,
- org.slf4j.spi
 Export-Package: de.kerner.commons,
  de.kerner.commons.collection,
  de.kerner.commons.file,
  de.kerner.commons.logging,
  de.kerner.commons.xml,
  de.kerner.commons.zip
+Import-Package: org.slf4j,
+ org.slf4j.helpers,
+ org.slf4j.impl,
+ org.slf4j.spi
 
