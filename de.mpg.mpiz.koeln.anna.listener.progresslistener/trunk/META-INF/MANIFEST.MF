@@ -16,7 +16,6 @@ Import-Package:
  de.mpg.mpiz.koeln.anna.listener.abstractlistener,
  de.mpg.mpiz.koeln.anna.server,
  de.mpg.mpiz.koeln.anna.step,
- de.mpg.mpiz.koeln.anna.step.common,
  org.osgi.framework;version="1.3.0",
  org.slf4j,
  org.slf4j.helpers,
