@@ -32,7 +32,7 @@ public class Activator implements BundleActivator {
 		private void startBundles(Collection<Bundle> installedBundles)
 				throws BundleException {
 			if (installedBundles.size() == 0) {
-				System.err.println("no plugins started");
+//				System.err.println("no plugins started");
 				return;
 			}
 			for (Bundle b : installedBundles) {
@@ -62,7 +62,7 @@ public class Activator implements BundleActivator {
 		private Collection<Bundle> installBundles(
 				Collection<String> bundlePathes) throws BundleException {
 			if (bundlePathes.size() == 0) {
-				System.err.println("no plugins installed");
+//				System.err.println("no plugins installed");
 				return Collections.emptyList();
 			}
 			synchronized (Activator.class) {
