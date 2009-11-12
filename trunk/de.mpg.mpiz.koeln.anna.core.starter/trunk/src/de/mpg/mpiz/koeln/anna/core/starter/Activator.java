@@ -86,7 +86,6 @@ public class Activator implements BundleActivator {
 			final List<String> result = new ArrayList<String>();
 			final File[] content = path.listFiles();
 			if (content == null || content.length == 0) {
-				System.err.println("content of dir =" + content);
 				// throw new
 				// NoPluginsFoundException("Could not find any plugins in " +
 				// path);
@@ -133,6 +132,7 @@ public class Activator implements BundleActivator {
 	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 
 	public void start(final BundleContext context) throws Exception {
+		System.err.println(this + " let's get things rolling");
 		exe.submit(new Runnable() {
 			public void run() {
 				try {
@@ -163,7 +163,7 @@ public class Activator implements BundleActivator {
 	}
 
 	public void stop(BundleContext context) throws Exception {
-		System.err.println(this + " stopping");
+		System.err.println(this + " stopping (nothing to do)");
 	}
 
 }
