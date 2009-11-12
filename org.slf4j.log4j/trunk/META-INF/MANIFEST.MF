@@ -6,7 +6,10 @@ Bundle-Version: 1.5.8.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .,
  lib/slf4j-log4j12-1.5.8.jar
-Export-Package: org.slf4j.impl
+Export-Package: org.slf4j,
+ org.slf4j.helpers,
+ org.slf4j.impl,
+ org.slf4j.spi
 Import-Package: org.apache.log4j,
  org.apache.log4j.chainsaw,
  org.apache.log4j.config,
@@ -25,8 +28,4 @@ Import-Package: org.apache.log4j,
  org.apache.log4j.or.sax,
  org.apache.log4j.spi,
  org.apache.log4j.varia,
- org.apache.log4j.xml,
- org.slf4j,
- org.slf4j.helpers,
- org.slf4j.impl,
- org.slf4j.spi
+ org.apache.log4j.xml
