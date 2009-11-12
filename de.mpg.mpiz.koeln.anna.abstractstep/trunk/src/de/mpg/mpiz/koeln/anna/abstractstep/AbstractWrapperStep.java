@@ -9,9 +9,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.kerner.commons.file.FileUtils;
-import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
-import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
+import de.kerner.commons.logging.Log;
+import de.mpg.mpiz.koeln.anna.server.data.DataProxy;
+import de.mpg.mpiz.koeln.anna.step.StepExecutionException;
+import de.mpg.mpiz.koeln.anna.step.StepUtils;
 
 /**
  * <p>
@@ -35,8 +36,7 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 				OutputStream err, Log logger) {
 			this.out = out;
 			this.err = err;
-			ps = new AbstractStepProcessBuilder(executableDir, workingDir,
-					logger) {
+			ps = new AbstractStepProcessBuilder(executableDir, workingDir) {
 				@Override
 				protected List<String> getCommandList() {
 					return getCmdList();
@@ -82,9 +82,9 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 				waitForFiles();
 				final boolean hh = update(getDataProxy());
 				if (hh) {
-					logger.debug(this, "updated databean");
+					logger.debug("updated databean");
 				} else {
-					logger.warn(this, "updating databean failed!");
+					logger.warn("updating databean failed!");
 				}
 				success = hh;
 			}
@@ -106,13 +106,13 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 
 	private void waitForFiles() throws InterruptedException {
 		if (resultFilesToWaitFor.isEmpty()) {
-			logger.debug(this, "no files to wait for");
+			logger.debug("no files to wait for");
 			return;
 		}
 		for (File f : resultFilesToWaitFor) {
 			synchronized (f) {
 				while (!f.exists()) {
-					logger.debug(this, "waiting for file \"" + f + " \"");
+					logger.debug("waiting for file \"" + f + " \"");
 					Thread.sleep(TIMEOUT);
 				}
 			}
@@ -147,21 +147,20 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	}
 
 	private synchronized boolean takeShortCut() {
-		logger.debug(this, "checking for shortcut available");
+		logger.debug("checking for shortcut available");
 		if (shortCutFiles.isEmpty()) {
-			logger.debug(this, "no shortcut files defined");
+			logger.debug("no shortcut files defined");
 			return false;
 		}
 		for (File f : shortCutFiles) {
 			final boolean fileCheck = FileUtils.fileCheck(f, false);
-			logger.debug(this, "file " + f.getAbsolutePath() + " there="
-					+ fileCheck);
+			logger.debug("file " + f.getAbsolutePath() + " there=" + fileCheck);
 			if (!(fileCheck)) {
-				logger.debug(this, "cannot skip");
+				logger.debug("cannot skip");
 				return false;
 			}
 		}
-		logger.debug(this, "skip available");
+		logger.debug("skip available");
 		return true;
 	}
 
@@ -201,7 +200,7 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 
 	// fields volatile
 	private void printProperties() {
-		logger.debug(this, " created, properties:" + FileUtils.NEW_LINE
+		logger.debug("created, properties:" + FileUtils.NEW_LINE
 				+ "\tstepWorkingDir=" + workingDir + FileUtils.NEW_LINE
 				+ "\texeDir=" + exeDir);
 	}

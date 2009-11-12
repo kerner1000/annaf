@@ -8,8 +8,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import de.kerner.commons.file.FileUtils;
-import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
+import de.kerner.commons.logging.Log;
 
 /**
  * @lastVisit 2009-08-12
@@ -20,9 +19,10 @@ import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
  */
 public abstract class AbstractStepProcessBuilder {
 
+	private final static Log logger = new Log(AbstractStepProcessBuilder.class);
+	
 	protected final File executableDir;
 	protected final File workingDir;
-	private final LogDispatcher logger;
 	
 	// TODO: remove this. Let this completely be handled from "WrapperStep"
 	private final Map<File, Boolean> outFiles = new ConcurrentHashMap<File, Boolean>();
@@ -30,14 +30,6 @@ public abstract class AbstractStepProcessBuilder {
 	protected AbstractStepProcessBuilder(File executableDir, File workingDir) {
 		this.executableDir = executableDir;
 		this.workingDir = workingDir;
-		this.logger = new ConsoleLogger();
-	}
-
-	protected AbstractStepProcessBuilder(File executableDir, File workingDir,
-			LogDispatcher logger) {
-		this.executableDir = executableDir;
-		this.workingDir = workingDir;
-		this.logger = logger;
 	}
 
 	@Deprecated
@@ -65,33 +57,33 @@ public abstract class AbstractStepProcessBuilder {
 	public boolean createAndStartProcess(final OutputStream out,
 			final OutputStream err) {
 		if (takeShortCut()){
-			logger.info(this, "file(s) there, taking shortcut");
+			logger.info("file(s) there, taking shortcut");
 			return true;
 		}
-		logger.debug(this, "file(s) not there, cannot take shortcut");
+		logger.debug("file(s) not there, cannot take shortcut");
 		final List<String> processCommandList = getCommandList();
 		final ProcessBuilder processBuilder = new ProcessBuilder(
 				processCommandList);
-		logger.debug(this, "creating process " + processBuilder.command());
+		logger.debug("creating process " + processBuilder.command());
 		processBuilder.directory(executableDir);
-		logger.debug(this, "executable dir of process: " + processBuilder.directory());
+		logger.debug("executable dir of process: " + processBuilder.directory());
 		processBuilder.redirectErrorStream(true);
 		try {
 			Process p = processBuilder.start();
-			logger.debug(this, "started process " + p);
+			logger.debug("started process " + p);
 			FileUtils.inputStreamToOutputStream(p.getInputStream(), out);
 			FileUtils.inputStreamToOutputStream(p.getErrorStream(), err);
 			final int exit = p.waitFor();
 //			logger.debug(this, "performing LSF buffer timeout...");
 //			Thread.sleep(1000);
 //			logger.debug(this, "continuing");
-			logger.debug(this, "process " + p + " exited with exit code " + exit);
+			logger.debug("process " + p + " exited with exit code " + exit);
 			if (exit != 0)
 				return false;
 			return true;
 		} catch (Exception e){
 			e.printStackTrace();
-			logger.error(this, e.getLocalizedMessage(), e);
+			logger.error(e.getLocalizedMessage(), e);
 			return false;
 		}
 	}
@@ -102,22 +94,22 @@ public abstract class AbstractStepProcessBuilder {
 	
 	@Deprecated
 	private boolean takeShortCut() {
-		logger.debug(this, "checking for shortcut available");
+		logger.debug("checking for shortcut available");
 		if(outFiles.isEmpty()){
-			logger.debug(this, "no outfiles defined");
+			logger.debug("no outfiles defined");
 			return false;
 		}
 		for (Entry<File, Boolean> e : outFiles.entrySet()) {
 			final boolean fileCheck = FileUtils.fileCheck(e.getKey(), false);
 			final boolean skipIt = e.getValue();
-			logger.debug(this, "file " + e.getKey().getAbsolutePath() + " there="+fileCheck);
-			logger.debug(this, "file " + e.getKey() + " skip="+skipIt);
+			logger.debug("file " + e.getKey().getAbsolutePath() + " there="+fileCheck);
+			logger.debug("file " + e.getKey() + " skip="+skipIt);
 			if(!(fileCheck && skipIt)){
-				logger.debug(this, "cannot skip");
+				logger.debug("cannot skip");
 				return false;
 			}
 		}
-		logger.debug(this, "skip available");
+		logger.debug("skip available");
 		return true;
 	}
 	

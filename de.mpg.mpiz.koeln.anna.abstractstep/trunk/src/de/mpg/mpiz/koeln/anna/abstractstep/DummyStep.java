@@ -1,8 +1,8 @@
 package de.mpg.mpiz.koeln.anna.abstractstep;
 
-import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
-import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
+import de.mpg.mpiz.koeln.anna.data.GFF3DataBean;
+import de.mpg.mpiz.koeln.anna.server.data.DataProxy;
+import de.mpg.mpiz.koeln.anna.step.StepExecutionException;
 
 class DummyStep extends AbstractGFF3AnnaStep {
 	
