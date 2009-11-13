@@ -8,6 +8,7 @@ Bundle-ClassPath: .,
  lib/bioutils-0.0.9.jar
 Import-Package: de.kerner.commons,
  de.kerner.commons.file,
+ de.kerner.commons.logging,
  org.slf4j,
  org.slf4j.helpers,
  org.slf4j.impl,

@@ -12,7 +12,6 @@ import de.kerner.commons.file.FileUtils;
 import de.kerner.commons.logging.Log;
 import de.mpg.mpiz.koeln.anna.server.data.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.StepExecutionException;
-import de.mpg.mpiz.koeln.anna.step.StepUtils;
 
 /**
  * <p>
@@ -66,30 +65,27 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	 * 
 	 * @throws StepExecutionException
 	 */
-	public boolean start() throws StepExecutionException {
+	public boolean start() throws Throwable {
 		boolean success = false;
-		try {
-			createIfAbsend();
-			prepare(getDataProxy());
-			printProperties();
-			validateProperties();
-			if (takeShortCut()) {
-				success = true;
+
+		createIfAbsend();
+		prepare(getDataProxy());
+		printProperties();
+		validateProperties();
+		if (takeShortCut()) {
+			success = true;
+		} else {
+			success = doItFinally();
+		}
+		if (success) {
+			waitForFiles();
+			final boolean hh = update(getDataProxy());
+			if (hh) {
+				logger.debug("updated databean");
 			} else {
-				success = doItFinally();
+				logger.warn("updating databean failed!");
 			}
-			if (success) {
-				waitForFiles();
-				final boolean hh = update(getDataProxy());
-				if (hh) {
-					logger.debug("updated databean");
-				} else {
-					logger.warn("updating databean failed!");
-				}
-				success = hh;
-			}
-		} catch (Exception e) {
-			StepUtils.handleException(this, e);
+			success = hh;
 		}
 		return success;
 	}
@@ -120,28 +116,24 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	}
 
 	// fields volatile
-	private boolean doItFinally() throws StepExecutionException {
+	private boolean doItFinally() throws Throwable {
 		boolean success = false;
-		try {
-			OutputStream out = System.out;
-			OutputStream err = System.err;
-			if (outFile != null) {
-				out = FileUtils.getBufferedOutputStreamForFile(outFile);
-			}
-			if (errFile != null) {
-				err = FileUtils.getBufferedOutputStreamForFile(errFile);
-			}
-			success = exe.submit(
-					new ThreaddedProcess(exeDir, workingDir, out, err, logger))
-					.get();
-			if (outFile != null) {
-				out.close();
-			}
-			if (errFile != null) {
-				err.close();
-			}
-		} catch (Exception e) {
-			StepUtils.handleException(this, e);
+		OutputStream out = System.out;
+		OutputStream err = System.err;
+		if (outFile != null) {
+			out = FileUtils.getBufferedOutputStreamForFile(outFile);
+		}
+		if (errFile != null) {
+			err = FileUtils.getBufferedOutputStreamForFile(errFile);
+		}
+		success = exe.submit(
+				new ThreaddedProcess(exeDir, workingDir, out, err, logger))
+				.get();
+		if (outFile != null) {
+			out.close();
+		}
+		if (errFile != null) {
+			err.close();
 		}
 		return success;
 	}

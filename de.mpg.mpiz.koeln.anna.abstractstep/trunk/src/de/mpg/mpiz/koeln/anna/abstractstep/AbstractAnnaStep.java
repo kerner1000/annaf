@@ -72,45 +72,39 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 	public abstract DataProxy<V> getDataProxy() throws ServiceNotAvailabeException;
 
 	public abstract boolean requirementsSatisfied(DataProxy<V> proxy)
-			throws StepExecutionException;
+			throws Throwable;
 
 	public abstract boolean canBeSkipped(DataProxy<V> proxy)
-			throws StepExecutionException;
+			throws Throwable;
 
 	public abstract boolean run(DataProxy<V> proxy)
-			throws StepExecutionException;
+			throws Throwable;
 
 	public boolean requirementsSatisfied() throws StepExecutionException {
-		DataProxy<V> proxy;
 		try {
-			proxy = getDataProxy();
-		} catch (ServiceNotAvailabeException e) {
-			logger.error(e.getLocalizedMessage(), e);
-			throw new StepExecutionException(this, e);
-		}
+			final DataProxy<V> proxy = getDataProxy();
 		return requirementsSatisfied(proxy);
+		} catch (Throwable t) {
+			throw new StepExecutionException(this, t);
+		}
 	}
 
 	public boolean canBeSkipped() throws StepExecutionException {
-		DataProxy<V> proxy;
 		try {
-			proxy = getDataProxy();
-		} catch (ServiceNotAvailabeException e) {
-			logger.error(e.getLocalizedMessage(), e);
-			throw new StepExecutionException(this, e);
-		}
+			final DataProxy<V> proxy = getDataProxy();
 		return canBeSkipped(proxy);
+		} catch (Throwable t) {
+			throw new StepExecutionException(this, t);
+		}
 	}
 
 	public boolean run() throws StepExecutionException {
-		DataProxy<V> proxy;
 		try {
-			proxy = getDataProxy();
-		} catch (ServiceNotAvailabeException e) {
-			logger.error(e.getLocalizedMessage(), e);
-			throw new StepExecutionException(this, e);
-		}
+			final DataProxy<V> proxy = getDataProxy();
 		return run(proxy);
+		} catch (Throwable t) {
+			throw new StepExecutionException(this, t);
+		}
 	}
 
 	public synchronized Properties getStepProperties() {
@@ -146,27 +140,17 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 		this.state = state;
 	}
 	
-	public List<String> requirementsNeeded(DataProxy<V> proxy) throws Exception{
+	public List<String> requirementsNeeded(DataProxy<V> proxy) throws Throwable {
 		return Collections.emptyList();
 	}
 	
 	public List<String> requirementsNeeded() {
-		DataProxy<V> proxy;
 		try {
-			proxy = getDataProxy();
-		} catch (Exception e) {
-			logger.error(e.getLocalizedMessage(), e);
-			final ArrayList<String> r = new ArrayList<String>();
-			r.add("error while receiving dataproxy");
-			return r;
-		}
-		try {
-			return requirementsNeeded(proxy);
-		} catch (Exception e) {
-			logger.error(e.getLocalizedMessage(), e);
-			final ArrayList<String> r = new ArrayList<String>();
-			r.add("error while getting requirements informations");
-			return r;
+			final DataProxy<V> proxy = getDataProxy();
+		return requirementsNeeded(proxy);
+		} catch (Throwable t) {
+			logger.error(t.getLocalizedMessage(), t);
+			return new ArrayList<String>();
 		}
 	}
 }
