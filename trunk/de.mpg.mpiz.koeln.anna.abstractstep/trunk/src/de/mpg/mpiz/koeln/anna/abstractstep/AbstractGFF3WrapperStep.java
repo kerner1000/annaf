@@ -1,5 +1,7 @@
 package de.mpg.mpiz.koeln.anna.abstractstep;
 
+import java.io.File;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -12,6 +14,10 @@ import de.mpg.mpiz.koeln.anna.step.StepExecutionException;
 // TODO: class implementation is duplicate to "AbstractGFF3AnnaStep". That is bad!
 public abstract class AbstractGFF3WrapperStep extends AbstractWrapperStep<GFF3DataBean>{
 	
+	public AbstractGFF3WrapperStep(File exeDir, File workingDir) {
+		super(exeDir, workingDir);
+	}
+
 	private volatile ServiceTracker tracker;
 
 	// tracker volatile

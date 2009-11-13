@@ -51,12 +51,17 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 
 	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 	private final static long TIMEOUT = 1000;
-	protected volatile File exeDir;
-	protected volatile File workingDir;
+	protected final File exeDir;
+	protected final File workingDir;
 	private volatile File outFile = null;
 	private volatile File errFile = null;
-	protected List<File> shortCutFiles = new ArrayList<File>();
-	protected List<File> resultFilesToWaitFor = new ArrayList<File>();
+	private List<File> shortCutFiles = new ArrayList<File>();
+	private List<File> resultFilesToWaitFor = new ArrayList<File>();
+	
+	public AbstractWrapperStep(File exeDir, File workingDir) {
+		this.exeDir = exeDir;
+		this.workingDir = workingDir;
+	}
 
 	/**
 	 * <p>
@@ -79,13 +84,7 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 		}
 		if (success) {
 			waitForFiles();
-			final boolean hh = update(getDataProxy());
-			if (hh) {
-				logger.debug("updated databean");
-			} else {
-				logger.warn("updating databean failed!");
-			}
-			success = hh;
+			update(getDataProxy());
 		}
 		return success;
 	}
@@ -162,17 +161,17 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	 * working directory)
 	 * </p>
 	 * 
-	 * @throws Exception
+	 * @throws Throwable 
 	 */
-	public abstract void prepare(DataProxy<T> data) throws Exception;
+	public abstract void prepare(DataProxy<T> data) throws Throwable;
 
 	/**
 	 * @return List of command line arguments, that will passed to wrapped step.
 	 */
 	public abstract List<String> getCmdList();
 
-	public abstract boolean update(DataProxy<T> data)
-			throws StepExecutionException;
+	public abstract void update(DataProxy<T> data)
+	throws Throwable;
 
 	public synchronized void addShortCutFile(File file) {
 		shortCutFiles.add(file);
@@ -198,7 +197,7 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	}
 
 	// fields volatile
-	private void validateProperties() throws StepExecutionException {
+	private void validateProperties() throws Throwable {
 		if (!FileUtils.dirCheck(exeDir, false))
 			throw new StepExecutionException(this, "cannot access exe dir");
 		if (!FileUtils.dirCheck(workingDir, true))

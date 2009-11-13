@@ -28,32 +28,34 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 	private volatile ServiceTracker tracker;
 	private volatile Properties properties;
 	protected volatile Log logger = new Log(AbstractAnnaStep.class);
-	private State state = State.LOOSE;
+	private volatile State state = State.LOOSE;
 
 	// fields volatile
-	protected synchronized void init(BundleContext context) throws StepExecutionException {
+	protected synchronized void init(BundleContext context)
+			throws StepExecutionException {
 		tracker = new ServiceTracker(context, AnnaServer.class.getName(), null);
 		tracker.open();
 		try {
 			properties = getPropertes();
 		} catch (Exception e) {
-			logger.error(StringUtils.getString(
-					"could not load settings from ", PROPERTIES_FILE
-							.getAbsolutePath(), ", using defaults"));
+			logger.error(StringUtils.getString("could not load settings from ",
+					PROPERTIES_FILE.getAbsolutePath(), ", using defaults"));
 		}
 	}
-	
+
 	public void start(BundleContext context) throws Exception {
-		logger.debug("starting step " + this);
-		init(context);
-		try{
-		getAnnaServer().registerStep(this);
-		}catch(Exception e){
-			final AbstractAnnaStep<?> as = new DummyStep(this.toString());
-			as.setState(AbstractAnnaStep.State.ERROR);
-			getAnnaServer().registerStep(as);
+		//logger.debug("starting step " + this);
+		try {
+			init(context);
+			getAnnaServer().registerStep(this);
+		} catch (Throwable e) {
+			synchronized (this) {
+				logger.debug("an exception orroured while initiation or registration of step, creating dummy step", e);
+				final AbstractAnnaStep<?> as = new DummyStep(this.toString());
+				as.setState(State.ERROR);
+				getAnnaServer().registerStep(as);
+			}
 		}
-		
 	}
 
 	public void stop(BundleContext context) throws Exception {
@@ -61,29 +63,28 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 		tracker.close();
 		tracker = null;
 	}
-	
-	public AnnaServer getAnnaServer() throws ServiceNotAvailabeException{
+
+	public AnnaServer getAnnaServer() throws ServiceNotAvailabeException {
 		AnnaServer server = (AnnaServer) tracker.getService();
-		if(server == null)
+		if (server == null)
 			throw new ServiceNotAvailabeException();
 		return server;
 	}
 
-	public abstract DataProxy<V> getDataProxy() throws ServiceNotAvailabeException;
+	public abstract DataProxy<V> getDataProxy()
+			throws ServiceNotAvailabeException;
 
 	public abstract boolean requirementsSatisfied(DataProxy<V> proxy)
 			throws Throwable;
 
-	public abstract boolean canBeSkipped(DataProxy<V> proxy)
-			throws Throwable;
+	public abstract boolean canBeSkipped(DataProxy<V> proxy) throws Throwable;
 
-	public abstract boolean run(DataProxy<V> proxy)
-			throws Throwable;
+	public abstract boolean run(DataProxy<V> proxy) throws Throwable;
 
 	public boolean requirementsSatisfied() throws StepExecutionException {
 		try {
 			final DataProxy<V> proxy = getDataProxy();
-		return requirementsSatisfied(proxy);
+			return requirementsSatisfied(proxy);
 		} catch (Throwable t) {
 			throw new StepExecutionException(this, t);
 		}
@@ -92,7 +93,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 	public boolean canBeSkipped() throws StepExecutionException {
 		try {
 			final DataProxy<V> proxy = getDataProxy();
-		return canBeSkipped(proxy);
+			return canBeSkipped(proxy);
 		} catch (Throwable t) {
 			throw new StepExecutionException(this, t);
 		}
@@ -101,7 +102,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 	public boolean run() throws StepExecutionException {
 		try {
 			final DataProxy<V> proxy = getDataProxy();
-		return run(proxy);
+			return run(proxy);
 		} catch (Throwable t) {
 			throw new StepExecutionException(this, t);
 		}
@@ -132,25 +133,30 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 		return pro;
 	}
 
-	public final synchronized State getState() {
+	public final State getState() {
 		return state;
 	}
 
-	public final synchronized void setState(State state) {
+	public final void setState(State state) {
 		this.state = state;
 	}
-	
+
 	public List<String> requirementsNeeded(DataProxy<V> proxy) throws Throwable {
 		return Collections.emptyList();
 	}
-	
+
 	public List<String> requirementsNeeded() {
 		try {
 			final DataProxy<V> proxy = getDataProxy();
-		return requirementsNeeded(proxy);
+			return requirementsNeeded(proxy);
 		} catch (Throwable t) {
 			logger.error(t.getLocalizedMessage(), t);
 			return new ArrayList<String>();
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
 	}
 }
