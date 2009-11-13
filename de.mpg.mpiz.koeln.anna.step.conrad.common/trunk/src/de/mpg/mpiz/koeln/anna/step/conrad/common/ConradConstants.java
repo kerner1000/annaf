@@ -1,5 +1,9 @@
 package de.mpg.mpiz.koeln.anna.step.conrad.common;
 
+import java.util.List;
+
+import de.kerner.commons.CommandStringBuilder;
+
 /**
  * 
  * @cleaned 2009-07-28
@@ -10,9 +14,16 @@ public class ConradConstants {
 	
 	private ConradConstants(){}
 	
+	public final static List<String> getConradCmdString(){
+		return new CommandStringBuilder("java").addFlagCommand("-Xmx6000m").addValueCommand("-jar", "conradCustom.jar").getCommandList();
+	}
+	
+	public final static String ADAPTED_KEY = "adapted";
+	
+	public final static String WORKING_DIR = "data/conrad";
+	
 	public final static String PROPERTIES_KEY_PREFIX = "anna.step.conrad.";
-	public final static String CONRAD_DIR_KEY = PROPERTIES_KEY_PREFIX
-	+ "conradWorkingDir";
-	public final static String CONRAD_EXE = "bin/conrad.sh";
+	
+	public static final String TRAINING_FILE = "conrad.trainingfile";
 
 }
