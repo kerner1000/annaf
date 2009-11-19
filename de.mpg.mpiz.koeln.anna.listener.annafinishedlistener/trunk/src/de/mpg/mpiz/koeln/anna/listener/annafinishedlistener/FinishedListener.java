@@ -2,27 +2,30 @@ package de.mpg.mpiz.koeln.anna.listener.annafinishedlistener;
 
 import java.util.Collection;
 
-import de.mpg.koeln.anna.core.events.AnnaEvent;
+import de.kerner.commons.logging.Log;
+import de.mpg.mpiz.koeln.anna.core.events.AnnaEvent;
 import de.mpg.mpiz.koeln.anna.listener.abstractlistener.AbstractEventListener;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
 import de.mpg.mpiz.koeln.anna.step.ObservableStep.State;
 
 public class FinishedListener extends AbstractEventListener {
 	
+	private final static Log logger = new Log(FinishedListener.class);
+	
 	private final static String PRE_LINE =  "!!!!!!!!!!!!!!!!!!!!!!";
 	private final static String POST_LINE = PRE_LINE;
 	
 	private volatile boolean error = false;
 	
-	public void eventOccoured(AnnaEvent event) {
+	public synchronized void eventOccoured(AnnaEvent event) {
 		if(areWeDone(event)){
-			logger.info(this, PRE_LINE);
+			logger.info(PRE_LINE);
 			if(error){
-				logger.info(this, "pipeline finished (with errors)!");
+				logger.info("pipeline finished (with errors)!");
 			} else {
-				logger.info(this, "pipeline finished!");
+				logger.info("pipeline finished!");
 			}
-			logger.info(this, POST_LINE);
+			logger.info(POST_LINE);
 		} else {
 			// ignore
 		}

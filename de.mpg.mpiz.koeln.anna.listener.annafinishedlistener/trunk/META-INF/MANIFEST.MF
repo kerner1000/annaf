@@ -1,13 +1,19 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Annafinishedlistener
+Bundle-Name: finished listener
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.listener.annafinishedlistener
-Bundle-Version: 0.0.1
+Bundle-Version: 0.0.2.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Import-Package: de.kerner.osgi.commons.logger.dispatcher,
- de.kerner.osgi.commons.utils,
- de.mpg.koeln.anna.core.events,
+Import-Package: de.kerner.commons,
+ de.kerner.commons.file,
+ de.kerner.commons.logging,
+ de.kerner.commons.osgi.utils,
+ de.mpg.mpiz.koeln.anna.core.events,
  de.mpg.mpiz.koeln.anna.listener.abstractlistener,
  de.mpg.mpiz.koeln.anna.step,
- org.osgi.framework;version="1.4.0"
+ org.osgi.framework;version="1.4.0",
+ org.slf4j,
+ org.slf4j.helpers,
+ org.slf4j.impl,
+ org.slf4j.spi
 Bundle-Activator: de.mpg.mpiz.koeln.anna.listener.annafinishedlistener.FinishedListener

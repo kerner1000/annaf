@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: LSF Commons
+Bundle-Name: LSF commons
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.common.lsf
-Bundle-Version: 0.0.4
+Bundle-Version: 0.0.5.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: de.mpg.mpiz.koeln.anna.step.common.lsf
