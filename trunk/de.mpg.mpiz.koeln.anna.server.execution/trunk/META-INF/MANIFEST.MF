@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: execution server
+Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.server.execution
+Bundle-Version: 0.8.0.qualifier
+Bundle-Activator: de.mpg.mpiz.koeln.anna.server.impl.AnnaServerActivator
+Import-Package: de.kerner.commons.file,
+ de.kerner.commons.logging,
+ org.osgi.framework,
+ org.osgi.util.tracker,
+ org.slf4j,
+ org.slf4j.helpers,
+ org.slf4j.impl,
+ org.slf4j.spi
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: .
+Export-Package: de.mpg.mpiz.koeln.anna.core.events,
+ de.mpg.mpiz.koeln.anna.server,
+ de.mpg.mpiz.koeln.anna.server.impl,
+ de.mpg.mpiz.koeln.anna.step
