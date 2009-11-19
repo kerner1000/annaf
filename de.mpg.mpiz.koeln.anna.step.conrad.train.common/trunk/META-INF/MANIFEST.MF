@@ -1,18 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: conrad train lsf
-Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.conrad.train.lsf
-Bundle-Version: 0.3.0.qualifier
+Bundle-Name: conrad train common
+Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.conrad.train.common
+Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: de.bioutils,
  de.bioutils.fasta,
  de.bioutils.frame,
- de.bioutils.gff,
- de.bioutils.gff.element,
- de.bioutils.gff.file,
- de.bioutils.gff.filter,
- de.bioutils.gff.generic,
- de.bioutils.gff.parser,
  de.bioutils.gff3,
  de.bioutils.gff3.attribute,
  de.bioutils.gff3.converter,
@@ -32,9 +26,6 @@ Import-Package: de.bioutils,
  de.mpg.mpiz.koeln.anna.server.data,
  de.mpg.mpiz.koeln.anna.server.data.impl,
  de.mpg.mpiz.koeln.anna.server.impl,
- de.mpg.mpiz.koeln.anna.step,
- de.mpg.mpiz.koeln.anna.step.common.lsf,
  de.mpg.mpiz.koeln.anna.step.conrad.common,
- de.mpg.mpiz.koeln.anna.step.conrad.train.common,
  org.osgi.framework;version="1.4.0"
-Bundle-Activator: de.mpg.mpiz.koeln.anna.step.conrad.train.lsf.TrainLSF
+Export-Package: de.mpg.mpiz.koeln.anna.step.conrad.train.common

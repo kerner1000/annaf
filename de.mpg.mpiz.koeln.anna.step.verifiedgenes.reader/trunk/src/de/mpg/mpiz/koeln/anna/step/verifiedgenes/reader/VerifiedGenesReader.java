@@ -18,6 +18,7 @@ import de.bioutils.gff3.element.GFF3Element;
 import de.bioutils.gff3.element.GFF3ElementGroup;
 import de.bioutils.gff3.file.GFF3File;
 import de.bioutils.gff3.file.GFF3FileImpl;
+import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
 import de.mpg.mpiz.koeln.anna.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.data.GFF3DataBean;
@@ -44,14 +45,22 @@ public class VerifiedGenesReader extends AbstractGFF3AnnaStep {
 		initFiles();
 	}
 
-	private void initFiles() {
+	private void initFiles() throws StepExecutionException {
 		final String fastaPath = super.getStepProperties().getProperty(
 				FASTA_KEY);
 		logger.debug("got path for FASTA: " + fastaPath);
 		final String gtfPath = super.getStepProperties().getProperty(GTF_KEY);
 		logger.debug("got path for GTF: " + gtfPath);
+		if(fastaPath == null || gtfPath == null)
+			throw new StepExecutionException(this, "could not determine path to file(s), please check settings");
 		fasta = new File(fastaPath);
 		gtf = new File(gtfPath);
+		if(!FileUtils.fileCheck(fasta, false)){
+			throw new StepExecutionException(this, "cannot access file \"" + fasta + "\", step settings correct?");
+		}
+		if(!FileUtils.fileCheck(gtf, false)){
+			throw new StepExecutionException(this, "cannot access file \"" + gtf + "\", step settings correct?");
+		}
 	}
 
 	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data) {
