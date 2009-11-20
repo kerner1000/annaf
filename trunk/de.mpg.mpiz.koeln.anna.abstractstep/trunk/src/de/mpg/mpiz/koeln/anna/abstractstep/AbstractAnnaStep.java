@@ -117,7 +117,7 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 		final Properties pro = new Properties(defaultProperties);
 		FileInputStream fi = null;
 		try {
-			logger.info(StringUtils.getString("loading settings from ",
+			logger.debug(StringUtils.getString("loading settings from ",
 					PROPERTIES_FILE));
 			fi = new FileInputStream(PROPERTIES_FILE);
 			pro.load(fi);
