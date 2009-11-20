@@ -161,6 +161,11 @@ public class Activator implements BundleActivator {
 			}
 		});
 	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
 
 	public void stop(BundleContext context) throws Exception {
 		System.err.println(this + " stopping (nothing to do)");
