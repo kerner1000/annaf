@@ -2,81 +2,72 @@ package de.mpg.mpiz.koeln.anna.step.getresults;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 
-import de.bioutils.gff3.element.GFF3Element;
+import de.bioutils.gff3.element.GFF3ElementGroup;
+import de.bioutils.gff3.element.GFF3ElementGroupImpl;
 import de.bioutils.gff3.file.GFF3FileImpl;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
-import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
-import de.mpg.mpiz.koeln.anna.server.data.GFF3DataBean;
-import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
-import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
+import de.mpg.mpiz.koeln.anna.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.anna.data.GFF3DataBean;
+import de.mpg.mpiz.koeln.anna.server.data.DataProxy;
+import de.mpg.mpiz.koeln.anna.step.StepExecutionException;
 
 public class GetResults extends AbstractGFF3AnnaStep {
 
 	private final static String OUT_DIR_KEY = "anna.step.getResults.outDir";
 	private final static String OUT_FILE_NAME_KEY = "anna.step.getResults.fileName";
 
-	@Override
-	public boolean run(DataProxy<GFF3DataBean> proxy)
-			throws StepExecutionException {
+	// Implement //
+
+	public boolean run(DataProxy<GFF3DataBean> proxy) throws Throwable {
 		boolean success = false;
 		final File outDir = new File(super.getStepProperties().getProperty(
 				OUT_DIR_KEY));
-		logger.debug(this, "got outdir=" + outDir);
+		logger.debug("got outdir=" + outDir);
 		success = FileUtils.dirCheck(outDir, true);
-		try {
-			writeFile(outDir, proxy);
-		} catch (Exception e) {
-			StepUtils.handleException(this, e);
-		}
+		writeFile(outDir, proxy);
 		return success;
 	}
 
 	private void writeFile(File outDir, DataProxy<GFF3DataBean> proxy)
 			throws DataBeanAccessException, IOException {
-		logger.debug(this, "retrieving GFF for predicted genes");
-		final Collection<GFF3Element> predicted = proxy.viewData()
+		logger.debug("retrieving GFF for predicted genes");
+		final GFF3ElementGroup predicted = proxy.viewData()
 				.getPredictedGenesGFF();
-		logger.debug(this, "retrieving GFF for predicted genes done (elements="
-				+ predicted.size() + ")");
-		
-		logger.debug(this, "retrieving GFF for repetetive elements");
-		final Collection<GFF3Element> repeat = proxy.viewData()
+		logger.debug("retrieving GFF for predicted genes done (elements="
+				+ predicted.getSize() + ")");
+
+		logger.debug("retrieving GFF for repetetive elements");
+		final GFF3ElementGroup repeat = proxy.viewData()
 				.getRepeatMaskerGFF();
-		logger.debug(this,
-				"retrieving GFF for repetetive elements done (elements="
-						+ repeat.size() + ")");
-		
-		logger.debug(this, "retrieving GFF for mapped ests");
-		final Collection<GFF3Element> ests = proxy.viewData()
-				.getMappedESTs();
-		logger.debug(this,
-				"retrieving GFF for mapped ests done (elements="
-						+ ests.size() + ")");
-		
-		logger.debug(this, "merging");
-		final Collection<GFF3Element> merged = new ArrayList<GFF3Element>();
-		if(predicted.size() != 0)
+		logger.debug("retrieving GFF for repetetive elements done (elements="
+						+ repeat.getSize() + ")");
+
+		logger.debug("retrieving GFF for mapped ests");
+		final GFF3ElementGroup ests = proxy.viewData().getMappedESTs();
+		logger.debug("retrieving GFF for mapped ests done (elements="
+				+ ests.getSize() + ")");
+
+		logger.debug("merging");
+		// TODO is that really sorted??
+		final GFF3ElementGroup merged = new GFF3ElementGroupImpl(true);
+		if (predicted.getSize() != 0)
 			merged.addAll(predicted);
-		if(repeat.size() != 0)
+		if (repeat.getSize() != 0)
 			merged.addAll(repeat);
-		if(ests.size() != 0)
+		if (ests.getSize() != 0)
 			merged.addAll(ests);
-		logger.debug(this, "merging done (elements="
-						+ merged.size() + ")");
-		if(merged.size() == 0){
-			logger.info(this, "nothing to write");
+		logger.debug("merging done (elements=" + merged.getSize() + ")");
+		if (merged.getSize() == 0) {
+			logger.info("nothing to write");
 			return;
 		}
 		final File outFile = new File(outDir, super.getStepProperties()
 				.getProperty(OUT_FILE_NAME_KEY));
-		logger.info(this, "writing results to " + outFile);
+		logger.info("writing results to " + outFile);
 		new GFF3FileImpl(merged).write(outFile);
-		logger.debug(this, "done writing results to " + outFile);
+		logger.debug("done writing results to " + outFile);
 	}
 
 	@Override
