@@ -24,7 +24,7 @@ public class LSF {
 		final File LSFerr = new File(workingDir, "lsf-%J-%I.err");
 		final Map<String, String> map = new HashMap<String,String>();
 //		map.put("-m", "pcbcn64");
-		map.put("-m", "pcbcomputenodes");
+		map.put("-m", "wspcb015.mpiz-koeln.mpg.de");
 //		map.put("-R", "rusage[mem=4000:swp=2000]");
 		map.put("-R", "rusage[mem=6000]");
 		map.put("-eo", LSFerr.getAbsolutePath());
