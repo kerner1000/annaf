@@ -27,12 +27,6 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3WrapperStep {
 	protected volatile File inFile;
 	protected volatile File outStr;
 	
-	//Constructor // 
-	
-	public AbstractStepRepeatMasker() {
-		
-	}
-	
 	// Override //
 	
 	@Override
