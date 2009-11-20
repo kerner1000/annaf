@@ -51,8 +51,8 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 
 	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 	private final static long TIMEOUT = 1000;
-	protected final File exeDir;
-	protected final File workingDir;
+	protected volatile File exeDir;
+	protected volatile File workingDir;
 	private volatile File outFile = null;
 	private volatile File errFile = null;
 	private List<File> shortCutFiles = new ArrayList<File>();
@@ -61,6 +61,10 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 	public AbstractWrapperStep(File exeDir, File workingDir) {
 		this.exeDir = exeDir;
 		this.workingDir = workingDir;
+	}
+	
+	public AbstractWrapperStep() {
+		
 	}
 
 	/**
@@ -202,5 +206,13 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 			throw new StepExecutionException(this, "cannot access exe dir");
 		if (!FileUtils.dirCheck(workingDir, true))
 			throw new StepExecutionException(this, "cannot access working dir");
+	}
+	
+	public void setExeDir(File exeDir){
+		this.exeDir = exeDir;
+	}
+	
+	public void setWorkingDir(File workingDir){
+		this.workingDir = workingDir;
 	}
 }
