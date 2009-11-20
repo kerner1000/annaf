@@ -132,7 +132,7 @@ public class Activator implements BundleActivator {
 	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 
 	public void start(final BundleContext context) throws Exception {
-		System.err.println(this + " let's get things rolling");
+		System.err.println("let's get things rolling");
 		exe.submit(new Runnable() {
 			public void run() {
 				try {
