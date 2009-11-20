@@ -17,6 +17,10 @@ public abstract class AbstractGFF3WrapperStep extends AbstractWrapperStep<GFF3Da
 	public AbstractGFF3WrapperStep(File exeDir, File workingDir) {
 		super(exeDir, workingDir);
 	}
+	
+	public AbstractGFF3WrapperStep() {
+		super();
+	}
 
 	private volatile ServiceTracker tracker;
 
