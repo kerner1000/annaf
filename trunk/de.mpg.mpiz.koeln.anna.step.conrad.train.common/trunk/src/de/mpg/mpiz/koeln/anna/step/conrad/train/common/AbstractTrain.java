@@ -21,7 +21,6 @@ import de.mpg.mpiz.koeln.anna.step.conrad.common.ConradConstants;
 
 public abstract class AbstractTrain extends AbstractGFF3WrapperStep {
 
-	protected final static String TRAINING_FILE_KEY = "trainingFile";
 	protected final static File TRAINING_FILE = new File(
 			ConradConstants.WORKING_DIR, "trainingFile.bin");
 
@@ -73,7 +72,7 @@ public abstract class AbstractTrain extends AbstractGFF3WrapperStep {
 			public void modifiyData(GFF3DataBean v) {
 				logger.debug("using custom slot: key=" + TRAINING_FILE
 						+ ", value=" + TRAINING_FILE.getAbsoluteFile());
-				v.addCustom(TRAINING_FILE_KEY, TRAINING_FILE.getAbsoluteFile());
+				v.addCustom(ConradConstants.TRAINING_FILE_KEY, TRAINING_FILE.getAbsoluteFile());
 			}
 		});
 	}
