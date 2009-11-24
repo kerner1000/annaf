@@ -51,16 +51,16 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3WrapperStep {
 	}
 
 	@Override
-	protected void createIfAbsend() throws StepExecutionException {
+	protected synchronized void createIfAbsend() throws StepExecutionException {
 		super.createIfAbsend();
 		if (!FileUtils.fileCheck(inFile, true))
-			throw new StepExecutionException(this, "cannot create file \""
+			throw new StepExecutionException(this, "cannot access file \""
 					+ inFile + "\"");
 		if (!FileUtils.fileCheck(outFile, true))
-			throw new StepExecutionException(this, "cannot create file \""
+			throw new StepExecutionException(this, "cannot access file \""
 					+ outFile + "\"");
 		if (!FileUtils.fileCheck(outStr, true))
-			throw new StepExecutionException(this, "cannot create file \""
+			throw new StepExecutionException(this, "cannot access file \""
 					+ outStr + "\"");
 
 	}
