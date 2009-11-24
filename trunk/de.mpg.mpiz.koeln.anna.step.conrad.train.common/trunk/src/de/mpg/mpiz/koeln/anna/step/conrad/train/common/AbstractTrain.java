@@ -118,6 +118,7 @@ public abstract class AbstractTrain extends AbstractGFF3WrapperStep {
 
 	@Override
 	public boolean run(DataProxy<GFF3DataBean> proxy) throws Throwable {
+		addShortCutFile(TRAINING_FILE);
 		return start();
 	}
 
