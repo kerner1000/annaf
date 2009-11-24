@@ -1,0 +1,1 @@
+* Shutdown executor service at some point to let application terminate.
