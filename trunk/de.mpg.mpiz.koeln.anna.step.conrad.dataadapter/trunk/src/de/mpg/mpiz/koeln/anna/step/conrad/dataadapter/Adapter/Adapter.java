@@ -85,7 +85,6 @@ public class Adapter extends AbstractGFF3AnnaStep {
 			unionTrimmed = union.trimmFastasByAttribute(Integer
 					.parseInt(getStepProperties().getProperty(OFFSET_KEY)));
 		}
-		doIntegrityCheck(union);
 		return unionTrimmed;
 	}
 
@@ -95,7 +94,6 @@ public class Adapter extends AbstractGFF3AnnaStep {
 				+ new DNABasicAlphabet() + "\"");
 		final GFF3FASTAUnion union2 = union
 				.removeNonAlphabetMatching(new DNABasicAlphabet());
-		doIntegrityCheck(union2);
 		return union2;
 	}
 
@@ -113,7 +111,6 @@ public class Adapter extends AbstractGFF3AnnaStep {
 		logger.debug("discarded "
 				+ (union.getSize() - unionReducedLength.getSize())
 				+ " elements");
-		doIntegrityCheck(unionReducedLength);
 		return unionReducedLength;
 	}
 
@@ -127,7 +124,6 @@ public class Adapter extends AbstractGFF3AnnaStep {
 			unionReducedSize = union.reduceSize(Integer
 					.parseInt(getStepProperties().getProperty(
 							MAX_NUM_ELEMENTS_KEY)));
-			doIntegrityCheck(unionReducedSize);
 		} else {
 			logger.debug("property \"" + MAX_NUM_ELEMENTS_KEY + "\" not set");
 			unionReducedSize = union;
@@ -230,6 +226,9 @@ public class Adapter extends AbstractGFF3AnnaStep {
 		union = removeAllWithRangeGreater(union);
 
 		final GFF3FASTAUnion finalUnion = reduceSize(union);
+		
+		logger.debug("done with adaptations");
+		doIntegrityCheck(finalUnion);
 
 		proxy.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
