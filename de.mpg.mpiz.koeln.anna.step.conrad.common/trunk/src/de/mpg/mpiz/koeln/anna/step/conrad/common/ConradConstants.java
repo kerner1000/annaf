@@ -18,6 +18,8 @@ public class ConradConstants {
 		return new CommandStringBuilder("java").addFlagCommand("-Xmx6000m").addValueCommand("-jar", "conradCustom.jar").getCommandList();
 	}
 	
+	public final static String TRAINING_FILE_KEY = "trainingFile";
+	
 	public final static String ADAPTED_KEY = "adapted";
 	
 	public final static String WORKING_DIR = "data/conrad";

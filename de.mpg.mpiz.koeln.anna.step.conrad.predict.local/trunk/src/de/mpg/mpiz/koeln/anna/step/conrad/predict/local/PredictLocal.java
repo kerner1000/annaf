@@ -4,41 +4,25 @@ import java.io.File;
 import java.util.List;
 
 import de.kerner.commons.CommandStringBuilder;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.mpg.mpiz.koeln.anna.abstractstep.AbstractStepProcessBuilder;
-import de.mpg.mpiz.koeln.anna.step.conrad.common.AbstractConradPredictStep;
 import de.mpg.mpiz.koeln.anna.step.conrad.common.ConradConstants;
+import de.mpg.mpiz.koeln.anna.step.conrad.predict.common.AbstractPredict;
 
 /**
- * @cleaned 2009-07-28
  * @author Alexander Kerner
- *
+ * 
  */
-public class PredictLocal extends AbstractConradPredictStep {
-	
-	private class Process extends AbstractStepProcessBuilder {
-
-		protected Process(File executableDir, File workingDir,
-				LogDispatcher logger) {
-			super(executableDir, workingDir, logger);
-		}
-
-		@Override
-		protected synchronized List<String> getCommandList() {
-			final CommandStringBuilder builder = new CommandStringBuilder(new File(
-					executableDir, ConradConstants.CONRAD_EXE).getAbsolutePath());
-			builder.addFlagCommand("predict");
-			builder.addFlagCommand(trainingFile.getAbsolutePath());
-			builder.addFlagCommand(workingDir.getAbsolutePath());
-			builder.addFlagCommand(resultFile.getParentFile().getAbsolutePath() + File.separator + "result");
-			return builder.getCommandList();
-		}
-
-	}
+public class PredictLocal extends AbstractPredict {
 
 	@Override
-	protected synchronized AbstractStepProcessBuilder getProcess() {
-		return new Process(exeDir, workingDir, logger);
+	public List<String> getCmdList() {
+
+		return new CommandStringBuilder(ConradConstants.getConradCmdString())
+				.addFlagCommand("predict").addFlagCommand(
+						trainingFile.getAbsolutePath()).addFlagCommand(
+						workingDir.getAbsolutePath()).addFlagCommand(
+						resultFile.getParentFile().getAbsolutePath()
+								+ File.separator + "result").getCommandList();
+
 	}
 
 }
