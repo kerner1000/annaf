@@ -1,0 +1,19 @@
+.sidePane {
+	float: left;
+	width: 20%;
+	
+}
+
+.sidePaneElement {
+	float: none;
+	background-color: gray;
+	padding: 10px;
+	height: 100%;
+}
+
+.annotate {
+	
+	background-color: silver;
+	float: left;
+	width: 80%;
+}
