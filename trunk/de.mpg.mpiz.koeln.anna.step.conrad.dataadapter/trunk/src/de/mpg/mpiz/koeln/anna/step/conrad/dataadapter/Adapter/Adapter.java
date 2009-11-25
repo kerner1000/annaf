@@ -233,7 +233,7 @@ public class Adapter extends AbstractGFF3AnnaStep {
 		final double avNumExonsPerGene = GFF3Utils
 				.getNumberOfExonsByGenes(finalUnion.getMaster().getElements());
 		logger.info("adaptaions done, using " + numGenes + " genes, with "
-				+ String.format("%+2.2f", avNumExonsPerGene)
+				+ String.format("%2.2f", avNumExonsPerGene)
 				+ " average exons per gene");
 		doIntegrityCheck(finalUnion);
 
