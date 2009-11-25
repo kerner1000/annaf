@@ -24,6 +24,8 @@
 		<h:commandButton value="upload"></h:commandButton>
 		<h:outputLabel value="File size: "></h:outputLabel>
 		<h:outputLabel value="#{uploadBacking.fileSize}"></h:outputLabel>
+		<h:outputLabel value=" File name: "></h:outputLabel>
+		<h:outputLabel value="#{uploadBacking.myFile}"></h:outputLabel>
 	</h:form>
 	
 	</h:panelGroup>
