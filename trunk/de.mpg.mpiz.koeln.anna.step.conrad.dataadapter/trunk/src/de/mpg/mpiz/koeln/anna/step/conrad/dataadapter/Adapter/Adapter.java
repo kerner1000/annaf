@@ -11,6 +11,7 @@ import de.bioutils.fasta.NewFASTAFile;
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff3.GFF3FASTAUnion;
 import de.bioutils.gff3.GFF3FASTAUnionImpl;
+import de.bioutils.gff3.GFF3Utils;
 import de.bioutils.gff3.IntegrityCheckException;
 import de.bioutils.gff3.Type;
 import de.bioutils.gff3.file.GFF3File;
@@ -226,8 +227,14 @@ public class Adapter extends AbstractGFF3AnnaStep {
 		union = removeAllWithRangeGreater(union);
 
 		final GFF3FASTAUnion finalUnion = reduceSize(union);
-		
-		logger.debug("done with adaptations");
+
+		//logger.debug("done with adaptations");
+		final int numGenes = GFF3Utils.numberOfGenes(finalUnion.getMaster());
+		final double avNumExonsPerGene = GFF3Utils
+				.getNumberOfExonsByGenes(finalUnion.getMaster().getElements());
+		logger.info("adaptaions done, using " + numGenes + " genes, with "
+				+ String.format("%+2.2f", avNumExonsPerGene)
+				+ " average exons per gene");
 		doIntegrityCheck(finalUnion);
 
 		proxy.modifiyData(new DataModifier<GFF3DataBean>() {
