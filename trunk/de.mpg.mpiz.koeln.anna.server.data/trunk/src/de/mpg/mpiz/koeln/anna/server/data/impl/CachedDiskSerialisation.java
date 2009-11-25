@@ -47,10 +47,10 @@ class CachedDiskSerialisation extends GFF3DiskSerialisation {
 		}
 	}
 	
-	protected <V extends DataBean> V handleCorruptData(File file, Throwable t) {
+	protected <V extends DataBean> V handleCorruptData(File file) {
 		dirty = true;
 		data = new GFF3DataBeanImpl();
-		return super.handleCorruptData(file, t);
+		return super.handleCorruptData(file);
 	}
 
 	@Override
