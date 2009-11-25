@@ -26,7 +26,7 @@ public class ExonerateLSF extends AbstractStepExonerate {
 		final String ests = new File(workingDir,
 				ExonerateConstants.EST_FILENAME).getAbsolutePath();
 		builder.addFlagCommand(ests);
-		builder.addFlagCommand("> " + new File(workingDir, ExonerateConstants.RESULT_FILENAME).getAbsolutePath());
+		builder.addFlagCommand(">" + new File(workingDir, ExonerateConstants.RESULT_FILENAME).getAbsolutePath());
 		return builder.getCommandList();
 	}
 

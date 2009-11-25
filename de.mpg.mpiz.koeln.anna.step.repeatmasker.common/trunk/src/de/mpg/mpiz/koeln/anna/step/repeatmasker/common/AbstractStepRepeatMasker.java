@@ -51,21 +51,6 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3WrapperStep {
 	}
 
 	@Override
-	protected synchronized void createIfAbsend() throws StepExecutionException {
-		super.createIfAbsend();
-		if (!FileUtils.fileCheck(inFile, true))
-			throw new StepExecutionException(this, "cannot access file \""
-					+ inFile + "\"");
-		if (!FileUtils.fileCheck(outFile, true))
-			throw new StepExecutionException(this, "cannot access file \""
-					+ outFile + "\"");
-		if (!FileUtils.fileCheck(outStr, true))
-			throw new StepExecutionException(this, "cannot access file \""
-					+ outStr + "\"");
-
-	}
-
-	@Override
 	public List<String> requirementsNeeded(DataProxy<GFF3DataBean> data)
 			throws Exception {
 		final List<String> r = new ArrayList<String>();
@@ -87,6 +72,17 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3WrapperStep {
 
 	public void prepare(DataProxy<GFF3DataBean> data) throws Throwable {
 		new NewFASTAFileImpl(data.viewData().getInputSequence()).write(inFile);
+
+//		if (!FileUtils.fileCheck(inFile, true))
+//			throw new StepExecutionException(this, "cannot access file \""
+//					+ inFile + "\"");
+//		if (!FileUtils.fileCheck(outFile, true))
+//			throw new StepExecutionException(this, "cannot access file \""
+//					+ outFile + "\"");
+//		if (!FileUtils.fileCheck(outStr, true))
+//			throw new StepExecutionException(this, "cannot access file \""
+//					+ outStr + "\"");
+
 	}
 
 	public void update(DataProxy<GFF3DataBean> data) throws Throwable {
