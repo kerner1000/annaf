@@ -42,6 +42,9 @@ public class ProgressListener extends AbstractEventListener {
 			
 			if(s.getState().equals(State.WAIT_FOR_REQ)){
 				try {
+					if(s.requirementsNeeded().isEmpty()){
+						// skip
+					} else 
 					sb.append(s.requirementsNeeded().iterator().next());
 				} catch (Exception e) {
 					logger.error("cannot print needed requirements for step " + s, e);
