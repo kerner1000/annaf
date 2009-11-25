@@ -13,6 +13,7 @@ import de.bioutils.gff.GFFFormatErrorException;
 import de.bioutils.gff.file.NewGFFFile;
 import de.bioutils.gff.file.NewGFFFileImpl;
 import de.bioutils.gff3.GFF3Utils;
+import de.bioutils.gff3.Type;
 import de.bioutils.gff3.converter.GFF3FileExtender;
 import de.bioutils.gff3.element.GFF3Element;
 import de.bioutils.gff3.element.GFF3ElementBuilder;
@@ -42,7 +43,7 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 				final String sourceNew = source.replaceAll(":", "");
 				logger.debug("changing source identifier from \"" + source
 						+ "\" to \"" + sourceNew + "\"");
-				g.add(new GFF3ElementBuilder(e).setSource(sourceNew).build());
+				g.add(new GFF3ElementBuilder(e).setSource(sourceNew).setType(Type.EST).build());
 			}
 			return new GFF3FileImpl(g);
 		}
@@ -90,6 +91,9 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 				ExonerateConstants.RESULT_FILENAME), true);
 		file = new DataAdapter().extend(file);
 		final GFF3ElementGroup result = file.getElements();
+		
+		
+		
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
 				v.setMappedESTs(new GFF3ElementGroupImpl(result));
