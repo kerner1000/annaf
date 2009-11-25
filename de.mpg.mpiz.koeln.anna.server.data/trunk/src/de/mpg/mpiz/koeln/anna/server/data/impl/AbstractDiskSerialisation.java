@@ -64,12 +64,15 @@ abstract class AbstractDiskSerialisation implements SerialisationStrategy {
 		}
 	}
 
-	protected <V extends DataBean> V handleCorruptData(File file, Throwable t) {
+	protected <V extends DataBean> V handleCorruptData(File file) {
 		logger.warn(file.toString() + " corrupt, returning new one");
+		try{
 		if (file.delete()) {
 			logger.info("deleted corrupted data");
 		} else {
 			logger.warn("could not delete corrupt data " + file);
+		}}catch(Throwable t){
+			logger.debug("ignoring \"" + t.getLocalizedMessage() + "\"", t);
 		}
 		return getNewDataBean();
 	}
@@ -82,10 +85,13 @@ abstract class AbstractDiskSerialisation implements SerialisationStrategy {
 			return data;
 		} catch (EOFException e) {
 			logger.warn(e.getLocalizedMessage(), e);
-			return handleCorruptData(file, e);
+			return handleCorruptData(file);
 		} catch (StreamCorruptedException e) {
 			logger.warn(e.getLocalizedMessage(), e);
-			return handleCorruptData(file, e);
+			return handleCorruptData(file);
+		} catch (IOException e) {
+			logger.warn(e.getLocalizedMessage(), e);
+			return handleCorruptData(file);
 		} catch (Throwable t) {
 			logger.error(t.getLocalizedMessage(), t);
 			throw new DataBeanAccessException(t);
