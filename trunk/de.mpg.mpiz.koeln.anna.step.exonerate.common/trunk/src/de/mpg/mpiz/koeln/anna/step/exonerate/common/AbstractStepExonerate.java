@@ -109,15 +109,13 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 							+ " is not there or invalid, will not do shortcut");
 		}
 		redirectOutStreamToFile(file);
-		addResultFileToWaitFor(new File(workingDir,
-				ExonerateConstants.RESULT_FILENAME));
+		addResultFileToWaitFor(file);
 		return start();
 	}
 
 	private boolean outFileIsValid(File file) throws IOException,
 			GFFFormatErrorException {
 		NewGFFFile gff;
-
 		gff = NewGFFFileImpl.parseFile(file);
 		// TODO: size == 0 does not really indicate an invalid file
 		if (gff.getElements() == null || gff.getElements().size() == 0)
@@ -130,7 +128,6 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 	}
 
 	public boolean canBeSkipped(DataProxy<GFF3DataBean> data) throws Throwable {
-
 		final boolean b = (data.viewData().getMappedESTs() != null && data
 				.viewData().getMappedESTs().getSize() != 0);
 		logger.debug(StringUtils.getString("need to run: ests=", b));
