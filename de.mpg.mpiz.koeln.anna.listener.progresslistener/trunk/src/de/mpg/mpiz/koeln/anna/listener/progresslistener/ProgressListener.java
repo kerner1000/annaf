@@ -47,7 +47,7 @@ public class ProgressListener extends AbstractEventListener {
 					} else 
 					sb.append(s.requirementsNeeded().iterator().next());
 				} catch (Exception e) {
-					logger.error("cannot print needed requirements for step " + s, e);
+					logger.debug("cannot print needed requirements for step " + s, e);
 				}
 			}
 			
