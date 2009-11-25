@@ -36,6 +36,7 @@ public class LSF {
 	public static List<String> getBsubFlagCommandStrings() {
 		final List<String> list = new ArrayList<String>();
 		list.add("-K");
+		list.add("-r");
 		return list;
 	}
 }
