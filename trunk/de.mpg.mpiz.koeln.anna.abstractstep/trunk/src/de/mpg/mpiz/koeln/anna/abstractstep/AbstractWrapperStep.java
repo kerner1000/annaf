@@ -23,6 +23,7 @@ import de.mpg.mpiz.koeln.anna.step.StepExecutionException;
  * @lastVisit 2009-10-02
  * @param <T>
  *            type of {@link de.mpg.mpiz.koeln.anna.server.data.DataBean}
+ * 
  */
 public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 

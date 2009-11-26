@@ -15,6 +15,7 @@ import de.kerner.commons.logging.Log;
  * @author Alexander Kerner
  * @ThreadSave state final, ConcurrentHashMap
  * @Exceptions nothing to do, abstract class
+ * @deprecated use {@code de.kerner.commons.exec.AbstractProcessRunner} instead
  *
  */
 public abstract class AbstractStepProcessBuilder {
