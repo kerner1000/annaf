@@ -9,6 +9,16 @@
 		<managed-bean-class>de.mpg.mpiz.koeln.anna.UploadBacking</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>selectTrainingSpeciesBacking</managed-bean-name>
+		<managed-bean-class>de.mpg.mpiz.koeln.anna.SelectTrainingSpeciesBacking</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>trainingSpeciesBean</managed-bean-name>
+		<managed-bean-class>de.mpg.mpiz.koeln.anna.TrainingSpeciesBean</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
 	
 	<navigation-rule>
 		<from-view-id>/*</from-view-id>
