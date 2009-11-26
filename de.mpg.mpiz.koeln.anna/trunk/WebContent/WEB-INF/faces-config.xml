@@ -35,5 +35,13 @@
 			<to-view-id>/submit.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>local</from-outcome>
+			<to-view-id>/local.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 
 </faces-config>

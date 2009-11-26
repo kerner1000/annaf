@@ -33,12 +33,9 @@
 
 		<h:panelGroup layout="block">
 			<h:form>
-				<t:selectOneMenu id="speciesSelect"
-					binding="#{selectTrainingSpeciesBacking.list}"
-					title="Select Species to train on">
-					<f:selectItem id="si1" itemLabel="Thums Up" itemValue="11" />
-					<f:selectItem id="si2" itemLabel="Limca" itemValue="22" />
-				</t:selectOneMenu>
+				<h:selectOneMenu>
+				<f:selectItems binding="#{selectTrainingSpeciesBacking.stringList}"/>
+				</h:selectOneMenu>
 			</h:form>
 		</h:panelGroup>
 
