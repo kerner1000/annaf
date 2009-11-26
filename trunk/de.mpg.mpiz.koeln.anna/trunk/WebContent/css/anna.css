@@ -1,19 +1,46 @@
 .sidePane {
 	float: left;
 	width: 20%;
-	
+	padding-top: 50px;
+	background-color: silver;
 }
 
 .sidePaneElement {
 	float: none;
-	background-color: gray;
 	padding: 10px;
 	height: 100%;
 }
 
-.annotate {
-	
-	background-color: silver;
+.contentElement, .annotate, .local, .home {
 	float: left;
 	width: 80%;
+	
 }
+
+.home {
+	
+}
+
+.welcome {
+	text-align: center;
+	padding: 10px;	
+	font-size: 200%;
+}
+
+
+.annotate {
+	
+}
+
+.local {
+	background-color: fuchsia;
+}
+
+.local-text {
+	
+}
+
+.introduction {
+
+}
+

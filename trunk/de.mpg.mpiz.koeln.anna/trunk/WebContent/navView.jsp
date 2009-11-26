@@ -12,5 +12,8 @@
 			<h:panelGroup layout="block" styleClass="sidePaneElement">
 				<h:commandLink value="Annotate!" action="submit"></h:commandLink>
 			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="sidePaneElement">
+				<h:commandLink value="Run locally" action="local"></h:commandLink>
+			</h:panelGroup>
 		</h:panelGroup>
 	</h:form>
