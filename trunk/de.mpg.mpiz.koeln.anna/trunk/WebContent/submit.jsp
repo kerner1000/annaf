@@ -15,22 +15,36 @@
 	<f:subview id="navView">
 		<jsp:include page="navView.jsp" />
 	</f:subview>
-	
+
 	<h:panelGroup layout="block" styleClass="annotate">
-	<h:form id="formFileUpload" enctype="multipart/form-data">
-		<h:outputLabel value="Upload FASTA file"></h:outputLabel>
-		<t:inputFileUpload id="fileupload" value="#{uploadBacking.myFile}"
-			required="true" />
-		<h:commandButton value="upload"></h:commandButton>
-		<h:outputLabel value="File size: "></h:outputLabel>
-		<h:outputLabel value="#{uploadBacking.fileSize}"></h:outputLabel>
-		<h:outputLabel value=" File name: "></h:outputLabel>
-		<h:outputLabel value="#{uploadBacking.myFile}"></h:outputLabel>
-	</h:form>
-	
+
+		<h:panelGroup layout="block">
+			<h:form id="formFileUpload" enctype="multipart/form-data">
+				<h:outputLabel value="Upload FASTA file"></h:outputLabel>
+				<t:inputFileUpload id="fileupload" value="#{uploadBacking.myFile}"
+					required="true" />
+				<h:commandButton value="upload"></h:commandButton>
+				<h:outputLabel value="File size: "></h:outputLabel>
+				<h:outputLabel value="#{uploadBacking.fileSize}"></h:outputLabel>
+				<h:outputLabel value=" File name: "></h:outputLabel>
+				<h:outputLabel value="#{uploadBacking.myFile}"></h:outputLabel>
+			</h:form>
+		</h:panelGroup>
+
+		<h:panelGroup layout="block">
+			<h:form>
+				<t:selectOneMenu id="speciesSelect"
+					binding="#{selectTrainingSpeciesBacking.list}"
+					title="Select Species to train on">
+					<f:selectItem id="si1" itemLabel="Thums Up" itemValue="11" />
+					<f:selectItem id="si2" itemLabel="Limca" itemValue="22" />
+				</t:selectOneMenu>
+			</h:form>
+		</h:panelGroup>
+
 	</h:panelGroup>
-	
-	
+
+
 </f:view>
 </body>
 </html>
