@@ -59,6 +59,13 @@ public abstract class AbstractPredict extends AbstractGFF3WrapperStep {
 
 	}
 	
+	// Override // 
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
+	
 	// Implement //
 
 	@Override
