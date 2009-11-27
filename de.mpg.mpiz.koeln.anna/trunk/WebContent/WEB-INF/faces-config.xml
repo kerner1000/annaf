@@ -19,6 +19,32 @@
 		<managed-bean-class>de.mpg.mpiz.koeln.anna.TrainingSpeciesBean</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>configBean</managed-bean-name>
+		<managed-bean-class>de.mpg.mpiz.koeln.anna.ConfigBean</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+		<managed-property>
+			<property-name>workingDir</property-name>
+			<property-class>java.lang.String</property-class>
+			<value>/home/proj/kerner/diplom/anna/annaWorkingDir</value>
+		</managed-property>
+		<managed-property>
+			<property-name>zipName</property-name>
+			<property-class>java.lang.String</property-class>
+			<value>anna-zipped.zip</value>
+		</managed-property>
+			<managed-property>
+				<property-name>trainingFileName</property-name>
+				<property-class>java.lang.String</property-class>
+				<value>trainingFile.bin</value>
+		</managed-property>
+		
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>runBacking</managed-bean-name>
+		<managed-bean-class>de.mpg.mpiz.koeln.anna.RunBacking</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
 	
 	<navigation-rule>
 		<from-view-id>/*</from-view-id>
@@ -43,5 +69,11 @@
 			<to-view-id>/local.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+	<converter>
+		<display-name>trainingSpeciesConverter</display-name>
+		<converter-id>trainingSpeciesConverter</converter-id>
+		<converter-class>de.mpg.mpiz.koeln.anna.TrainingSpeciesConverter</converter-class>
+	</converter>
 
 </faces-config>

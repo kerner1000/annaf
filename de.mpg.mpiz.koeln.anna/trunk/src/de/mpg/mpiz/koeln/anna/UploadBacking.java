@@ -1,13 +1,18 @@
 package de.mpg.mpiz.koeln.anna;
 
-import java.io.File;
-
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 
 import de.kerner.commons.file.HumanReadableFileSizePrinter;
 import de.kerner.commons.logging.Log;
 
 public class UploadBacking {
+	
+	/**
+	 * <p> For example "#{userBean}" </p>
+	 */
+	public static String getIdentString(){
+		return "#{uploadBacking}";
+	}
 	
 	private final static Log log = new Log(UploadBacking.class);
 	

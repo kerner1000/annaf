@@ -12,32 +12,53 @@
 </head>
 <body>
 <f:view>
+
+	<f:loadBundle basename="de.mpg.mpiz.koeln.anna.resources.resources"
+		var="res" />
+
 	<f:subview id="navView">
 		<jsp:include page="navView.jsp" />
 	</f:subview>
 
 	<h:panelGroup layout="block" styleClass="annotate">
 
-		<h:panelGroup layout="block">
-			<h:form id="formFileUpload" enctype="multipart/form-data">
+			<h:panelGroup layout="block" styleClass="annotate-intro">
+				<h:outputText value="#{res[\'annotate.intro\']}"></h:outputText>
+			</h:panelGroup>
+		
+
+		<h:panelGroup layout="block" styleClass="fileUpload">
+			<h:panelGrid columns="2" width="100%">
 				<h:outputLabel value="Upload FASTA file"></h:outputLabel>
+				<h:panelGroup rendered="#{uploadBacking.myFile ne null}">
+					<h:outputLabel value="File size: "></h:outputLabel>
+					<h:outputLabel value="#{uploadBacking.fileSize}"></h:outputLabel>
+				</h:panelGroup>
+			</h:panelGrid>
+			<h:form id="formFileUpload" enctype="multipart/form-data">
 				<t:inputFileUpload id="fileupload" value="#{uploadBacking.myFile}"
 					required="true" />
 				<h:commandButton value="upload"></h:commandButton>
-				<h:outputLabel value="File size: "></h:outputLabel>
-				<h:outputLabel value="#{uploadBacking.fileSize}"></h:outputLabel>
-				<h:outputLabel value=" File name: "></h:outputLabel>
-				<h:outputLabel value="#{uploadBacking.myFile}"></h:outputLabel>
 			</h:form>
 		</h:panelGroup>
 
-		<h:panelGroup layout="block">
+		<h:panelGroup layout="block" styleClass="speciesSelect">
+		<h:outputLabel value="Select organism to train on"></h:outputLabel>
 			<h:form>
-				<h:selectOneMenu>
-				<f:selectItems binding="#{selectTrainingSpeciesBacking.stringList}"/>
+				<h:selectOneMenu id="species" value="1"
+					converter="trainingSpeciesConverter">
+					<f:selectItems value="#{selectTrainingSpeciesBacking.list}" />
 				</h:selectOneMenu>
 			</h:form>
 		</h:panelGroup>
+		
+		<h:panelGroup layout="block" styleClass="run">
+		<h:form>
+		<h:commandButton value="run!" action="#{runBacking.run}"></h:commandButton>
+		</h:form>
+		</h:panelGroup>
+		
+		<h:messages></h:messages>
 
 	</h:panelGroup>
 

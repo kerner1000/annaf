@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf12591565411190" configfile="/de.mpg.mpiz.koeln.anna/WebContent/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="*" id="pf12591619573331" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf12591619573332 pf125916346392910" path="/*"/>
-  <nodes xsi:type="pageflow:PFPage" name="home" id="pf12591619573336" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf12591619573332" path="/home.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="submit" id="pf125916346392911" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf125916346392910" path="/submit.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="562" id="pf12591619573331" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf12591619573332 pf125916346392910 pf12593173704250" path="/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="home" x="338" y="178" id="pf12591619573336" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf12591619573332" path="/home.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="submit" x="338" y="562" id="pf125916346392911" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf125916346392910" path="/submit.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="local" x="338" y="946" id="pf12593173704251" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" inlinks="pf12593173704250" path="/local.jsp"/>
   <links id="pf12591619573332" target="pf12591619573336" source="pf12591619573331" outcome="home"/>
   <links id="pf125916346392910" target="pf125916346392911" source="pf12591619573331" outcome="submit"/>
+  <links id="pf12593173704250" target="pf12593173704251" source="pf12591619573331" outcome="local"/>
 </pageflow:Pageflow>

@@ -67,7 +67,8 @@ public abstract class AbstractPredict extends AbstractGFF3WrapperStep {
 
 	@Override
 	public void prepare(DataProxy<GFF3DataBean> data) throws Throwable {
-		createFiles(data);
+		// its to late to do that here
+		//createFiles(data);
 	}
 
 	@Override
@@ -132,6 +133,7 @@ public abstract class AbstractPredict extends AbstractGFF3WrapperStep {
 
 	@Override
 	public boolean run(DataProxy<GFF3DataBean> data) throws Throwable {
+		createFiles(data);
 		addShortCutFile(resultFile.getAbsoluteFile());
 		addResultFileToWaitFor(resultFile.getAbsoluteFile());
 		return start();
