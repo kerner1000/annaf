@@ -22,28 +22,25 @@ public abstract class AbstractPredict extends AbstractGFF3WrapperStep {
 	protected final static String TRAIN_PREFIX_KEY = "predict.";
 	protected volatile File resultFile = null;
 	protected volatile File trainingFile = null;
-	
+
 	// Constructor //
-	
-	public AbstractPredict(){
+
+	public AbstractPredict() {
 		super(new File(ConradConstants.WORKING_DIR), new File(
 				ConradConstants.WORKING_DIR));
 	}
-	
+
 	// Private //
 
-	private void createFiles(DataProxy<GFF3DataBean> data) throws Exception {
+	private void createFiles(DataProxy<GFF3DataBean> data) throws Throwable {
 		resultFile = new File(workingDir, "result.gff");
-		final Serializable trainingFileString = data.viewData().getCustom(
+		trainingFile = (File) data.viewData().getCustom(
 				ConradConstants.TRAINING_FILE_KEY);
-		trainingFile = new File(getStepProperties().getProperty(
-				(String) trainingFileString));
 		final File file = new File(workingDir, "ref.fasta");
 		new NewFASTAFileImpl(data.viewData().getInputSequence()).write(file);
-		logger.debug(StringUtils
-				.getString("got ", trainingFile,
-						" as training file from data proxy (size=", trainingFile
-								.length(), ")"));
+		logger.debug(StringUtils.getString("got ", trainingFile,
+				" as training file from data proxy (size=", trainingFile
+						.length(), ")"));
 
 		// copying does not work for some reason.
 		// take "original" file for now
@@ -58,14 +55,14 @@ public abstract class AbstractPredict extends AbstractGFF3WrapperStep {
 		// trainingFile.deleteOnExit();
 
 	}
-	
-	// Override // 
-	
+
+	// Override //
+
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName();
 	}
-	
+
 	// Implement //
 
 	@Override
@@ -75,7 +72,8 @@ public abstract class AbstractPredict extends AbstractGFF3WrapperStep {
 
 	@Override
 	public void update(DataProxy<GFF3DataBean> data) throws Throwable {
-		final GFF3ElementGroup c = GFF3Utils.convertFromGFFFile(resultFile, true).getElements();
+		final GFF3ElementGroup c = GFF3Utils.convertFromGFFFile(resultFile,
+				true).getElements();
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
 				v.setPredictedGenesGFF(c);
@@ -99,30 +97,36 @@ public abstract class AbstractPredict extends AbstractGFF3WrapperStep {
 	@Override
 	public boolean requirementsSatisfied(DataProxy<GFF3DataBean> data)
 			throws Throwable {
-		final Serializable trainingFileString = data.viewData().getCustom(
-				ConradConstants.TRAINING_FILE_KEY);
-		boolean trainingFileBoolean = false;
-		if (trainingFileString == null) {
-			// not there, actually we can return right away
-		} else {
-			trainingFile = new File(getStepProperties().getProperty(
-					(String) trainingFileString));
-			trainingFileBoolean = FileUtils.fileCheck(trainingFile, false);
 
+		final boolean trainingFileNotNull = (data.viewData().getCustom(ConradConstants.TRAINING_FILE_KEY) != null);
+		if(trainingFileNotNull){
+			final File trainingFileFile = (File) data.viewData().getCustom(ConradConstants.TRAINING_FILE_KEY);
+			
+			if(!FileUtils.fileCheck(trainingFileFile, false)){
+				logger.info("cannot access training file \"" + trainingFileFile + "\"");
+				return false;
+			}
+			
+			// at this point training file is there and accessible
+			final boolean inputSequences = (data.viewData().getInputSequence() != null);
+			final boolean inputSequencesSize = (!data.viewData().getInputSequence()
+					.isEmpty());
+			logger.debug(StringUtils.getString("requirements: trainingFile=",
+					trainingFileFile));
+			logger.debug(StringUtils.getString("requirements: inputSequences=",
+					inputSequences));
+			logger.debug(StringUtils.getString("requirements: inputSequencesSize=",
+					inputSequencesSize));
+			
+			return (inputSequences && inputSequencesSize);
+			
+		} else {
+			logger.debug(StringUtils.getString("requirements: trainingFileNotNull=",
+					trainingFileNotNull));
+			return false;
 		}
 
-		final boolean inputSequences = (data.viewData().getInputSequence() != null);
-		final boolean inputSequencesSize = (!data.viewData().getInputSequence()
-				.isEmpty());
-
-		logger.debug(StringUtils.getString("requirements: trainingFile=",
-				trainingFile));
-		logger.debug(StringUtils.getString("requirements: inputSequences=",
-				inputSequences));
-		logger.debug(StringUtils.getString("requirements: inputSequencesSize=",
-				inputSequencesSize));
-
-		return (trainingFileBoolean && inputSequences && inputSequencesSize);
+		
 
 	}
 

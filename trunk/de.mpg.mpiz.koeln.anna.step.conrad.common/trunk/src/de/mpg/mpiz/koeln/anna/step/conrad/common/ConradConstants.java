@@ -26,6 +26,6 @@ public class ConradConstants {
 	
 	public final static String PROPERTIES_KEY_PREFIX = "anna.step.conrad.";
 	
-	public static final String TRAINING_FILE = "conrad.trainingfile";
+	public static final String TRAINING_FILE_REFIX = "conrad.trainingfile";
 
 }
