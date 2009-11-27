@@ -30,6 +30,11 @@ public abstract class AbstractTrain extends AbstractGFF3WrapperStep {
 	}
 
 	// Override //
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
 
 	@Override
 	public List<String> requirementsNeeded(DataProxy<GFF3DataBean> data)

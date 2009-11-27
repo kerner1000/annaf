@@ -154,9 +154,4 @@ public abstract class AbstractAnnaStep<V> implements BundleActivator, AnnaStep {
 			return new ArrayList<String>();
 		}
 	}
-	
-	@Override
-	public String toString() {
-		return this.getClass().getSimpleName();
-	}
 }

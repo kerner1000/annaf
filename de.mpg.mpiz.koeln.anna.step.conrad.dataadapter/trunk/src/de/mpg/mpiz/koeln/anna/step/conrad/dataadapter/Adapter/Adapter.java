@@ -143,6 +143,11 @@ public class Adapter extends AbstractGFF3AnnaStep {
 	}
 
 	// Override //
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
 
 	@Override
 	protected void init(BundleContext context) throws StepExecutionException {
