@@ -17,6 +17,11 @@
 	
 }
 
+.annotateElement, .annotate-intro, .fileUpload, .speciesSelect, .run {
+	padding: 10px;
+	text-align: center;
+}
+
 .home {
 	
 }
@@ -29,7 +34,19 @@
 
 
 .annotate {
-	
+	background-color: gray;
+}
+
+.annotate-intro {
+	background-color: lime;
+}
+
+.fileUpload {
+	background-color: purple;
+}
+
+.speciesSelect {
+
 }
 
 .local {
@@ -38,6 +55,10 @@
 
 .local-text {
 	
+}
+
+.run {
+	background-color: olive;
 }
 
 .introduction {
