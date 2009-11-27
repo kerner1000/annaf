@@ -85,9 +85,9 @@ public abstract class AbstractTrain extends AbstractGFF3WrapperStep {
 	@Override
 	public boolean canBeSkipped(DataProxy<GFF3DataBean> data) throws Throwable {
 		boolean trainingFile = false;
-		if (getStepProperties().getProperty(ConradConstants.TRAINING_FILE) != null) {
+		if (getStepProperties().getProperty(ConradConstants.TRAINING_FILE_REFIX) != null) {
 			trainingFile = FileUtils.fileCheck((File) data.viewData()
-					.getCustom(ConradConstants.TRAINING_FILE), false);
+					.getCustom(ConradConstants.TRAINING_FILE_REFIX), false);
 		}
 		logger.debug("need to run: trainingFile=" + trainingFile);
 		return trainingFile;
