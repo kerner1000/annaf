@@ -33,7 +33,7 @@ public abstract class AbstractPredict extends AbstractGFF3WrapperStep {
 	// Private //
 
 	private void createFiles(DataProxy<GFF3DataBean> data) throws Throwable {
-		resultFile = new File(workingDir, "result.gff");
+		resultFile = new File(workingDir, "result.gtf");
 		trainingFile = (File) data.viewData().getCustom(
 				ConradConstants.TRAINING_FILE_KEY);
 		final File file = new File(workingDir, "ref.fasta");
