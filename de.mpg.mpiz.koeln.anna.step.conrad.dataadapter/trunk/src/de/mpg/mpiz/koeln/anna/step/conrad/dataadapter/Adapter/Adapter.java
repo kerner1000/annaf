@@ -16,6 +16,7 @@ import de.bioutils.gff3.IntegrityCheckException;
 import de.bioutils.gff3.Type;
 import de.bioutils.gff3.file.GFF3File;
 import de.bioutils.gff3.file.GFF3FileImpl;
+import de.bioutils.range.Range;
 import de.kerner.commons.logging.Log;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
 import de.mpg.mpiz.koeln.anna.data.GFF3DataBean;
@@ -225,6 +226,10 @@ public class Adapter extends AbstractGFF3AnnaStep {
 		GFF3FASTAUnion union = new GFF3FASTAUnionImpl(gff3File, fastaFile);
 		doIntegrityCheck(union);
 
+		final Range r = union.getGFF3ElementGroup().getRange();
+		if(new Integer(getStepProperties().getProperty(MAX_LENGH_KEY)) > r.getLength()){
+			logger.debug("no elements out of range, wont trimm");
+		} else 
 		union = trimmFastaElements(union);
 
 		union = removeNonAlphabetMatching(union);
