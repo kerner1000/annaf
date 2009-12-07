@@ -2,7 +2,12 @@ package de.mpg.mpiz.koeln.anna.step.inputsequencereader;
 
 import java.io.File;
 
+import de.bioutils.AbstractSequence;
+import de.bioutils.DNABasicAlphabet;
+import de.bioutils.fasta.FASTAElement;
 import de.bioutils.fasta.FASTAElementGroup;
+import de.bioutils.fasta.FASTAElementGroupImpl;
+import de.bioutils.fasta.FASTAElementImpl;
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
 import de.mpg.mpiz.koeln.anna.data.GFF3DataBean;
@@ -43,6 +48,20 @@ public class InputSequenceReader extends AbstractGFF3AnnaStep {
 		}
 		logger.debug("got input sequences:"
 				+ fastas.iterator().next().getHeader() + " [...]");
+		
+		logger.debug("checking for valid alphabet");
+		final FASTAElementGroup newFastas = new FASTAElementGroupImpl();
+		for(FASTAElement e : fastas){
+			final AbstractSequence s = e.getSequence();
+			if(s.matchesAlphabet(new DNABasicAlphabet())){
+				// all good
+			} else {
+				logger.warn("Sequence " + "\"" + e.getHeader() + "\" does not match alphabet " + new DNABasicAlphabet() + ", will change concerning characters to \"n\"");
+			s.makeConformToAlphabet(new DNABasicAlphabet(), 'n');
+			}
+			newFastas.add(new FASTAElementImpl(e.getHeader(), s));
+		}
+		
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
 				v.setInputSequence(fastas);
