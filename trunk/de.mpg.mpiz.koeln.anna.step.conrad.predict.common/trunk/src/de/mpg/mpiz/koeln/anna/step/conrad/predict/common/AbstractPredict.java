@@ -38,6 +38,7 @@ public abstract class AbstractPredict extends AbstractGFF3WrapperStep {
 				ConradConstants.TRAINING_FILE_KEY);
 		final File file = new File(workingDir, "ref.fasta");
 		new NewFASTAFileImpl(data.viewData().getInputSequence()).write(file);
+		
 		logger.debug(StringUtils.getString("got ", trainingFile,
 				" as training file from data proxy (size=", trainingFile
 						.length(), ")"));
