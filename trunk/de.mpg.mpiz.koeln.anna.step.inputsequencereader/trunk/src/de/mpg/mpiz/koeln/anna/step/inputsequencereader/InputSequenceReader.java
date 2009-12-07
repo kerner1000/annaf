@@ -52,7 +52,7 @@ public class InputSequenceReader extends AbstractGFF3AnnaStep {
 		
 		logger.debug("checking for valid alphabet");
 		final FASTAElementGroup sequencesNew = FastaUtils.adaptToAlphabet(fastas, new DNABasicAlphabet());
-		new NewFASTAFileImpl(sequencesNew).write(new File("/home/pcb/kerner/Desktop/input.fasta"));
+		//new NewFASTAFileImpl(sequencesNew).write(new File("/home/pcb/kerner/Desktop/input.fasta"));
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
 				v.setInputSequence(sequencesNew);
