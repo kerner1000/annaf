@@ -139,7 +139,7 @@ public class Adapter extends AbstractGFF3AnnaStep {
 						.getSequence().getLength());
 		logger.debug("length of longest GFF3: "
 				+ unionReducedSize.getGFF3ElementGroup().getLargestElement()
-						.getRange());
+						.getRange().getLength());
 		return unionReducedSize;
 	}
 
