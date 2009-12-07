@@ -8,8 +8,13 @@ import java.util.List;
 
 import org.osgi.framework.BundleContext;
 
+import de.bioutils.AbstractSequence;
+import de.bioutils.DNABasicAlphabet;
 import de.bioutils.fasta.FASTAElement;
 import de.bioutils.fasta.FASTAElementGroup;
+import de.bioutils.fasta.FASTAElementGroupImpl;
+import de.bioutils.fasta.FASTAElementImpl;
+import de.bioutils.fasta.FastaUtils;
 import de.bioutils.fasta.NewFASTAFile;
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
@@ -94,9 +99,13 @@ public class VerifiedGenesReader extends AbstractGFF3AnnaStep {
 		final NewFASTAFile fastaFile = NewFASTAFileImpl.parse(fasta);
 		final FASTAElementGroup sequences = fastaFile.getElements();
 		logger.info("done reading fasta");
+		
+		logger.debug("checking for valid alphabet");
+		final FASTAElementGroup sequencesNew = FastaUtils.adaptToAlphabet(sequences, new DNABasicAlphabet());
+		
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
-				v.setVerifiedGenesFasta(sequences);
+				v.setVerifiedGenesFasta(sequencesNew);
 			}
 		});
 	}

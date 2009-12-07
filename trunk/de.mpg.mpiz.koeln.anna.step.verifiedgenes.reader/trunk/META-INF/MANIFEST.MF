@@ -4,7 +4,8 @@ Bundle-Name: verified genes reader
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.verifiedgenes.reader
 Bundle-Version: 0.4.0.qualifier
 Bundle-Activator: de.mpg.mpiz.koeln.anna.step.verifiedgenes.reader.VerifiedGenesReader
-Import-Package: de.bioutils.fasta,
+Import-Package: de.bioutils,
+ de.bioutils.fasta,
  de.bioutils.frame,
  de.bioutils.gff,
  de.bioutils.gff.element,
