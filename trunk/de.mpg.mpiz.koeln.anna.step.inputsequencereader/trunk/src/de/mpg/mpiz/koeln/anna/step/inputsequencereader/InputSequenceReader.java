@@ -34,7 +34,7 @@ public class InputSequenceReader extends AbstractGFF3AnnaStep {
 
 		final File inFile = new File(getStepProperties()
 				.getProperty(INFILE_KEY));
-		logger.debug("reading file " + inFile);
+		logger.info("reading file " + inFile);
 		final FASTAElementGroup fastas = NewFASTAFileImpl.parse(inFile)
 				.getElements();
 		if (fastas == null || fastas.isEmpty()) {
