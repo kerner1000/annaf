@@ -90,14 +90,14 @@ public class Adapter extends AbstractGFF3AnnaStep {
 		return unionTrimmed;
 	}
 
-	private GFF3FASTAUnion removeNonAlphabetMatching(GFF3FASTAUnion union)
-			throws IntegrityCheckException {
-		logger.debug("removing fastas that do not match alphabet \""
-				+ new DNABasicAlphabet() + "\"");
-		final GFF3FASTAUnion union2 = union
-				.removeNonAlphabetMatching(new DNABasicAlphabet());
-		return union2;
-	}
+//	private GFF3FASTAUnion removeNonAlphabetMatching(GFF3FASTAUnion union)
+//			throws IntegrityCheckException {
+//		logger.debug("removing fastas that do not match alphabet \""
+//				+ new DNABasicAlphabet() + "\"");
+//		final GFF3FASTAUnion union2 = union
+//				.removeNonAlphabetMatching(new DNABasicAlphabet());
+//		return union2;
+//	}
 
 	private GFF3FASTAUnion removeAllWithRangeGreater(GFF3FASTAUnion union)
 			throws IntegrityCheckException {
@@ -232,7 +232,7 @@ public class Adapter extends AbstractGFF3AnnaStep {
 		} else 
 		union = trimmFastaElements(union);
 
-		union = removeNonAlphabetMatching(union);
+//		union = removeNonAlphabetMatching(union);
 
 		union = removeAllWithRangeGreater(union);
 
