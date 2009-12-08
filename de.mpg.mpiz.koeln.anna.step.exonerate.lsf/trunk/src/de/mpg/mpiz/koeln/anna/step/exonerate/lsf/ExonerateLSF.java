@@ -14,7 +14,7 @@ public class ExonerateLSF extends AbstractStepExonerate {
 	public List<String> getCmdList() {
 		final CommandStringBuilder builder = new CommandStringBuilder(LSF.BSUB_EXE);
 		builder.addAllFlagCommands(LSF.getBsubFlagCommandStrings());
-		builder.addAllValueCommands(LSF.getBsubValueCommandStrings(workingDir));
+		builder.addAllValueCommands(LSF.getBsubValueCommandStringsFailSave(workingDir));
 		builder.addFlagCommand(new File(
 				exeDir, ExonerateConstants.EXE).getAbsolutePath());
 		builder.addValueCommand("--showquerygff", "yes");
