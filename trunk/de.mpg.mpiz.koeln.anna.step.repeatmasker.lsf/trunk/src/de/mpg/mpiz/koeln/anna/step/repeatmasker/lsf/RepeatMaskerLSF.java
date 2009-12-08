@@ -14,7 +14,7 @@ public class RepeatMaskerLSF extends AbstractStepRepeatMasker {
 	public List<String> getCmdList() {
 		final CommandStringBuilder builder = new CommandStringBuilder(LSF.BSUB_EXE);
 		builder.addAllFlagCommands(LSF.getBsubFlagCommandStrings());
-		builder.addAllValueCommands(LSF.getBsubValueCommandStrings(workingDir));
+		builder.addAllValueCommands(LSF.getBsubValueCommandStringsFailSave(workingDir));
 		builder.addFlagCommand(new File(
 				exeDir, RepeatMaskerConstants.EXE).getAbsolutePath());
 //		builder.addAllFlagCommands("-s");
