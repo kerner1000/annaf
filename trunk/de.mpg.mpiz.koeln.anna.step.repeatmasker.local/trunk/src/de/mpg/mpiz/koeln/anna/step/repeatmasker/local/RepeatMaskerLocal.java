@@ -13,10 +13,11 @@ public class RepeatMaskerLocal extends AbstractStepRepeatMasker {
 	public List<String> getCmdList() {
 		final CommandStringBuilder builder = new CommandStringBuilder(new File(
 				exeDir, RepeatMaskerConstants.EXE).getAbsolutePath());
+		builder.addAllFlagCommands(RepeatMaskerConstants.OPTIONS_FLAG);
 //		builder.addValueCommand("-pa", "2");
 //		builder.addAllFlagCommands("-s");
-		builder.addFlagCommand("-gff");
-		builder.addFlagCommand("-qq");
+//		builder.addFlagCommand("-gff");
+//		builder.addFlagCommand("-qq");
 		builder.addFlagCommand(inFile.getAbsolutePath());
 		return builder.getCommandList();
 	}	
