@@ -119,6 +119,7 @@ public class AnnaServerImpl implements AnnaServer {
 	}
 
 	public void shutdown() {
+		logger.debug("shutting down server");
 		exe.shutdown();
 				
 	}
