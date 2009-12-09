@@ -18,6 +18,7 @@ public class RepeatMaskerLSF extends AbstractStepRepeatMasker {
 		builder.addFlagCommand(new File(
 				exeDir, RepeatMaskerConstants.EXE).getAbsolutePath());
 		builder.addAllFlagCommands(RepeatMaskerConstants.OPTIONS_FLAG);
+		builder.addAllValueCommands(RepeatMaskerConstants.OPTIONS_VALUE);
 //		builder.addAllFlagCommands("-s");
 //		builder.addFlagCommand("-gff");
 		builder.addFlagCommand(inFile.getAbsolutePath());

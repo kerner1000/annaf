@@ -14,6 +14,7 @@ public class RepeatMaskerLocal extends AbstractStepRepeatMasker {
 		final CommandStringBuilder builder = new CommandStringBuilder(new File(
 				exeDir, RepeatMaskerConstants.EXE).getAbsolutePath());
 		builder.addAllFlagCommands(RepeatMaskerConstants.OPTIONS_FLAG);
+		builder.addAllValueCommands(RepeatMaskerConstants.OPTIONS_VALUE);
 //		builder.addValueCommand("-pa", "2");
 //		builder.addAllFlagCommands("-s");
 //		builder.addFlagCommand("-gff");
