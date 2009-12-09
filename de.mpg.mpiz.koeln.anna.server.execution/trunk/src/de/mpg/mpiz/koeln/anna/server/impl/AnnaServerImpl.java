@@ -117,4 +117,9 @@ public class AnnaServerImpl implements AnnaServer {
 			logger.debug("step was errorgenious, will not change state");
 		handler.stepStateChanged((AnnaStep) step);
 	}
+
+	public void shutdown() {
+		exe.shutdown();
+				
+	}
 }

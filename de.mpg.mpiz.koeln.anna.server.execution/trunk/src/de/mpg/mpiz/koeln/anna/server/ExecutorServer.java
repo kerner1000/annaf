@@ -13,5 +13,7 @@ public interface ExecutorServer extends Server {
 	void registerStep(ExecutableStep step);
 
 	void unregisterStep(ExecutableStep step);
+	
+	void shutdown();
 
 }
