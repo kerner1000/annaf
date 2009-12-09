@@ -3,6 +3,7 @@ package de.mpg.mpiz.koeln.anna.listener.annafinishedlistener;
 import java.util.Collection;
 
 import de.kerner.commons.logging.Log;
+import de.kerner.commons.osgi.utils.ServiceNotAvailabeException;
 import de.mpg.mpiz.koeln.anna.core.events.AnnaEvent;
 import de.mpg.mpiz.koeln.anna.listener.abstractlistener.AbstractEventListener;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
@@ -26,11 +27,20 @@ public class FinishedListener extends AbstractEventListener {
 				logger.info("pipeline finished!");
 			}
 			logger.info(POST_LINE);
+			shutdownPipeline();
 		} else {
 			// ignore
 		}
 	}
 	
+	private void shutdownPipeline() {
+		try {
+			super.getServer().shutdown();
+		} catch (Throwable e) {
+			logger.error(e.getLocalizedMessage(), e);
+		}
+	}
+
 	private boolean areWeDone(AnnaEvent event){
 		final Collection<AnnaStep> eventList = event.getRegisteredSteps();
 		for(AnnaStep s : eventList){
