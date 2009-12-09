@@ -97,8 +97,10 @@ public class VerifiedGenesReader extends AbstractGFF3AnnaStep {
 			DataBeanAccessException, StepExecutionException {
 		logger.info("reading FASTA file " + fasta);
 		final NewFASTAFile fastaFile = NewFASTAFileImpl.parse(fasta);
-		final FASTAElementGroup sequences = fastaFile.getElements();
+		FASTAElementGroup sequences = fastaFile.getElements();
 		logger.info("done reading fasta");
+		
+		sequences = trimmFasta(sequences);
 		
 		logger.debug("checking for valid alphabet");
 		final FASTAElementGroup sequencesNew = FastaUtils.adaptToAlphabet(sequences, new DNABasicAlphabet());
@@ -108,6 +110,17 @@ public class VerifiedGenesReader extends AbstractGFF3AnnaStep {
 				v.setVerifiedGenesFasta(sequencesNew);
 			}
 		});
+	}
+	
+	private FASTAElementGroup trimmFasta(FASTAElementGroup fastas) {
+		final String tmpHeader = fastas.iterator().next()
+				.getHeader();
+		logger.debug("trimming fasta headers");
+		fastas = FastaUtils.trimHeader(fastas);
+		logger.debug("done trimming fasta headers");
+		logger.debug("old header: \"" + tmpHeader + "\", new header: \""
+				+ fastas.iterator().next().getHeader() + "\"");
+		return fastas;
 	}
 
 	public boolean canBeSkipped(DataProxy<GFF3DataBean> data) throws Throwable {

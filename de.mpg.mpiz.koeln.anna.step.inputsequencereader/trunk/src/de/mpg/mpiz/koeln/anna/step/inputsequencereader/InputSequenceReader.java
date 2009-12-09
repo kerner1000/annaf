@@ -9,6 +9,7 @@ import de.bioutils.fasta.FASTAElementGroup;
 import de.bioutils.fasta.FASTAElementGroupImpl;
 import de.bioutils.fasta.FASTAElementImpl;
 import de.bioutils.fasta.FastaUtils;
+import de.bioutils.fasta.NewFASTAFile;
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
 import de.mpg.mpiz.koeln.anna.data.GFF3DataBean;
@@ -41,7 +42,7 @@ public class InputSequenceReader extends AbstractGFF3AnnaStep {
 		final File inFile = new File(getStepProperties()
 				.getProperty(INFILE_KEY));
 		logger.info("reading file " + inFile);
-		final FASTAElementGroup fastas = NewFASTAFileImpl.parse(inFile)
+		FASTAElementGroup fastas = NewFASTAFileImpl.parse(inFile)
 				.getElements();
 		if (fastas == null || fastas.isEmpty()) {
 			logger.warn("file " + inFile + " is invalid");
@@ -49,6 +50,8 @@ public class InputSequenceReader extends AbstractGFF3AnnaStep {
 		}
 		logger.debug("got input sequences:"
 				+ fastas.iterator().next().getHeader() + " [...]");
+		
+		fastas = trimmFasta(fastas);
 		
 		logger.debug("checking for valid alphabet");
 		final FASTAElementGroup sequencesNew = FastaUtils.adaptToAlphabet(fastas, new DNABasicAlphabet());
@@ -59,6 +62,17 @@ public class InputSequenceReader extends AbstractGFF3AnnaStep {
 			}
 		});
 		return true;
+	}
+	
+	private FASTAElementGroup trimmFasta(FASTAElementGroup fastas) {
+		final String tmpHeader = fastas.iterator().next()
+				.getHeader();
+		logger.debug("trimming fasta headers");
+		fastas = FastaUtils.trimHeader(fastas);
+		logger.debug("done trimming fasta headers");
+		logger.debug("old header: \"" + tmpHeader + "\", new header: \""
+				+ fastas.iterator().next().getHeader() + "\"");
+		return fastas;
 	}
 
 	@Override
