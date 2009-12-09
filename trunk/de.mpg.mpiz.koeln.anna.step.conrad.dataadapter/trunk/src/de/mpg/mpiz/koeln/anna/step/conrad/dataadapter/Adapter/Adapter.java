@@ -61,17 +61,6 @@ public class Adapter extends AbstractGFF3AnnaStep {
 		}
 	}
 
-	private NewFASTAFile trimmFasta(NewFASTAFile file) {
-		final String tmpHeader = file.getElements().iterator().next()
-				.getHeader();
-		logger.debug("trimming fasta headers");
-		file = FastaUtils.trimHeader(file);
-		logger.debug("done trimming fasta headers");
-		logger.debug("old header: \"" + tmpHeader + "\", new header: \""
-				+ file.getElements().iterator().next().getHeader() + "\"");
-		return file;
-	}
-
 	private GFF3FASTAUnion trimmFastaElements(GFF3FASTAUnion union)
 			throws NumberFormatException, IntegrityCheckException {
 		logger.debug("trimming fasta element length (Offset:"
@@ -217,7 +206,7 @@ public class Adapter extends AbstractGFF3AnnaStep {
 		NewFASTAFile fastaFile = new NewFASTAFileImpl(proxy.viewData()
 				.getVerifiedGenesFasta());
 
-		fastaFile = trimmFasta(fastaFile);
+		//fastaFile = trimmFasta(fastaFile);
 
 		final GFF3File gff3File = new GFF3FileImpl(proxy.viewData()
 				.getVerifiedGenesGFF());
