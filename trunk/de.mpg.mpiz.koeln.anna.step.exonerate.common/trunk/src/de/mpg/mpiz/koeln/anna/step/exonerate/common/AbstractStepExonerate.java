@@ -109,7 +109,7 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 			super.addShortCutFile(file);
 		} else {
 			logger
-					.info(file
+					.debug(file
 							+ " is not there or invalid, will not do shortcut");
 		}
 		redirectOutStreamToFile(file);
