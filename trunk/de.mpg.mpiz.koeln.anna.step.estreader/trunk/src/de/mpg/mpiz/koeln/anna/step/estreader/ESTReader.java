@@ -2,8 +2,10 @@ package de.mpg.mpiz.koeln.anna.step.estreader;
 
 import java.io.File;
 
+import de.bioutils.DNABasicAlphabet;
 import de.bioutils.fasta.FASTAElementGroup;
 import de.bioutils.fasta.FASTAElementGroupImpl;
+import de.bioutils.fasta.FastaUtils;
 import de.bioutils.fasta.NewFASTAFile;
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3AnnaStep;
@@ -33,19 +35,35 @@ public class ESTReader extends AbstractGFF3AnnaStep {
 	}
 
 	@Override
-	public boolean run(DataProxy<GFF3DataBean> proxy)
-			throws Throwable {
+	public boolean run(DataProxy<GFF3DataBean> proxy) throws Throwable {
 		final File file = new File(getStepProperties().getProperty(INFILE_KEY));
 		logger.debug("reading file " + file);
-		final NewFASTAFile f = NewFASTAFileImpl.parse(file);
+		NewFASTAFile f = NewFASTAFileImpl.parse(file);
 		logger.debug("reading file " + file + " done, updating data");
+
+		f = trimmFasta(f);
+
+		logger.debug("checking for valid alphabet");
+		final FASTAElementGroup sequencesNew = FastaUtils.adaptToAlphabet(
+				f.getElements(), new DNABasicAlphabet());
+
 		proxy.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
-				v.setESTs(new FASTAElementGroupImpl(f.getElements()));
+				v.setESTs(new FASTAElementGroupImpl(sequencesNew));
 				logger.debug("updating data done");
 			}
 		});
 		return true;
+	}
+
+	private NewFASTAFile trimmFasta(NewFASTAFile fastas) {
+		final String tmpHeader = fastas.getElements().iterator().next().getHeader();
+		logger.debug("trimming fasta headers");
+		fastas = FastaUtils.trimHeader(fastas);
+		logger.debug("done trimming fasta headers");
+		logger.debug("old header: \"" + tmpHeader + "\", new header: \""
+				+ fastas.getElements().iterator().next().getHeader() + "\"");
+		return fastas;
 	}
 
 	public boolean isCyclic() {
