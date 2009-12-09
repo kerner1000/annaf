@@ -3,6 +3,7 @@ package de.mpg.mpiz.koeln.anna.listener.abstractlistener;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import de.kerner.commons.osgi.utils.ServiceNotAvailabeException;
 import de.kerner.commons.osgi.utils.ServiceRetriever;
 import de.kerner.commons.osgi.utils.ServiceRetrieverImpl;
 import de.mpg.mpiz.koeln.anna.core.events.AnnaEventListener;
@@ -20,6 +21,10 @@ public abstract class AbstractEventListener implements BundleActivator, AnnaEven
 
 	public void stop(BundleContext context) throws Exception {
 		retriever = null;
+	}
+
+	public AnnaServer getServer() throws ServiceNotAvailabeException {
+		return retriever.getService();
 	}
 
 }
