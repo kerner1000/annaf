@@ -25,6 +25,7 @@ import de.kerner.commons.StringUtils;
 import de.kerner.commons.file.FileUtils;
 import de.kerner.commons.osgi.utils.ServiceNotAvailabeException;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3WrapperStep;
+import de.mpg.mpiz.koeln.anna.core.AnnaConstants;
 import de.mpg.mpiz.koeln.anna.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.data.DataModifier;
@@ -43,7 +44,8 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 				final String sourceNew = source.replaceAll(":", "");
 				logger.debug("changing source identifier from \"" + source
 						+ "\" to \"" + sourceNew + "\"");
-				g.add(new GFF3ElementBuilder(e).setSource(sourceNew).setType(Type.EST).build());
+				g.add(new GFF3ElementBuilder(e).setSource(sourceNew).setType(
+						Type.EST).setSource(AnnaConstants.IDENT).build());
 			}
 			return new GFF3FileImpl(g);
 		}
@@ -91,9 +93,7 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 				ExonerateConstants.RESULT_FILENAME), true);
 		file = new DataAdapter().extend(file);
 		final GFF3ElementGroup result = file.getElements();
-		
-		
-		
+
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
 				v.setMappedESTs(new GFF3ElementGroupImpl(result));
@@ -108,9 +108,8 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 		if (FileUtils.fileCheck(file, false) && outFileIsValid(file)) {
 			super.addShortCutFile(file);
 		} else {
-			logger
-					.debug(file
-							+ " is not there or invalid, will not do shortcut");
+			logger.debug(file
+					+ " is not there or invalid, will not do shortcut");
 		}
 		redirectOutStreamToFile(file);
 		addResultFileToWaitFor(file);
