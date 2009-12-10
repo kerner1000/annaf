@@ -16,6 +16,7 @@ import de.bioutils.gff3.element.GFF3ElementGroupImpl;
 import de.bioutils.gff3.file.GFF3File;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3WrapperStep;
+import de.mpg.mpiz.koeln.anna.core.AnnaConstants;
 import de.mpg.mpiz.koeln.anna.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.data.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.data.DataProxy;
@@ -98,7 +99,7 @@ public abstract class AbstractStepRepeatMasker extends AbstractGFF3WrapperStep {
 				+ tmp.getElements().iterator().next().getType() + "\" to \""
 				+ Type.repeat_region + "\"");
 		for (GFF3Element e : tmp.getElements()) {
-			result.add(new GFF3ElementBuilder(e).setType(Type.repeat_region)
+			result.add(new GFF3ElementBuilder(e).setType(Type.repeat_region).setSource(AnnaConstants.IDENT)
 					.build());
 		}
 
