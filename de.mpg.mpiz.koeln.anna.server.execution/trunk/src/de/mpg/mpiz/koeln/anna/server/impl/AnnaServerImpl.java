@@ -35,14 +35,21 @@ public class AnnaServerImpl implements AnnaServer {
 	private final EventHandler handler;
 	private final Properties properties;
 	private final ExecutorService exe = Executors.newCachedThreadPool();
+	private final AnnaServerActivator activator;
 
-	AnnaServerImpl() {
+	AnnaServerImpl(AnnaServerActivator activator) {
 		properties = getPropertes();
 		logger.debug("loaded properties: " + properties);
 		handler = new EventHandler(registeredSteps);
 		handler.addEventListener(new NotifyOthersListener());
+		this.activator = activator;
 	}
 
+	public void shutdown() {
+		exe.shutdown();
+		activator.shutdown();
+	}
+	
 	public synchronized void unregisterStep(ExecutableStep step) {
 		logger.debug("TODO");
 		// TODO Auto-generated method stub
@@ -116,11 +123,5 @@ public class AnnaServerImpl implements AnnaServer {
 		else
 			logger.debug("step was errorgenious, will not change state");
 		handler.stepStateChanged((AnnaStep) step);
-	}
-
-	public void shutdown() {
-		logger.debug("shutting down server");
-		exe.shutdown();
-				
 	}
 }
