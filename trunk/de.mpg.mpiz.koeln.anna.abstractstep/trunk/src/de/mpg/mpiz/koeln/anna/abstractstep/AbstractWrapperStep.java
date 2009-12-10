@@ -133,6 +133,7 @@ public abstract class AbstractWrapperStep<T> extends AbstractAnnaStep<T> {
 		success = exe.submit(
 				new ThreaddedProcess(exeDir, workingDir, out, err, logger))
 				.get();
+		exe.shutdown();
 		if (outFile != null) {
 			out.close();
 		}
