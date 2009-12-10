@@ -7,10 +7,14 @@ import org.osgi.framework.BundleContext;
 
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff3.GFF3Utils;
+import de.bioutils.gff3.element.GFF3Element;
+import de.bioutils.gff3.element.GFF3ElementBuilder;
 import de.bioutils.gff3.element.GFF3ElementGroup;
+import de.bioutils.gff3.element.GFF3ElementGroupImpl;
 import de.kerner.commons.StringUtils;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.abstractstep.AbstractGFF3WrapperStep;
+import de.mpg.mpiz.koeln.anna.core.AnnaConstants;
 import de.mpg.mpiz.koeln.anna.data.GFF3DataBean;
 import de.mpg.mpiz.koeln.anna.server.data.DataModifier;
 import de.mpg.mpiz.koeln.anna.server.data.DataProxy;
@@ -76,9 +80,13 @@ public abstract class AbstractPredict extends AbstractGFF3WrapperStep {
 	public void update(DataProxy<GFF3DataBean> data) throws Throwable {
 		final GFF3ElementGroup c = GFF3Utils.convertFromGFFFile(resultFile,
 				true).getElements();
+		final GFF3ElementGroup result = new GFF3ElementGroupImpl(c.isSorted());
+		for(GFF3Element e : c){
+			result.add(new GFF3ElementBuilder(e).setSource(AnnaConstants.IDENT).build());
+		}
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
-				v.setPredictedGenesGFF(c);
+				v.setPredictedGenesGFF(result);
 			}
 		});
 	}
