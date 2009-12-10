@@ -160,6 +160,7 @@ public class Activator implements BundleActivator {
 				}
 			}
 		});
+		exe.shutdown();
 	}
 	
 	@Override

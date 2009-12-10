@@ -34,5 +34,6 @@ public abstract class StepSheduler implements Callable<Void> {
 	
 	public synchronized void start(){
 		pool.submit(exe);
+		pool.shutdown();
 	}
 }
