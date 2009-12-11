@@ -88,6 +88,10 @@ public class VerifiedGenesReader extends AbstractGFF3AnnaStep {
 		
 		final GFF3ElementGroup elements2 = trimmGFF(elements);
 		
+		if(elements.getSize() != elements2.getSize()){
+			logger.warn("size of elements before trimm: " + elements.getSize() + ", size of elements after trimm: " + elements2.getSize());
+		}
+		
 		logger.info("done reading GFF");
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
