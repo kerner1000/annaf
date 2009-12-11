@@ -47,7 +47,7 @@ public class AnnaServerImpl implements AnnaServer {
 
 	public void shutdown() {
 		exe.shutdown();
-		//activator.shutdown();
+		activator.shutdown();
 	}
 	
 	public synchronized void unregisterStep(ExecutableStep step) {
