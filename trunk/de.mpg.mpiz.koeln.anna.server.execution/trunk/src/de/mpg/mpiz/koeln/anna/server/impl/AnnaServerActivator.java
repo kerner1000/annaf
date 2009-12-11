@@ -36,15 +36,22 @@ public class AnnaServerActivator implements BundleActivator {
 		return this.getClass().getSimpleName();
 	}
 
-	// TODO: this should be obsolete (services do not need to be unregistered in order to shutdown OSGi)
+	
 	void shutdown() {
-		logger.debug("shutting down server");
-		final ServiceReference reference = context.getServiceReference(AnnaServer.class.getName());
-		final boolean b = context.ungetService(reference);
-		if(b){
-			logger.debug("server down");
-		} else {
-			logger.debug("server was not running");
-		}
+		
+		// TODO: this should be obsolete (services do not need to be unregistered in order to shutdown OSGi)
+//		logger.debug("shutting down server");
+//		final ServiceReference reference = context.getServiceReference(AnnaServer.class.getName());
+//		final boolean b = context.ungetService(reference);
+//		if(b){
+//			logger.debug("server down");
+//		} else {
+//			logger.debug("server was not running");
+//		}
+		
+		// TODO: ugly workaround to terminate whole app.
+		
+		logger.debug("doing dirty shutdown");
+		System.exit(0);
 	}
 }
