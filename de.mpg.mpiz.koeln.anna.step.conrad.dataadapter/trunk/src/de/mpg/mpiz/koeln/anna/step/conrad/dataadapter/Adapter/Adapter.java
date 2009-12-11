@@ -213,7 +213,8 @@ public class Adapter extends AbstractGFF3AnnaStep {
 
 		logger.debug("creating Union");
 		GFF3FASTAUnion union = new GFF3FASTAUnionImpl(gff3File, fastaFile);
-		doIntegrityCheck(union);
+		
+		//doIntegrityCheck(union);
 
 		final Range r = union.getGFF3ElementGroup().getRange();
 		if(new Integer(getStepProperties().getProperty(MAX_LENGH_KEY)) > r.getLength()){
