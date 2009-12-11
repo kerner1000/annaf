@@ -85,12 +85,25 @@ public class VerifiedGenesReader extends AbstractGFF3AnnaStep {
 		// TODO file may not be sorted.
 		final GFF3File gtfFile = GFF3Utils.convertFromGFFFile(gtf, true);
 		final GFF3ElementGroup elements = gtfFile.getElements();
+		
+		final GFF3ElementGroup elements2 = trimmGFF(elements);
+		
 		logger.info("done reading GFF");
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
-				v.setVerifiedGenesGFF(elements);
+				v.setVerifiedGenesGFF(elements2);
 			}
 		});
+	}
+
+	private GFF3ElementGroup trimmGFF(GFF3ElementGroup elements) {
+		final String tmpIdent = elements.iterator().next().getSeqID();
+		logger.debug("trimming gff3 sequence identifiers");
+		elements = GFF3Utils.trimHeader(elements);
+		logger.debug("done trimming gff3 sequence identifiers");
+		logger.debug("old ident: \"" + tmpIdent + "\", new ident: \""
+				+ elements.iterator().next().getSeqID() + "\"");
+		return elements;
 	}
 
 	private void doFasta(DataProxy<GFF3DataBean> data) throws IOException,
