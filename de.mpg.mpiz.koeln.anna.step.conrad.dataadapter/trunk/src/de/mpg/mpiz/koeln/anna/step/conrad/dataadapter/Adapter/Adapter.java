@@ -219,8 +219,11 @@ public class Adapter extends AbstractGFF3AnnaStep {
 		final Range r = union.getGFF3ElementGroup().getRange();
 		if(new Integer(getStepProperties().getProperty(MAX_LENGH_KEY)) > r.getLength()){
 			logger.debug("no elements out of range, wont trimm");
-		} else 
+		} else {
+			
 		union = trimmFastaElements(union);
+			
+		}
 
 //		union = removeNonAlphabetMatching(union);
 
