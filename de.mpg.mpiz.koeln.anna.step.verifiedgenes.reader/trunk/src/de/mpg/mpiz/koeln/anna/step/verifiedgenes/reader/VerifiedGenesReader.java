@@ -95,6 +95,7 @@ public class VerifiedGenesReader extends AbstractGFF3AnnaStep {
 		logger.info("done reading GFF");
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
+				logger.debug("updating verified gff3 (" + elements2.getSize() + " elements)");
 				v.setVerifiedGenesGFF(elements2);
 			}
 		});
