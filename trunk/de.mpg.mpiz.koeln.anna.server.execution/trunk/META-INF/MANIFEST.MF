@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: execution server
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.server.execution
-Bundle-Version: 0.9.0.qualifier
+Bundle-Version: 0.10.0.qualifier
 Bundle-Activator: de.mpg.mpiz.koeln.anna.server.impl.AnnaServerActivator
 Import-Package: de.kerner.commons.file,
  de.kerner.commons.logging,
