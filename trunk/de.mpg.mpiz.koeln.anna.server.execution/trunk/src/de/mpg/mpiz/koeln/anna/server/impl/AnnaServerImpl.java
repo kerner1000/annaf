@@ -41,12 +41,13 @@ public class AnnaServerImpl implements AnnaServer {
 		public void run() {
 			// TODO: ugly workaround to terminate whole app.
 			logger.debug("doing dirty shutdown");
-			activator.shutdown();
 			try {
 				sleep(timeout);
 				while (!areWeDone()) {
 					sleep(timeout);
 				}
+				exe.shutdown();
+				activator.shutdown();
 				System.exit(0);
 			} catch (Exception e) {
 				System.err.println("dirty shutdown failed! ("
@@ -85,8 +86,7 @@ public class AnnaServerImpl implements AnnaServer {
 	}
 
 	public void shutdown() {
-		exe.shutdown();
-
+		logger.debug("starting shutting down");
 		new Terminator(registeredSteps).start();
 
 	}
@@ -109,6 +109,10 @@ public class AnnaServerImpl implements AnnaServer {
 			ss = new CyclicStepSheduler((AnnaStep) step, handler);
 		} else {
 			ss = new ImmediateStepSheduler((AnnaStep) step, handler);
+		}
+		synchronized (AnnaSepExecutor.LOCK) {
+			logger.debug("notifying others (new step)");
+			AnnaSepExecutor.LOCK.notifyAll();
 		}
 		exe.submit(ss);
 	}

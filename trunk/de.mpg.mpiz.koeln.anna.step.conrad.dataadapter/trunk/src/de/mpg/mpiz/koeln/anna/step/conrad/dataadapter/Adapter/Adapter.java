@@ -11,6 +11,7 @@ import de.bioutils.fasta.NewFASTAFile;
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff3.GFF3FASTAUnion;
 import de.bioutils.gff3.GFF3FASTAUnionImpl;
+import de.bioutils.gff3.GFF3Statistics;
 import de.bioutils.gff3.GFF3Utils;
 import de.bioutils.gff3.IntegrityCheckException;
 import de.bioutils.gff3.Type;
@@ -216,7 +217,7 @@ public class Adapter extends AbstractGFF3AnnaStep {
 		logger.debug("cleaning up");
 		union = union.throwAwayAllOrphans();
 		
-		doIntegrityCheck(union);
+		//doIntegrityCheck(union);
 
 		final Range r = union.getGFF3ElementGroup().getRange();
 		if(getStepProperties().getProperty(MAX_LENGH_KEY) == null || new Integer(getStepProperties().getProperty(MAX_LENGH_KEY)) > r.getLength()){
@@ -234,9 +235,10 @@ public class Adapter extends AbstractGFF3AnnaStep {
 		final GFF3FASTAUnion finalUnion = reduceSize(union);
 
 		//logger.debug("done with adaptations");
-		final int numGenes = GFF3Utils.numberOfGenes(finalUnion.getMaster());
-		final double avNumExonsPerGene = GFF3Utils
-				.getNumberOfExonsByGenes(finalUnion.getMaster().getElements());
+		final GFF3Statistics stats = new GFF3Statistics(finalUnion.getMaster());
+		final int numGenes = stats.getNumberOfGenes();
+		final double avNumExonsPerGene = stats
+				.getNumberOfExonsPerGene();
 		logger.info("adaptaions done, using " + numGenes + " genes, with "
 				+ String.format("%2.2f", avNumExonsPerGene)
 				+ " average exons per gene");
