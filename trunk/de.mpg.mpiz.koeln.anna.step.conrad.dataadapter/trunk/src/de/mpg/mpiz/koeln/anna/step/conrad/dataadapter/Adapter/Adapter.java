@@ -213,12 +213,14 @@ public class Adapter extends AbstractGFF3AnnaStep {
 
 		logger.debug("creating Union");
 		GFF3FASTAUnion union = new GFF3FASTAUnionImpl(gff3File, fastaFile);
+		logger.debug("cleaning up");
+		union = union.throwAwayAllOrphans();
 		
-		//doIntegrityCheck(union);
+		doIntegrityCheck(union);
 
 		final Range r = union.getGFF3ElementGroup().getRange();
-		if(new Integer(getStepProperties().getProperty(MAX_LENGH_KEY)) > r.getLength()){
-			logger.debug("no elements out of range, wont trimm");
+		if(getStepProperties().getProperty(MAX_LENGH_KEY) == null || new Integer(getStepProperties().getProperty(MAX_LENGH_KEY)) > r.getLength()){
+			logger.debug("no range defined or no elements out of range, wont trimm");
 		} else {
 			
 		union = trimmFastaElements(union);
