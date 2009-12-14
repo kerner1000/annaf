@@ -51,9 +51,24 @@ public class FinishedListener extends AbstractEventListener {
 				this.error = true;
 			}
 		}
-		return true;
+		// maybe we are not done but nothing is going to happen no more
+		final boolean b = nonActive(event);
+		if(b){
+			logger.info("we are not done, but we are inactive");
+		}
+		return b;
 	}
 	
+	private boolean nonActive(AnnaEvent event) {
+		final Collection<AnnaStep> eventList = event.getRegisteredSteps();
+		for(AnnaStep s : eventList){
+			if((s.getState().isActive())){
+				return false;
+			}
+		}
+		return true;
+	}
+
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName();
