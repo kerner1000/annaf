@@ -37,7 +37,7 @@ public class AnnaServerActivator implements BundleActivator {
 	}
 
 	
-	void shutdown() {
+	synchronized void shutdown() {
 		
 		// TODO: this should be obsolete (services do not need to be unregistered in order to shutdown OSGi)
 //		logger.debug("shutting down server");
@@ -49,9 +49,6 @@ public class AnnaServerActivator implements BundleActivator {
 //			logger.debug("server was not running");
 //		}
 		
-		// TODO: ugly workaround to terminate whole app.
 		
-		logger.debug("doing dirty shutdown");
-		System.exit(0);
 	}
 }

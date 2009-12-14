@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 
 import de.kerner.commons.file.FileUtils;
 import de.kerner.commons.logging.Log;
+import de.mpg.mpiz.koeln.anna.core.events.AnnaEvent;
 import de.mpg.mpiz.koeln.anna.core.events.AnnaEventListener;
 import de.mpg.mpiz.koeln.anna.server.AnnaServer;
 import de.mpg.mpiz.koeln.anna.step.AnnaStep;
@@ -26,6 +27,44 @@ import de.mpg.mpiz.koeln.anna.step.ObservableStep.State;
  * 
  */
 public class AnnaServerImpl implements AnnaServer {
+
+	private class Terminator extends Thread {
+
+		private Collection<AnnaStep> registeredSteps;
+		private final long timeout = 5000;
+
+		Terminator(Collection<AnnaStep> registeredSteps) {
+			this.registeredSteps = registeredSteps;
+		}
+
+		@Override
+		public void run() {
+			// TODO: ugly workaround to terminate whole app.
+			logger.debug("doing dirty shutdown");
+			activator.shutdown();
+			try {
+				sleep(timeout);
+				while (!areWeDone()) {
+					sleep(timeout);
+				}
+				System.exit(0);
+			} catch (Exception e) {
+				System.err.println("dirty shutdown failed! ("
+						+ e.getLocalizedMessage() + ")");
+			}
+		}
+
+		private boolean areWeDone() {
+			synchronized (registeredSteps) {
+				for (AnnaStep s : registeredSteps) {
+					if (!(s.getState().isFinished())) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+	}
 
 	private final static Log logger = new Log(AnnaServerImpl.class);
 	// TODO path
@@ -47,9 +86,11 @@ public class AnnaServerImpl implements AnnaServer {
 
 	public void shutdown() {
 		exe.shutdown();
-		activator.shutdown();
+
+		new Terminator(registeredSteps).start();
+
 	}
-	
+
 	public synchronized void unregisterStep(ExecutableStep step) {
 		logger.debug("TODO");
 		// TODO Auto-generated method stub
@@ -117,7 +158,7 @@ public class AnnaServerImpl implements AnnaServer {
 	}
 
 	private void setStepState(ExecutableStep step, State state) {
-		//logger.debug("changing step state, step="+step + ", state="+state);
+		// logger.debug("changing step state, step="+step + ", state="+state);
 		if (!((AnnaStep) step).getState().equals(State.ERROR))
 			((AnnaStep) step).setState(state);
 		else
