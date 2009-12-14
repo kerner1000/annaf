@@ -52,11 +52,7 @@ public class FinishedListener extends AbstractEventListener {
 			}
 		}
 		// maybe we are not done but nothing is going to happen no more
-		final boolean b = nonActive(event);
-		if(b){
-			logger.info("we are not done, but we are inactive");
-		}
-		return b;
+		return nonActive(event);
 	}
 	
 	private boolean nonActive(AnnaEvent event) {
