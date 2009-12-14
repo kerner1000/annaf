@@ -43,23 +43,12 @@ public class FinishedListener extends AbstractEventListener {
 
 	private boolean areWeDone(AnnaEvent event){
 		final Collection<AnnaStep> eventList = event.getRegisteredSteps();
+//		boolean done = true;
 		for(AnnaStep s : eventList){
-			if(!(s.getState().isFinished())){
+			if(!s.getState().isFinished() || s.getState().isActive())
 				return false;
-			}
 			if(s.getState().equals(State.ERROR)){
 				this.error = true;
-			}
-		}
-		// maybe we are not done but nothing is going to happen no more
-		return nonActive(event);
-	}
-	
-	private boolean nonActive(AnnaEvent event) {
-		final Collection<AnnaStep> eventList = event.getRegisteredSteps();
-		for(AnnaStep s : eventList){
-			if((s.getState().isActive())){
-				return false;
 			}
 		}
 		return true;
