@@ -1,12 +1,18 @@
 package de.mpg.mpiz.koeln.anna.step;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface ObservableStep {
 	
 	public enum State {
-		// non-finished steps
-		LOOSE, REGISTERED, CHECK_NEED_TO_RUN, WAIT_FOR_REQ, RUNNING,
+		LOOSE, 
+		
+		// active steps
+		REGISTERED, CHECK_NEED_TO_RUN, RUNNING,
+		
+		// well... might wait forever.
+		WAIT_FOR_REQ, 
 		
 		// finished steps
 		DONE, ERROR, SKIPPED;
@@ -18,6 +24,19 @@ public interface ObservableStep {
 			case ERROR:
 				return true;
 			case SKIPPED:
+				return true;
+			default:
+				return false;
+			}
+		}
+		
+		public boolean isActive(){
+			switch(this){
+			case REGISTERED:
+				return true;
+			case CHECK_NEED_TO_RUN:
+				return true;
+			case RUNNING:
 				return true;
 			default:
 				return false;
