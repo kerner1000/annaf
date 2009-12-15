@@ -75,6 +75,7 @@ public class Activator implements BundleActivator {
 						result.add(b);
 						}catch(Exception e){
 							System.err.println(e.getLocalizedMessage());
+							System.err.println("... for bundle \"" + p + "\"");
 						}
 					}
 				}
