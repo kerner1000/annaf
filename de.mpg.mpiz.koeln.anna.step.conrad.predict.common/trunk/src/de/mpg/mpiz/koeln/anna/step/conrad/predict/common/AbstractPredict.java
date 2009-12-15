@@ -86,6 +86,7 @@ public abstract class AbstractPredict extends AbstractGFF3WrapperStep {
 		}
 		data.modifiyData(new DataModifier<GFF3DataBean>() {
 			public void modifiyData(GFF3DataBean v) {
+				logger.debug("setting predicted genes");
 				v.setPredictedGenesGFF(result);
 			}
 		});
