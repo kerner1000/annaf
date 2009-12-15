@@ -8,8 +8,10 @@ Bundle-ClassPath: .,
  lib/kerner-commons-0.0.10.jar
 Export-Package: de.kerner.commons,
  de.kerner.commons.collection,
+ de.kerner.commons.exec,
  de.kerner.commons.file,
  de.kerner.commons.logging,
+ de.kerner.commons.workflow,
  de.kerner.commons.xml,
  de.kerner.commons.zip
 Import-Package: org.slf4j,
