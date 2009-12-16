@@ -42,8 +42,8 @@ public abstract class AbstractStepExonerate extends AbstractGFF3WrapperStep {
 			for (GFF3Element e : gff3File.getElements()) {
 				final String source = e.getSource();
 				final String sourceNew = source.replaceAll(":", "");
-				logger.debug("changing source identifier from \"" + source
-						+ "\" to \"" + sourceNew + "\"");
+//				logger.debug("changing source identifier from \"" + source
+//						+ "\" to \"" + sourceNew + "\"");
 				g.add(new GFF3ElementBuilder(e).setSource(sourceNew).setType(
 						Type.EST).setSource(AnnaConstants.IDENT).build());
 			}

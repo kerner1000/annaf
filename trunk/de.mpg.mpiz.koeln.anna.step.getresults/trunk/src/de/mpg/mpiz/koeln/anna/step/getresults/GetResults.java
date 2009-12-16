@@ -26,37 +26,35 @@ public class GetResults extends AbstractGFF3AnnaStep {
 				OUT_DIR_KEY));
 		logger.debug("got outdir=" + outDir);
 		success = FileUtils.dirCheck(outDir, true);
+		if(success)
 		writeFile(outDir, proxy);
 		return success;
 	}
 
 	private void writeFile(File outDir, DataProxy<GFF3DataBean> proxy)
 			throws DataBeanAccessException, IOException {
-		logger.debug("retrieving GFF for predicted genes");
+		logger.debug("reading GFF for predicted genes");
 		final GFF3ElementGroup predicted = proxy.viewData()
 				.getPredictedGenesGFF();
-		logger.debug("retrieving GFF for predicted genes done (elements="
+		logger.debug("reading GFF for predicted genes done (elements="
 				+ predicted.getSize() + ")");
 
-		logger.debug("retrieving GFF for repetetive elements");
+		logger.debug("reading GFF for repetetive elements");
 		final GFF3ElementGroup repeat = proxy.viewData()
 				.getRepeatMaskerGFF();
-		logger.debug("retrieving GFF for repetetive elements done (elements="
+		logger.debug("reading GFF for repetetive elements done (elements="
 						+ repeat.getSize() + ")");
 
-		logger.debug("retrieving GFF for mapped ests");
+		logger.debug("reading GFF for mapped ests");
 		final GFF3ElementGroup ests = proxy.viewData().getMappedESTs();
-		logger.debug("retrieving GFF for mapped ests done (elements="
+		logger.debug("reading GFF for mapped ests done (elements="
 				+ ests.getSize() + ")");
 
 		logger.debug("merging");
 		// TODO is that really sorted??
 		final GFF3ElementGroup merged = new GFF3ElementGroupImpl(true);
-		if (predicted.getSize() != 0)
 			merged.addAll(predicted);
-		if (repeat.getSize() != 0)
 			merged.addAll(repeat);
-		if (ests.getSize() != 0)
 			merged.addAll(ests);
 		logger.debug("merging done (elements=" + merged.getSize() + ")");
 		if (merged.getSize() == 0) {
