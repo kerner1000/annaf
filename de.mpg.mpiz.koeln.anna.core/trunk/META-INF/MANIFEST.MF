@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: anna core
+Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.core
+Bundle-Version: 0.0.1.qualifier
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: de.mpg.mpiz.koeln.anna.core
