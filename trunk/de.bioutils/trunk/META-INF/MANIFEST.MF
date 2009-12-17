@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: bioutils
 Bundle-SymbolicName: de.bioutils
-Bundle-Version: 0.0.9.qualifier
+Bundle-Version: 0.0.10.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .,
- lib/bioutils-0.0.9.jar
+ lib/bioutils-0.0.10.jar
 Import-Package: de.kerner.commons,
  de.kerner.commons.file,
  de.kerner.commons.logging,
@@ -20,6 +20,8 @@ Export-Package: de.bioutils,
  de.bioutils.blast.printer,
  de.bioutils.blast.utils,
  de.bioutils.fasta,
+ de.bioutils.fasta.parser,
+ de.bioutils.fasta.parser.example,
  de.bioutils.frame,
  de.bioutils.gff,
  de.bioutils.gff.element,
@@ -34,5 +36,7 @@ Export-Package: de.bioutils,
  de.bioutils.gff3.element.filter,
  de.bioutils.gff3.file,
  de.bioutils.gff3.parser,
+ de.bioutils.nucleotide,
+ de.bioutils.nucleotide.dna,
  de.bioutils.range
 
